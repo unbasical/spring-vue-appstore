@@ -2,7 +2,7 @@
 
 image::https://storiescdn.hornet.com/wp-content/uploads/2019/01/24204340/he-man.jpg[GitHub mascot]
 
-# https://git.heroku.com/fr-11-apps.git[Heroku Backend - Hosting]
+# https://fr-11-apps.herokuapp.com/apps.html[Go to App]
 
 == What you'll build
 

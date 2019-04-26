@@ -79,4 +79,23 @@ public class App {
         ratings.add(rating);
     }
 
+    public void setTags(Set<Tag> tags) {
+        this.tags.retainAll(tags);
+        this.tags.addAll(tags);
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments.retainAll(comments);
+        this.comments.addAll(comments);
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings.retainAll(ratings);
+        this.ratings.addAll(ratings);
+    }
+
+    public void setScreenshots(List<Screenshot> screenshots) {
+        this.screenshots.retainAll(screenshots);
+        this.screenshots.addAll(screenshots);
+    }
 }

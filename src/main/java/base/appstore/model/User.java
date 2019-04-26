@@ -47,4 +47,13 @@ public class User {
     @EqualsAndHashCode.Exclude
     private List<App> apps = new ArrayList<>();
 
+    public void setRoles(Set<Role> roles) {
+        this.roles.retainAll(roles);
+        this.roles.addAll(roles);
+    }
+
+    public void setApps(List<App> apps) {
+        this.apps.retainAll(apps);
+        this.apps.addAll(apps);
+    }
 }

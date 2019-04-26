@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Stream;
+
 
 @RestController
 @RequestMapping("/users")
@@ -25,6 +27,21 @@ public class UserController {
     @PostMapping()
     public UserDto createUser(@RequestBody UserDto input) {
         return new UserDto(userRepo.save(input.toEntity()));
+    }
+
+    @GetMapping()
+    public Stream<UserDto> getAllUsers() {
+        return userRepo.findAll().stream().map(UserDto::new);
+    }
+
+    @GetMapping("{id}")
+    public UserDto getUser(@PathVariable Long id) {
+        return userRepo.findById(id).map(UserDto::new).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userRepo.deleteById(id);
     }
 
     @PostMapping("{userID}/apps")
@@ -43,17 +60,12 @@ public class UserController {
     @PutMapping("{userID}/apps/{appID}")
     public AppDto updateApp(@PathVariable Long userID, @PathVariable Long appID, @RequestBody AppDto input) {
         final App receivedApp = input.toEntity();
-        return appRepo.findOne(Example.of(receivedApp)).map(app -> {
+        return appRepo.findById(appID).map(app -> {
             app.setTitle(receivedApp.getTitle());
             app.setDescription(receivedApp.getDescription());
             app.setTags(receivedApp.getTags());
             return new AppDto(appRepo.save(app));
         }).orElseGet(() -> new AppDto(appRepo.save(receivedApp)));
-    }
-
-    @DeleteMapping("{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userRepo.deleteById(id);
     }
 
 }

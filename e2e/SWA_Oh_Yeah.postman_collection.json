@@ -1,0 +1,151 @@
+{
+  "info": {
+    "_postman_id": "21a82021-f85a-4d79-b09b-ed20a9784eb5",
+    "name": "SWA_Oh_Yeah",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Donaldus Maximus\",\n\t\"email\": \"donaldus.maximus@hm.edu\"\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/users",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create App",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"title\": \"Test Title\",\n\t\"description\": \"My first description\"\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/users/{{user}}/apps",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "users",
+            "{{user}}",
+            "apps"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update App",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"title\": \"Test New Title\",\n\t\"description\": \"My new description\"\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/users/{{user}}/apps/2",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "users",
+            "{{user}}",
+            "apps",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "All Apps",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/apps",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "apps"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "One App",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/apps/2",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "apps",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

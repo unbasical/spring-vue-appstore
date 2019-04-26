@@ -23,7 +23,7 @@ public class AppController {
     private AppRepository appRepository;
 
     @GetMapping()
-    public Stream<AppDto> filteredApps(@RequestParam(required = false) String search
+    public Stream<AppDto> getAllAppsFiltered(@RequestParam(required = false) String search
             , @RequestParam(required = false) String tag
             , @RequestParam(required = false) Long rating) {
         return appRepository.findAll()
@@ -32,8 +32,13 @@ public class AppController {
     }
 
     @GetMapping("{id}")
-    public AppDto find(@PathVariable Long id) {
+    public AppDto getApp(@PathVariable Long id) {
         return appRepository.findById(id).map(AppDto::new).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteApp(@PathVariable Long id) {
+        appRepository.deleteById(id);
     }
 
     @PostMapping("{id}/ratings")

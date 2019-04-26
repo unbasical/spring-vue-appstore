@@ -2,11 +2,13 @@ package base.appstore.controller;
 
 import base.appstore.controller.dto.AppDto;
 import base.appstore.controller.dto.UserDto;
+import base.appstore.exceptions.ResourceExistsException;
 import base.appstore.exceptions.ResourceNotFoundException;
 import base.appstore.model.App;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,6 +29,10 @@ public class UserController {
 
     @PostMapping("{userID}/apps")
     public AppDto createApp(@PathVariable Long userID, @RequestBody AppDto input) {
+        if (appRepo.findOne(Example.of(input.toEntity())).isPresent()) {
+            throw new ResourceExistsException();
+        }
+
         return userRepo.findById(userID).map(user -> {
             final App receivedApp = input.toEntity();
             receivedApp.setUser(user);
@@ -37,8 +43,7 @@ public class UserController {
     @PutMapping("{userID}/apps/{appID}")
     public AppDto updateApp(@PathVariable Long userID, @PathVariable Long appID, @RequestBody AppDto input) {
         final App receivedApp = input.toEntity();
-
-        return appRepo.findById(appID).map(app -> {
+        return appRepo.findOne(Example.of(receivedApp)).map(app -> {
             app.setTitle(receivedApp.getTitle());
             app.setDescription(receivedApp.getDescription());
             app.setTags(receivedApp.getTags());

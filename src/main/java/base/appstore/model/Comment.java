@@ -1,9 +1,8 @@
 package base.appstore.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -11,15 +10,13 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
 
     @Id
-    @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -28,8 +25,7 @@ public class Comment {
     @CreatedDate
     private Date createDate;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "comment_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User author;
-
 }

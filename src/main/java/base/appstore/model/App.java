@@ -1,35 +1,23 @@
 package base.appstore.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-/**
- * App.
- * Model class persisted using JPA
- *
- * @author Gudrun Socher
- * @version 1.0
- */
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class App {
 
     @Id
-    @Column(name = "app_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -42,7 +30,6 @@ public class App {
     @LastModifiedDate
     private Date updateDate;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
@@ -51,32 +38,27 @@ public class App {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "app_id")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "app_id")
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "app_id")
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "app_id")
-    private List<Screenshot> screenshots;
+    private List<Screenshot> screenshots = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "logo_id", referencedColumnName = "app_id")
     private Logo logo;
 
     public void addComment(Comment comment) {
@@ -87,10 +69,4 @@ public class App {
         ratings.add(rating);
     }
 
-    public long getAverageRating() {
-        // TODO implement
-        //Long sum = ratings.stream().reduce(0l,(a,b)->a+b);
-        //return sum/ratings.size();
-        return -1;
-    }
 }

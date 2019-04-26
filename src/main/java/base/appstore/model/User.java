@@ -30,7 +30,7 @@ public class User {
     @LastModifiedDate
     private Date updateDate;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(

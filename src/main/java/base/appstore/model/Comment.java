@@ -20,7 +20,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String commentText;
+    private String text;
 
     @CreatedDate
     private Date createDate;

@@ -1,6 +1,8 @@
 package base.appstore.controller;
 
-import base.appstore.exceptions.AppNotFoundException;
+import base.appstore.controller.dto.AppDto;
+import base.appstore.controller.dto.RatingDto;
+import base.appstore.exceptions.ResourceNotFoundException;
 import base.appstore.model.App;
 import base.appstore.model.Comment;
 import base.appstore.repository.AppRepository;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @RestController
@@ -19,47 +22,28 @@ public class AppController {
     private AppRepository appRepository;
 
     @GetMapping()
-    public List<App> filteredApps(@RequestParam(required = false) String search, @RequestParam(required = false) String tag, @RequestParam(required = false) Long rating) {
-        return appRepository.findAll();
+    public Stream<AppDto> filteredApps(@RequestParam(required = false) String search
+            , @RequestParam(required = false) String tag
+            , @RequestParam(required = false) Long rating) {
+        return appRepository.findAll()
+                .stream()
+                .map(AppDto::new);
     }
 
     @GetMapping("{id}")
-    public App find(@PathVariable Long id) {
-        return appRepository.findById(id).orElseThrow(() -> new AppNotFoundException(id));
+    public AppDto find(@PathVariable Long id) {
+        return appRepository.findById(id).map(AppDto::new).orElseThrow(ResourceNotFoundException::new);
     }
-
-    @PostMapping()
-    public App create(@RequestBody App input) {
-        // Todo fix if app already exists
-        return appRepository.save(input);
-    }
-
-    @PutMapping("{id}")
-    public App update(@PathVariable Long id, @RequestBody App input) {
-        return appRepository.findById(id).map(app -> {
-            app.setTitle(input.getTitle());
-            app.setDescription(input.getDescription());
-            app.setTags(input.getTags());
-            return appRepository.save(app);
-        }).orElseGet(() -> {
-            return appRepository.save(input);
-        });
-    }
-
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id) {
-        appRepository.deleteById(id);
-    }
-
 
     @PostMapping("{id}/ratings")
-    public void updateRating(@PathVariable Long id, @RequestBody Long rating) {
+    public void updateRating(@PathVariable Long id, @RequestBody RatingDto rating) {
 
-        App ratingApp = appRepository.getOne(id);
-        //ratingApp.addRating(rating);
+        final App app = appRepository.getOne(id);
+        app.addRating(rating.toEntity());
+        appRepository.save(app);
     }
 
-    @GetMapping("{id}/comments")
+    @GetMapping("{id}/raitings")
     public List<Comment> getComments(@PathVariable Long id) {
         App app = appRepository.getOne(id);
         return app.getComments();

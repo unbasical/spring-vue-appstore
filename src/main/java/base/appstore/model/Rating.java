@@ -20,7 +20,7 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String commentText;
+    private int stars;
 
     @CreatedDate
     private Date createDate;

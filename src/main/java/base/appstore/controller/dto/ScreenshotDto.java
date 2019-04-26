@@ -3,7 +3,7 @@ package base.appstore.controller.dto;
 import lombok.Data;
 
 @Data
-public class Screenshot {
+public class ScreenshotDto {
 
     private Long id;
     private byte[] imageData;

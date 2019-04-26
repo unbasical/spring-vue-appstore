@@ -2,15 +2,14 @@ package base.appstore.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class User {
+public class AppDto {
 
     private Long id;
-    private String name;
-    private String email;
+    private String title;
+    private String description;
+    private long views;
 
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class CommentDto {
 
     private Long id;
     private String commentText;

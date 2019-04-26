@@ -2,14 +2,14 @@ package base.appstore.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
-public class App {
+@NoArgsConstructor
+public class LogoDto {
 
     private Long id;
-    private String title;
-    private String description;
-    private long views;
-
+    private byte[] imageData;
 }

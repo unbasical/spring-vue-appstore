@@ -3,7 +3,7 @@ package base.appstore.controller.dto;
 import lombok.Data;
 
 @Data
-public class Tag {
+public class TagDto {
 
     private Long id;
     private String name;

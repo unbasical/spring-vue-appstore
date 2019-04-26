@@ -23,4 +23,11 @@ public class CommentDto {
         this.createDate = comment.getCreateDate();
         this.author = new UserDto(comment.getAuthor());
     }
+
+    public Comment toEntity() {
+        final Comment comment = new Comment();
+        comment.setText(text);
+        comment.setAuthor(author.toEntity());
+        return comment;
+    }
 }

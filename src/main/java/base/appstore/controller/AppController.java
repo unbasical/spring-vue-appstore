@@ -1,6 +1,7 @@
 package base.appstore.controller;
 
 import base.appstore.controller.dto.AppDto;
+import base.appstore.controller.dto.CommentDto;
 import base.appstore.controller.dto.RatingDto;
 import base.appstore.exceptions.ResourceNotFoundException;
 import base.appstore.model.App;
@@ -50,9 +51,9 @@ public class AppController {
     }
 
     @PostMapping("{id}/comments")
-    public void updateComment(@PathVariable Long id, @RequestBody Comment comment) {
+    public void updateComment(@PathVariable Long id, @RequestBody CommentDto comment) {
         App app = appRepository.getOne(id);
-        app.addComment(comment);
+        app.addComment(comment.toEntity());
     }
 
 }

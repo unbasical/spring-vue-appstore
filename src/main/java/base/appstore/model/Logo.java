@@ -1,5 +1,4 @@
 package base.appstore.model;
 
-public class Comment {
-
+public class Logo {
 }

@@ -1,11 +1,17 @@
 package base.appstore.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.ArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * App.
@@ -15,86 +21,76 @@ import java.util.List;
  * @version 1.0
  */
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class App {
 
     @Id
+    @Column(name = "app_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String text;
-    private String tags;
+
     private String title;
+    private String description;
+    private long views;
+
+    @CreatedDate
+    private Date createDate;
+    @LastModifiedDate
+    private Date updateDate;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "app_id")
     private List<Comment> comments;
-    private List<Long> ratings;
 
-    public App() {
-    }
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "app_id")
+    private Set<Tag> tags;
 
-    /**
-     * Constructor used to initialize App object based on HTTP POST.
-     *
-     * @param text  Text of an App.
-     * @param tags  Tags of an App as a list of strings.
-     * @param title Title of an App.
-     */
-    public App(String text, String tags, String title) {
-        this.text = text;
-        //TODO tags is String, may make it to List
-        this.tags = tags;
-        this.title = title;
-        comments = new ArrayList<>();
-        ratings = new ArrayList<>();
-    }
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "app_id")
+    private List<Rating> ratings;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "app_id")
+    private List<Screenshot> screenshots;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "logo_id", referencedColumnName = "app_id")
+    private Logo logo;
 
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
-    public void addRating(Long rating){
+    public void addRating(Rating rating) {
         ratings.add(rating);
     }
 
-    public Long getAverageRating(){
-        Long sum = ratings.stream().reduce(0l,(a,b)->a+b);
-        return sum/ratings.size();
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public List<Long> getRatings() {
-        return ratings;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public long getAverageRating() {
+        // TODO implement
+        //Long sum = ratings.stream().reduce(0l,(a,b)->a+b);
+        //return sum/ratings.size();
+        return -1;
     }
 }

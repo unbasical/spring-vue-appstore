@@ -1,5 +1,9 @@
-package base.appstore;
+package base.appstore.controller;
 
+import base.appstore.exceptions.AppNotFoundException;
+import base.appstore.model.App;
+import base.appstore.model.Comment;
+import base.appstore.repository.AppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

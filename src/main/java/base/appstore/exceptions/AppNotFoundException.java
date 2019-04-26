@@ -1,4 +1,4 @@
-package base.appstore;
+package base.appstore.exceptions;
 
 public class AppNotFoundException extends RuntimeException {
   AppNotFoundException(Long id) {

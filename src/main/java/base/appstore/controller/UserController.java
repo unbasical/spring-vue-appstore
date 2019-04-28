@@ -73,4 +73,9 @@ public class UserController {
         }).orElseGet(() -> new AppDto(appRepo.save(receivedApp)));
     }
 
+    @DeleteMapping("{userID}/apps/{appID}")
+    public void deleteApp(@PathVariable Long userID, @PathVariable Long appID) {
+        appRepo.deleteById(appID);
+    }
+
 }

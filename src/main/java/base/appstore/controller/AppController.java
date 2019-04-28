@@ -40,13 +40,8 @@ public class AppController {
         return appRepository.findById(id).map(AppDto::new).orElseThrow(ResourceNotFoundException::new);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteApp(@PathVariable Long id) {
-        appRepository.deleteById(id);
-    }
-
     @PostMapping("{id}/ratings")
-    public void updateRating(@PathVariable Long id, @RequestBody RatingDto ratingDto) {
+    public void createRating(@PathVariable Long id, @RequestBody RatingDto ratingDto) {
         final App app = getAppByIdOrThrow(id);
         final User author = userRepository.findById(ratingDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);
         final Rating rating = ratingDto.toEntity();

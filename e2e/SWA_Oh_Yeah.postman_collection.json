@@ -101,6 +101,70 @@
       "response": []
     },
     {
+      "name": "Create Comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"author\": {\n    \"id\": 1,\n    \"name\": \"Donaldus Maximus\",\n    \"email\": \"donaldus.maximus@hm.edu\"\n  },\n  \"text\": \"Die App ist mega geil!!!!!!!!!\"\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/apps/2/comments",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "apps",
+            "2",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Rating",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"author\": {\n    \"id\": 1,\n    \"name\": \"Donaldus Maximus\",\n    \"email\": \"donaldus.maximus@hm.edu\"\n  },\n  \"stars\": 5\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/apps/2/ratings",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "apps",
+            "2",
+            "ratings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "All Apps",
       "request": {
         "method": "GET",
@@ -124,9 +188,116 @@
       "response": []
     },
     {
+      "name": "All users",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Donaldus Maximus\",\n\t\"email\": \"donaldus.maximus@hm.edu\"\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/users",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "All comments for App",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/apps/2/comments",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "apps",
+            "2",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "All ratings for App",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/apps/2/ratings",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "apps",
+            "2",
+            "ratings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "One App",
       "request": {
         "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/apps/2",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "apps",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete App",
+      "request": {
+        "method": "DELETE",
         "header": [],
         "body": {
           "mode": "raw",

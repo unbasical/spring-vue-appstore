@@ -29,7 +29,7 @@ public class Rating {
     @EqualsAndHashCode.Exclude
     private Date createDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User author;
 }

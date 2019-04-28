@@ -5,6 +5,7 @@ import base.appstore.controller.dto.UserDto;
 import base.appstore.exceptions.ResourceExistsException;
 import base.appstore.exceptions.ResourceNotFoundException;
 import base.appstore.model.App;
+import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class UserController {
 
     @PostMapping()
     public UserDto createUser(@RequestBody UserDto input) {
+        if (userRepo.findOne(Example.of(User.builder().email(input.getEmail()).build())).isPresent()) {
+            throw new ResourceExistsException();
+        }
+
         return new UserDto(userRepo.save(input.toEntity()));
     }
 

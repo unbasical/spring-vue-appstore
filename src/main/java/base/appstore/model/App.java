@@ -34,40 +34,40 @@ public class App {
     @EqualsAndHashCode.Exclude
     private Date updateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     private User user;
 
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             orphanRemoval = true
     )
     @EqualsAndHashCode.Exclude
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             orphanRemoval = true
     )
     @EqualsAndHashCode.Exclude
     private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             orphanRemoval = true
     )
     @EqualsAndHashCode.Exclude
     private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             orphanRemoval = true
     )
     @EqualsAndHashCode.Exclude
     private List<Screenshot> screenshots = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @EqualsAndHashCode.Exclude
     private Logo logo;
 

@@ -6,11 +6,13 @@ import base.appstore.controller.dto.RatingDto;
 import base.appstore.exceptions.ResourceNotFoundException;
 import base.appstore.model.App;
 import base.appstore.model.Comment;
+import base.appstore.model.Rating;
+import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
+import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 
@@ -21,6 +23,8 @@ public class AppController {
 
     @Autowired
     private AppRepository appRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping()
     public Stream<AppDto> getAllAppsFiltered(@RequestParam(required = false) String search
@@ -42,23 +46,43 @@ public class AppController {
     }
 
     @PostMapping("{id}/ratings")
-    public void updateRating(@PathVariable Long id, @RequestBody RatingDto rating) {
+    public void updateRating(@PathVariable Long id, @RequestBody RatingDto ratingDto) {
+        final App app = getAppByIdOrThrow(id);
+        final User author = userRepository.findById(ratingDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);
+        final Rating rating = ratingDto.toEntity();
 
-        final App app = appRepository.getOne(id);
-        app.addRating(rating.toEntity());
+        rating.setAuthor(author);
+        app.addRating(rating);
+
         appRepository.save(app);
     }
 
-    @GetMapping("{id}/raitings")
-    public List<Comment> getComments(@PathVariable Long id) {
-        App app = appRepository.getOne(id);
-        return app.getComments();
+    @PostMapping("{id}/comments")
+    public void createComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
+        final App app = getAppByIdOrThrow(id);
+        final User author = userRepository.findById(commentDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);
+        final Comment comment = commentDto.toEntity();
+
+        comment.setAuthor(author);
+        app.addComment(comment);
+
+        appRepository.save(app);
     }
 
-    @PostMapping("{id}/comments")
-    public void updateComment(@PathVariable Long id, @RequestBody CommentDto comment) {
-        App app = appRepository.getOne(id);
-        app.addComment(comment.toEntity());
+    @GetMapping("{id}/ratings")
+    public Stream<RatingDto> getRatings(@PathVariable Long id) {
+        final App app = getAppByIdOrThrow(id);
+        return app.getRatings().stream().map(RatingDto::new);
+    }
+
+    @GetMapping("{id}/comments")
+    public Stream<CommentDto> getComments(@PathVariable Long id) {
+        final App app = getAppByIdOrThrow(id);
+        return app.getComments().stream().map(CommentDto::new);
+    }
+
+    private App getAppByIdOrThrow(Long id) throws ResourceNotFoundException {
+        return appRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
 }

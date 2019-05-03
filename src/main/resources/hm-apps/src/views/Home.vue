@@ -7,11 +7,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import AllApps from "@/components/AllApps.vue"; // @ is an alias to /src
 
 @Component({
   components: {
-    HelloWorld
+    AllApps
   }
 })
 export default class Home extends Vue {}

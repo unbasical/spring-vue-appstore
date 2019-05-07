@@ -14,7 +14,6 @@
           href="https://github.com/vuetifyjs/vuetify/releases/latest"
           target="_blank"
         >
-        
           <span class="mr-2">Donaldus Maximus</span>
         </v-btn>
         <v-toolbar-side-icon></v-toolbar-side-icon>
@@ -33,7 +32,7 @@
           </v-list-tile>
         </v-list>
       </v-toolbar>
-  
+
       <v-divider></v-divider>
   
       <v-list dense class="pt-0">
@@ -56,7 +55,7 @@
           <v-flex xs10>
             <v-content>
               <AllApps/>
-              </v-content>
+            </v-content>
           </v-flex>
         </v-layout>
       </v-container>

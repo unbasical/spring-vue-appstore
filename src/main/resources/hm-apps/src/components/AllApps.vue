@@ -20,6 +20,7 @@
                         <v-flex xs4>
                             <div style="text-align: center">
                             <v-avatar>
+
                                 <v-img
                                     :src="app.image"
                                     height="50px"

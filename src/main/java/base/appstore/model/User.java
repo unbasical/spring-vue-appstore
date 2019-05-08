@@ -38,13 +38,8 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Role> roles = new HashSet<>();
 
-    /*@OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.MERGE,
-            orphanRemoval = true
-    )
-    @EqualsAndHashCode.Exclude*/
     @OneToMany(
+            mappedBy = "user",
             cascade = CascadeType.MERGE,
             orphanRemoval = true
     )

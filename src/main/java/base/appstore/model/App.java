@@ -34,10 +34,10 @@ public class App {
     @EqualsAndHashCode.Exclude
     private Date updateDate;
 
-   // @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-   // @JoinColumn(name = "user_id")
-   // @EqualsAndHashCode.Exclude
-    // private User user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    private User user;
 
     @OneToMany(
             cascade = CascadeType.MERGE,

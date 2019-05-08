@@ -41,6 +41,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     data: () => ({
       apps: [
@@ -50,7 +52,13 @@
         {title: 'Halycon Days4', description: 'Ellie Goulding\n(2013)', rating: 3, image: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png'},
         {title: 'Halycon Days5', description: 'Ellie Goulding\n(2013)', rating: 1, image: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png'},
       ]
-    })
+    }),
+    mounted() {
+      axios.get(`/apps`)
+      .then(res => {
+        this.apps.push(...res.data);
+      })
+    },
   }
 </script>
 

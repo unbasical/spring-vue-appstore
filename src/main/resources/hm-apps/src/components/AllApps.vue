@@ -18,52 +18,62 @@
                     <!-- Logo, Description, Sceenshot Row-->
                     <v-layout style="margin: inherit" row>
                         <v-flex xs4>
-                            <v-img
+                            <div style="text-align: center">
+                            <v-avatar>
+                                <v-img
                                     :src="app.image"
                                     height="50px"
                                     contain
                             ></v-img>
+                            </v-avatar>
+                            </div>
                         </v-flex>
                         <v-flex xs4>
                             <div v-if="app.description.length<110">{{app.description}}</div>
                             <div v-if="app.description.length>=110">{{app.description.substring(0,110)+"..."}}</div>
                         </v-flex>
                         <v-flex xs4>
+                            <div style="text-align: center">
                             <v-img
                                     :src="app.image"
                                     height="125px"
                                     contain
                             ></v-img>
-
+                            </div>
                         </v-flex>
                     </v-layout>
                     <!-- Tags and Stars Row-->
                     <v-layout style="margin: inherit"  row>
                         <v-flex xs4>
+                            <div style="text-align: center">
                             <div>Tags: tag1, tag2</div>
+                            </div>
                         </v-flex>
                         <v-flex xs4></v-flex>
                         <v-flex xs4>
+                            <div style="text-align: center">
                             <v-icon>{{app.rating &lt; 1 ? 'star' : 'star_border'}}</v-icon>
                             <v-icon>{{app.rating &lt; 2 ? 'star' : 'star_border'}}</v-icon>
                             <v-icon>{{app.rating &lt; 3 ? 'star' : 'star_border'}}</v-icon>
                             <v-icon>{{app.rating &lt; 4 ? 'star' : 'star_border'}}</v-icon>
                             <v-icon>{{app.rating &lt; 5 ? 'star' : 'star_border'}}</v-icon>
+                            </div>
                         </v-flex>
                     </v-layout>
                     <!-- Buttons Row-->
                     <v-layout style="margin: inherit"  row>
                         <v-flex xs4>
-                            <v-card-actions>
-                                <v-btn>More Info</v-btn>
-                            </v-card-actions>
+                            <div style="text-align: center">
+                                <v-btn round>More Info</v-btn>
+                            </div>
                         </v-flex>
                         <v-flex xs4>
                         </v-flex>
                         <v-flex xs4>
-                            <v-btn>Go to Site</v-btn>
+                            <div style="text-align: center">
+                            <v-btn round>Go to Site</v-btn>
+                            </div>
                         </v-flex>
-
                     </v-layout>
                 </v-card>
             </v-flex>

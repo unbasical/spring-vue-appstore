@@ -57,7 +57,7 @@ public class UserController {
 
         return userRepo.findById(userID).map(user -> {
             final App receivedApp = input.toEntity();
-            //receivedApp.setUser(user);
+            receivedApp.setUser(user);
             return receivedApp;
         }).map(appRepo::save).map(AppDto::new).orElseThrow(ResourceNotFoundException::new);
     }

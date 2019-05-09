@@ -47,8 +47,11 @@
         </v-toolbar>
         <v-container align-start fluid style="padding: 0px">
             <v-layout row wrap>
-                <v-flex xs2>
-                    <v-navigation-drawer permanent>
+
+                <v-flex @mouseenter="drawer = !drawer" xs2>
+                    <v-navigation-drawer v-model="drawer"
+                                         absolute
+                                         temporary>
                         <v-toolbar flat>
                             <v-list>
                                 <v-list-tile>
@@ -98,7 +101,9 @@
             AllApps
         },
         data() {
+
             return {
+                drawer:null,
                 items: [{title: 'Test'}],
             }
         }

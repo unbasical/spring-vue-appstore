@@ -24,6 +24,7 @@ public class User {
     private Long id;
 
     private String name;
+    private String password;
 
     private String email;
 
@@ -34,9 +35,9 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Date updateDate;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
     @EqualsAndHashCode.Exclude
-    private Set<Role> roles = new HashSet<>();
+    private Role role;
 
     @OneToMany(
             mappedBy = "user",
@@ -46,10 +47,6 @@ public class User {
     @EqualsAndHashCode.Exclude
     private List<App> apps = new ArrayList<>();
 
-    public void setRoles(Set<Role> roles) {
-        this.roles.retainAll(roles);
-        this.roles.addAll(roles);
-    }
 
     public void setApps(List<App> apps) {
         this.apps.retainAll(apps);

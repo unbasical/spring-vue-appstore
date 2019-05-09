@@ -19,14 +19,14 @@
                     <v-layout style="margin: inherit" row>
                         <v-flex xs4>
                             <div style="text-align: center">
-                            <v-avatar>
+                                <v-avatar>
 
-                                <v-img
-                                    :src="app.image"
-                                    height="50px"
-                                    contain
-                            ></v-img>
-                            </v-avatar>
+                                    <v-img
+                                            :src="app.image"
+                                            height="50px"
+                                            contain
+                                    ></v-img>
+                                </v-avatar>
                             </div>
                         </v-flex>
                         <v-flex xs4>
@@ -35,44 +35,51 @@
                         </v-flex>
                         <v-flex xs4>
                             <div style="text-align: center">
-                            <v-img
-                                    :src="app.image"
-                                    height="125px"
-                                    contain
-                            ></v-img>
+                                <v-img
+                                        :src="app.image"
+                                        height="125px"
+                                        contain
+                                ></v-img>
                             </div>
                         </v-flex>
                     </v-layout>
                     <!-- Tags and Stars Row-->
-                    <v-layout style="margin: inherit"  row>
+                    <v-layout style="margin: inherit" row>
                         <v-flex xs4>
                             <div style="text-align: center">
-                            <div>Tags: tag1, tag2</div>
+                                <div>Tags: tag1, tag2</div>
                             </div>
                         </v-flex>
                         <v-flex xs4></v-flex>
                         <v-flex xs4>
                             <div style="text-align: center">
-                            <v-icon>{{app.rating &lt; 1 ? 'star' : 'star_border'}}</v-icon>
-                            <v-icon>{{app.rating &lt; 2 ? 'star' : 'star_border'}}</v-icon>
-                            <v-icon>{{app.rating &lt; 3 ? 'star' : 'star_border'}}</v-icon>
-                            <v-icon>{{app.rating &lt; 4 ? 'star' : 'star_border'}}</v-icon>
-                            <v-icon>{{app.rating &lt; 5 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{app.rating &lt; 1 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{app.rating &lt; 2 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{app.rating &lt; 3 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{app.rating &lt; 4 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{app.rating &lt; 5 ? 'star' : 'star_border'}}</v-icon>
                             </div>
                         </v-flex>
                     </v-layout>
                     <!-- Buttons Row-->
-                    <v-layout style="margin: inherit"  row>
+                    <v-layout style="margin: inherit" row>
                         <v-flex xs4>
                             <div style="text-align: center">
-                                <v-btn round>More Info</v-btn>
+
+                                <v-btn color="deep-purple" class="white--text" round>
+                                    More Info
+                                </v-btn>
+
                             </div>
                         </v-flex>
                         <v-flex xs4>
                         </v-flex>
                         <v-flex xs4>
                             <div style="text-align: center">
-                            <v-btn round>Go to Site</v-btn>
+                                <v-btn color="deep-purple" class="white--text" round>
+                                    Go to Site
+                                </v-btn>
+
                             </div>
                         </v-flex>
                     </v-layout>
@@ -83,6 +90,8 @@
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         data: () => ({
             apps: [
@@ -125,10 +134,16 @@
             ]
         }),
         mounted() {
+
             axios.get(`/apps`)
                 .then(res => {
-                    this.apps.push(...res.data);
-                })
+                    if (res.data.status == 200) {
+                        this.apps.push(...res.data);
+                        console.log(...res.data);
+                    }
+                }).catch(error => {
+                console.log("api error:" + error);
+            })
         },
     }
 </script>

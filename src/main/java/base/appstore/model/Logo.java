@@ -1,18 +1,13 @@
 package base.appstore.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -23,5 +18,8 @@ public class Logo {
     @EqualsAndHashCode.Exclude
     private Long id;
 
+    private String filename;
+    private String contentType;
+    @Column(length = 2_000_000)
     private byte[] imageData;
 }

@@ -123,7 +123,13 @@
                     image: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png'
                 },
             ]
-        })
+        }),
+        mounted() {
+            axios.get(`/apps`)
+                .then(res => {
+                    this.apps.push(...res.data);
+                })
+        },
     }
 </script>
 

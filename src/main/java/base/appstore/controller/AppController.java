@@ -37,7 +37,13 @@ public class AppController {
 
     @GetMapping("{id}")
     public AppDto getApp(@PathVariable Long id) {
-        return appRepository.findById(id).map(AppDto::new).orElseThrow(ResourceNotFoundException::new);
+        final App app = getAppByIdOrThrow(id);
+
+        // Increment views
+        app.setViews(app.getViews() + 1);
+        appRepository.save(app);
+
+        return new AppDto(app);
     }
 
     @PostMapping("{id}/ratings")

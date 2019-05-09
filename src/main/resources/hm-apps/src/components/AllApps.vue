@@ -134,7 +134,6 @@
             ]
         }),
         mounted() {
-
             axios.get(`/apps`)
                 .then(res => {
                     if (res.data.status == 200) {

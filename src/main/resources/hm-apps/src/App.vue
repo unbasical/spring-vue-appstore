@@ -48,45 +48,64 @@
         <v-container align-start fluid style="padding: 0px">
             <v-layout row wrap>
 
-                <v-flex @mouseenter="drawer = !drawer" xs2>
-                    <v-navigation-drawer v-model="drawer"
-                                         absolute
-                                         temporary>
-                        <v-toolbar flat>
-                            <v-list>
-                                <v-list-tile>
-                                    <v-list-tile-title class="title headline text-uppercase">
-                                        <span>HM-App</span>
-                                        <span class="font-weight-light">store</span>
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-toolbar>
+                <v-navigation-drawer
+                        v-model="drawer"
+                        :mini-variant.sync="mini"
+                        hide-overlay
+                        stateless
+                        absolute
+                >
+                    <v-toolbar flat class="transparent">
+                        <v-list class="pa-0">
+                            <v-list-tile>
+                                    <v-list-tile-action>
+                                        <div v-if="mini">
 
-                        <v-divider></v-divider>
-
-                        <v-list dense class="pt-0">
-                            <v-list-tile
-                                    v-for="item in items"
-                                    :key="item.title"
-                                    @click=""
-                            >
-                                <v-list-tile-action>
-                                    <v-icon>{{ item.icon }}</v-icon>
-                                </v-list-tile-action>
-
+                                        <v-btn
+                                                icon
+                                                @click.stop="mini = !mini"
+                                        >
+                                            <v-icon>chevron_right</v-icon>
+                                        </v-btn>
+                                        </div>
+                                    </v-list-tile-action>
                                 <v-list-tile-content>
-                                    <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                                    <v-list-tile-title>HM APPS</v-list-tile-title>
                                 </v-list-tile-content>
+                                <v-list-tile-action>
+                                    <v-btn
+                                            icon
+                                            @click.stop="mini = !mini"
+                                    >
+                                        <v-icon>chevron_left</v-icon>
+                                    </v-btn>
+                                </v-list-tile-action>
                             </v-list-tile>
                         </v-list>
-                    </v-navigation-drawer>
-                </v-flex>
-                <v-flex xs10>
-                    <v-content>
-                        <AllApps/>
-                    </v-content>
-                </v-flex>
+                    </v-toolbar>
+
+                    <v-list class="pt-0" dense>
+                        <v-divider></v-divider>
+
+                        <v-list-tile
+                                v-for="item in items"
+                                :key="item.title"
+                        >
+                            <!--
+                            Add Icon if you want to
+                            <v-list-tile-action>
+                                <v-icon>{{ item.icon }}</v-icon>
+                            </v-list-tile-action>
+                             -->
+                            <v-list-tile-content>
+                                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-navigation-drawer>
+                <v-content>
+                    <AllApps/>
+                </v-content>
             </v-layout>
         </v-container>
     </v-app>
@@ -101,10 +120,10 @@
             AllApps
         },
         data() {
-
             return {
-                drawer:null,
-                items: [{title: 'Test'}],
+                drawer: true,
+                mini: true,
+                items: [{title: 'Menu 1'},{title: 'Menu 2'}],
             }
         }
     }

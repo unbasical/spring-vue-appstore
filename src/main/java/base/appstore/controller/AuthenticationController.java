@@ -1,7 +1,7 @@
 package base.appstore.controller;
 
-import base.appstore.model.AuthenticationRequest;
-import base.appstore.model.JWTTokenResponse;
+import base.appstore.controller.dto.AuthenticationRequest;
+import base.appstore.controller.dto.JWTTokenResponse;
 import base.appstore.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

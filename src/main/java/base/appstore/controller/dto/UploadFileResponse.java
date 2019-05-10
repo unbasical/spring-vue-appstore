@@ -1,4 +1,4 @@
-package base.appstore.controller.response;
+package base.appstore.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

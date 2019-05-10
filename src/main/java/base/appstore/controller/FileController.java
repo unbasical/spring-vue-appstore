@@ -1,6 +1,6 @@
 package base.appstore.controller;
 
-import base.appstore.controller.response.UploadFileResponse;
+import base.appstore.controller.dto.UploadFileResponse;
 import base.appstore.exceptions.ImageNotStorableException;
 import base.appstore.exceptions.ResourceNotFoundException;
 import base.appstore.model.App;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class FileController {
     @Autowired
     private AppRepository appRepository;
 
+    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     @PostMapping("{userID}/apps/{appID}/logo")
     public UploadFileResponse uploadLogo(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file) {
         final App match = getAppByIdOrThrow(appID);
@@ -43,6 +45,7 @@ public class FileController {
         return new UploadFileResponse(file.getName(), file.getContentType(), file.getSize());
     }
 
+    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     @PostMapping("{userID}/apps/{appID}/screenshots")
     public UploadFileResponse uploadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file) {
         final App match = getAppByIdOrThrow(appID);

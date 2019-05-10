@@ -1,4 +1,4 @@
-package base.appstore.model;
+package base.appstore.controller.dto;
 
 public class AuthenticationRequest {
 

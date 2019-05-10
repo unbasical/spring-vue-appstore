@@ -1,7 +1,7 @@
 package base.appstore.services;
 
 
-import base.appstore.model.JWTTokenResponse;
+import base.appstore.controller.dto.JWTTokenResponse;
 import base.appstore.model.User;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ import java.util.Optional;
 public class AuthenticationService {
 
     @Autowired
-    private UserRepository accountRepository;
+    private UserRepository userRepository;
     @Autowired
     private JwtTokenService jwtTokenService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public AuthenticationService(UserRepository accountRepository, JwtTokenService jwtTokenService, PasswordEncoder passwordEncoder) {
-        this.accountRepository = accountRepository;
+    public AuthenticationService(UserRepository userRepository, JwtTokenService jwtTokenService, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.jwtTokenService = jwtTokenService;
         this.passwordEncoder = passwordEncoder;
     }
 
     public JWTTokenResponse generateJWTToken(String username, String password) {
-        Optional<User> userAccount = accountRepository.findOneByUsername(username);
+        Optional<User> userAccount = userRepository.findOneByUsername(username);
 
         return userAccount.filter(account -> passwordEncoder.matches(password, account.getPassword()))
                 .map(account -> new JWTTokenResponse(

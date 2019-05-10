@@ -79,6 +79,10 @@ public class App {
         ratings.add(rating);
     }
 
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
+
     public void setTags(Set<Tag> tags) {
         this.tags.retainAll(tags);
         this.tags.addAll(tags);

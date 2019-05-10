@@ -9,6 +9,7 @@ import base.appstore.model.Role;
 import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
+import base.appstore.services.AuthorizationService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 
@@ -28,10 +30,11 @@ public class UserController {
     private AppRepository appRepo;
     private UserRepository userRepo;
     private PasswordEncoder passwordEncoder;
+    private AuthorizationService authService;
 
     @PostMapping()
     public UserDto createUser(@RequestBody UserDto input) {
-        if (userRepo.findOne(Example.of(User.builder().email(input.getEmail()).build())).isPresent()) {
+        if (userRepo.findOneByName(input.getName()).isPresent()) {
             throw new ResourceExistsException();
         }
 
@@ -61,8 +64,10 @@ public class UserController {
 
     @PostMapping("{userID}/apps")
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    public AppDto createApp(@PathVariable Long userID, @RequestBody AppDto input, Authentication auth) {
-        if (appRepo.findOne(Example.of(input.toEntity())).isPresent()) {
+    public AppDto createApp(@PathVariable Long userID, @RequestBody AppDto input) {
+        final App app = appRepo.findOne(Example.of(input.toEntity())).orElse(null);
+
+        if (Objects.nonNull(app)) {
             throw new ResourceExistsException();
         }
 
@@ -76,9 +81,9 @@ public class UserController {
 
     @PutMapping("{userID}/apps/{appID}")
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    public AppDto updateApp(@PathVariable Long userID, @PathVariable Long appID, @RequestBody AppDto input) {
+    public AppDto updateApp(@PathVariable Long userID, @PathVariable Long appID, @RequestBody AppDto input, Authentication auth) {
         final App receivedApp = input.toEntity();
-        return appRepo.findById(appID).map(app -> {
+        return authService.getAppIfAuthorized(auth, userID, appID).map(app -> {
             app.setTitle(receivedApp.getTitle());
             app.setDescription(receivedApp.getDescription());
             app.setTags(receivedApp.getTags());

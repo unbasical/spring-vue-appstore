@@ -11,7 +11,6 @@ import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Stream;
@@ -60,7 +59,6 @@ public class AppController {
     }
 
     @PostMapping("{id}/comments")
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     public void createComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
         final App app = getAppByIdOrThrow(id);
         final User author = userRepository.findById(commentDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);

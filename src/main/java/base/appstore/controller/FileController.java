@@ -7,11 +7,13 @@ import base.appstore.model.App;
 import base.appstore.model.Logo;
 import base.appstore.model.Screenshot;
 import base.appstore.repository.AppRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import base.appstore.services.AuthorizationService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,15 +26,16 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin
+@AllArgsConstructor
 public class FileController {
 
-    @Autowired
     private AppRepository appRepository;
+    private AuthorizationService authService;
 
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     @PostMapping("{userID}/apps/{appID}/logo")
-    public UploadFileResponse uploadLogo(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file) {
-        final App match = getAppByIdOrThrow(appID);
+    public UploadFileResponse uploadLogo(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file, Authentication auth) {
+        final App match = authService.getAppIfAuthorized(auth, userID, appID).orElseThrow(ResourceNotFoundException::new);
 
         try {
             match.setLogo(Logo.builder()
@@ -50,8 +53,8 @@ public class FileController {
 
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     @PostMapping("{userID}/apps/{appID}/screenshots")
-    public UploadFileResponse uploadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file) {
-        final App match = getAppByIdOrThrow(appID);
+    public UploadFileResponse uploadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file, Authentication auth) {
+        final App match = authService.getAppIfAuthorized(auth, userID, appID).orElseThrow(ResourceNotFoundException::new);
 
         try {
             match.getScreenshots().add(Screenshot.builder()
@@ -85,7 +88,6 @@ public class FileController {
                 .body(logo.getImageData());
     }
 
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     @GetMapping(value = "{userID}/apps/{appID}/screenshots/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> downloadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @PathVariable Long id) {
         final App app = getAppByIdOrThrow(appID);

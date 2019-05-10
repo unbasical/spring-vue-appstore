@@ -3,7 +3,7 @@
         <v-layout
                 row wrap
         >
-            <v-flex v-for="app in apps" :key="app.title" xs5>
+            <v-flex v-for="app in applist" :key="app.title" xs5>
                 <v-card color="purple" class="white--text" style="margin: 10px">
                     <!-- TitleRow-->
                     <v-layout style="margin: inherit" row>
@@ -91,6 +91,7 @@
 
 <script>
     import axios from "axios";
+    import {mapGetters} from 'vuex';
 
     export default {
         data: () => ({
@@ -144,6 +145,20 @@
                 console.log("api error:" + error);
             })
         },
+        methods: {
+            ...mapGetters([
+                'getSearch',
+                'getTags',
+                'getMinimumRating'
+            ])
+        },
+        computed: {
+            applist: function () {
+                console.log(this.apps + '\n');
+                console.log(this.getSearch())
+                return this.apps.filter(app => app.title.includes(this.getSearch()));
+            }
+        }
     }
 </script>
 

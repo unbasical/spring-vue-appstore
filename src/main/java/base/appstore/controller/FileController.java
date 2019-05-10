@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -78,6 +79,7 @@ public class FileController {
                 .body(logo.getImageData());
     }
 
+    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     @GetMapping(value = "{userID}/apps/{appID}/screenshots/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> downloadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @PathVariable Long id) {
         final App app = getAppByIdOrThrow(appID);
@@ -91,6 +93,27 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + screenshot.getFilename() + "\"")
                 .body(screenshot.getImageData());
     }
+
+    @DeleteMapping(value = "{userID}/apps/{appID}/logo")
+    public void deleteLogo(@PathVariable Long userID, @PathVariable Long appID) {
+        final App app = getAppByIdOrThrow(appID);
+        app.setLogo(null);
+        appRepository.save(app);
+    }
+
+    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
+    @DeleteMapping(value = "{userID}/apps/{appID}/screenshots/{id}")
+    public void deleteScreenshot(@PathVariable Long userID, @PathVariable Long appID, @PathVariable Long id) {
+        final App app = getAppByIdOrThrow(appID);
+
+        app.setScreenshots(app.getScreenshots().stream()
+                .filter(s -> !s.getId().equals(id))
+                .collect(Collectors.toList())
+        );
+
+        appRepository.save(app);
+    }
+
 
     private App getAppByIdOrThrow(Long id) throws ResourceNotFoundException {
         return appRepository.findById(id).orElseThrow(ResourceNotFoundException::new);

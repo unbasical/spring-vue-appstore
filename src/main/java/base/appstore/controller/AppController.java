@@ -61,7 +61,6 @@ public class AppController {
 
     @PostMapping("{id}/comments")
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-
     public void createComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
         final App app = getAppByIdOrThrow(id);
         final User author = userRepository.findById(commentDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);

@@ -28,7 +28,7 @@ public class AuthenticationService {
     }
 
     public JWTTokenResponse generateJWTToken(String username, String password) {
-        Optional<User> userAccount = userRepository.findOneByUsername(username);
+        Optional<User> userAccount = userRepository.findOneByName(username);
 
         return userAccount.filter(account -> passwordEncoder.matches(password, account.getPassword()))
                 .map(account -> new JWTTokenResponse(

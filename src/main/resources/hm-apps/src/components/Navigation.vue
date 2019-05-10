@@ -35,8 +35,8 @@
                     </v-list-tile>
                 </v-list>
             </v-toolbar>
+
             <v-list class="pt-0" dense>
-                <v-divider></v-divider>
                 <v-list-tile>
                     <v-list-tile-action>
                         <v-icon>search</v-icon>
@@ -51,18 +51,48 @@
                         </v-text-field>
                     </v-list-tile-content>
                 </v-list-tile>
-                <v-list-tile
-                        v-for="item in items"
-                        :key="item.title"
-                >
-                    <!--
-                    Add Icon if you want to
+                <v-list-tile>
+
                     <v-list-tile-action>
-                        <v-icon>{{ item.icon }}</v-icon>
+                        <v-icon>search</v-icon>
                     </v-list-tile-action>
-                     -->
                     <v-list-tile-content>
-                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                        <v-select
+                                v-model="allTags"
+                                :items="selectedTags"
+
+                                chips
+                                label="Chips"
+                                multiple
+                        ></v-select>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile>
+                    <v-list-tile-content>
+                        <v-flex row>
+                            <div style="text-align: center">
+                                <v-btn icon small depressed
+                                       @click="setMinimumRating(1)">
+                                    <v-icon x-small>{{getMinimumRating() >= 1 ? 'star' : 'star_border'}}</v-icon>
+                                </v-btn>
+                                <v-btn icon small depressed
+                                       @click="setMinimumRating(2)">
+                                    <v-icon x-small>{{getMinimumRating() >= 2 ? 'star' : 'star_border'}}</v-icon>
+                                </v-btn>
+                                <v-btn icon small depressed
+                                               @click="setMinimumRating(3)">
+                                <v-icon x-small>{{getMinimumRating() >= 3 ? 'star' : 'star_border'}}</v-icon>
+                            </v-btn>
+                                <v-btn icon small depressed
+                                       @click="setMinimumRating(4)">
+                                    <v-icon x-small>{{getMinimumRating() >= 4 ? 'star' : 'star_border'}}</v-icon>
+                                </v-btn>
+                                <v-btn icon small depressed
+                                       @click="setMinimumRating(5)">
+                                    <v-icon x-small>{{getMinimumRating() >= 5 ? 'star' : 'star_border'}}</v-icon>
+                                </v-btn>
+                            </div>
+                        </v-flex>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
@@ -71,23 +101,42 @@
 </template>
 
 <script>
-    import { mapMutations } from 'vuex'
-
+    import {mapMutations} from 'vuex'
+    import {mapGetters} from 'vuex'
+    import axios from 'axios'
     export default {
         name: "Navigation.vue",
         data() {
             return {
-                filter:"",
+                filter: "",
                 drawer: true,
                 mini: true,
+                allTags: ["test"],
+                selectedTags: [],
                 items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
             }
         },
-        methods:{
+        mounted() {
+            axios.get(`/tags`)
+                .then(res => {
+                    if (res.data.status == 200) {
+                        this.allTags.push(...res.data);
+                        console.log(...res.data);
+                    }
+                }).catch(error => {
+                console.log("api error:" + error);
+            })
+        },
+        methods: {
             ...mapMutations([
                 'setSearch',
                 'setTags',
                 'setMinimumRating'
+            ]),
+            ...mapGetters([
+                'getSearch',
+                'getTags',
+                'getMinimumRating'
             ])
         }
 

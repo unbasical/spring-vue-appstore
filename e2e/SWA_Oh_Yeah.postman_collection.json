@@ -1,507 +1,886 @@
 {
-  "info": {
-    "_postman_id": "21a82021-f85a-4d79-b09b-ed20a9784eb5",
-    "name": "SWA_Oh_Yeah",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Create User",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "f8bf8c5b-6028-4bb5-820c-aa3a4094ee0e",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "     // assert that the response has a valid JSON body",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "type": "text",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n\t\"name\": \"Donaldus Maximus Ultimatus\",\n\t\"email\": \"donaldus.bene.maximus@hm.edu\"\n}"
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/users",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "users"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Create App",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "c489c6ce-ea50-45fb-a363-47773b161ec2",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "     // assert that the response has a valid JSON body",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n\t\"title\": \"Test Title\",\n\t\"description\": \"My first description\"\n}"
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/users/{{user}}/apps",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "users",
-            "{{user}}",
-            "apps"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Update App",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "type": "text",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n\t\"title\": \"Test New Title\",\n\t\"description\": \"My new description\"\n}"
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/users/{{user}}/apps/2",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "users",
-            "{{user}}",
-            "apps",
-            "2"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Create Comment",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "9e15ffe5-b4c3-4612-996a-272508262a37",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"author\": {\n    \"id\": 1,\n    \"name\": \"Donaldus Maximus\",\n    \"email\": \"donaldus.maximus@hm.edu\"\n  },\n  \"text\": \"Die App ist mega geil!!!!!!!!!\"\n}"
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/apps/2/comments",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "apps",
-            "2",
-            "comments"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Create Rating",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "c1ebcd47-9852-4b4f-b258-d7231c071689",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "type": "text",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"author\": {\n    \"id\": 1,\n    \"name\": \"Donaldus Maximus\",\n    \"email\": \"donaldus.maximus@hm.edu\"\n  },\n  \"stars\": 5\n}"
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/apps/2/ratings",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "apps",
-            "2",
-            "ratings"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "All Apps",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "a8647f9b-2482-48ef-8349-c466b19dc66f",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "     // assert that the response has a valid JSON body",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": ""
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/apps",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "apps"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "All users",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "bfdefd9b-bc7b-437b-a9d1-3ac9c8a7a196",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "     // assert that the response has a valid JSON body",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "type": "text",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n\t\"name\": \"Donaldus Maximus\",\n\t\"email\": \"donaldus.maximus@hm.edu\"\n}"
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/users",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "users"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "All comments for App",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "08557474-1a0b-4c3c-888b-86fc477a294a",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "     // assert that the response has a valid JSON body",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": ""
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/apps/2/comments",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "apps",
-            "2",
-            "comments"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "All ratings for App",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "8c6f03d6-6aa7-494a-9493-f62abc58d837",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "     // assert that the response has a valid JSON body",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": ""
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/apps/2/ratings",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "apps",
-            "2",
-            "ratings"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "One App",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "f7f1f968-bac3-48d1-9499-357858877f8a",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "     // assert that the response has a valid JSON body",
-              "     pm.response.to.be.withBody;",
-              "     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": ""
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/apps/2",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "apps",
-            "2"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Delete App",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "5367aef9-ab72-4119-b24a-fed14db7e6e9",
-            "exec": [
-              "// example using pm.response.to.be*",
-              "pm.test(\"response must be valid and have a body\", function () {",
-              "     // assert that the status code is 200",
-              "     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": ""
-        },
-        "url": {
-          "raw": "http://{{host}}:{{port}}/users/{{user}}/apps/2",
-          "protocol": "http",
-          "host": [
-            "{{host}}"
-          ],
-          "port": "{{port}}",
-          "path": [
-            "users",
-            "{{user}}",
-            "apps",
-            "2"
-          ]
-        }
-      },
-      "response": []
-    }
-  ]
+	"info": {
+		"_postman_id": "21a82021-f85a-4d79-b09b-ed20a9784eb5",
+		"name": "SWA_Oh_Yeah",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f8bf8c5b-6028-4bb5-820c-aa3a4094ee0e",
+						"exec": [
+							"// Extract user id",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"user\", jsonData.id);",
+							"",
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Donaldus Maximus Ultimatus\",\n\t\"email\": \"donaldus.bene.maximus@hm.edu\",\n\t\"password\": \"test\"\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f8bf8c5b-6028-4bb5-820c-aa3a4094ee0e",
+						"exec": [
+							"// Extract token",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+							"",
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"Donaldus Maximus Ultimatus\",\n\t\"password\": \"test\"\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/login",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create App",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c489c6ce-ea50-45fb-a363-47773b161ec2",
+						"exec": [
+							"// Extract user id",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"app\", jsonData.id);",
+							"",
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Test Title\",\n\t\"description\": \"My first description\"\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users/{{user}}/apps",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users",
+						"{{user}}",
+						"apps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Logo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c489c6ce-ea50-45fb-a363-47773b161ec2",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users/{{user}}/apps/{{app}}/logo",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users",
+						"{{user}}",
+						"apps",
+						"{{app}}",
+						"logo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Screenshot",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c489c6ce-ea50-45fb-a363-47773b161ec2",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users/{{user}}/apps/{{app}}/screenshots",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users",
+						"{{user}}",
+						"apps",
+						"{{app}}",
+						"screenshots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Logo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c489c6ce-ea50-45fb-a363-47773b161ec2",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users/{{user}}/apps/{{app}}/logo",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users",
+						"{{user}}",
+						"apps",
+						"{{app}}",
+						"logo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update App",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Test New Title\",\n\t\"description\": \"My new description\",\n\t\"tags\": [\"Great\", \"Awesome\", \"Fancy\", \"Great\"]\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users/{{user}}/apps/{{app}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users",
+						"{{user}}",
+						"apps",
+						"{{app}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9e15ffe5-b4c3-4612-996a-272508262a37",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": {\n    \"id\": 1,\n    \"name\": \"Donaldus Maximus\",\n    \"email\": \"donaldus.maximus@hm.edu\"\n  },\n  \"text\": \"Die App ist mega geil!!!!!!!!!\"\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/apps/{{app}}/comments",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"apps",
+						"{{app}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Rating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9e15ffe5-b4c3-4612-996a-272508262a37",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"author\": {\n    \"id\": 1,\n    \"name\": \"Donaldus Maximus\",\n    \"email\": \"donaldus.maximus@hm.edu\"\n  },\n  \"stars\": 4\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/apps/{{app}}/ratings",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"apps",
+						"{{app}}",
+						"ratings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Apps",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a8647f9b-2482-48ef-8349-c466b19dc66f",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/apps",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"apps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Tags",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a8647f9b-2482-48ef-8349-c466b19dc66f",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/tags",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bfdefd9b-bc7b-437b-a9d1-3ac9c8a7a196",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Donaldus Maximus\",\n\t\"email\": \"donaldus.maximus@hm.edu\"\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All comments for App",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "08557474-1a0b-4c3c-888b-86fc477a294a",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/apps/{{app}}/comments",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"apps",
+						"{{app}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All ratings for App",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c6f03d6-6aa7-494a-9493-f62abc58d837",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/apps/{{app}}/ratings",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"apps",
+						"{{app}}",
+						"ratings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One App",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7f1f968-bac3-48d1-9499-357858877f8a",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/apps/{{app}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"apps",
+						"{{app}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete App",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5367aef9-ab72-4119-b24a-fed14db7e6e9",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users/{{user}}/apps/{{app}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users",
+						"{{user}}",
+						"apps",
+						"{{app}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f8bf8c5b-6028-4bb5-820c-aa3a4094ee0e",
+						"exec": [
+							"// example using pm.response.to.be*",
+							"pm.test(\"response must be valid and have a body\", function () {",
+							"     // assert that the status code is 200",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Donaldus Maximus Ultimatus\",\n\t\"email\": \"donaldus.bene.maximus@hm.edu\"\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/users",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7d6b072a-1b83-4315-bf13-62ef73edec8f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "23d84ce4-cc8c-428c-874c-20141f173ae4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
 }

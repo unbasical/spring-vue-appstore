@@ -12,7 +12,6 @@
                     <v-list-tile>
                         <v-list-tile-action>
                             <div v-if="mini">
-
                                 <v-btn
                                         icon
                                         @click.stop="mini = !mini"
@@ -54,13 +53,14 @@
                 <v-list-tile>
 
                     <v-list-tile-action>
-                        <v-icon>search</v-icon>
+                        <v-icon>list</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-content>
                         <v-select
-                                v-model="selectedTags"
-                                :items="allTags"
 
+                                v-model="selectedTags"
+                                v-on:input="setTags(selectedTags)"
+                                :items="allTags"
                                 chips
                                 label="Tags"
                                 multiple
@@ -80,9 +80,9 @@
                                     <v-icon x-small>{{getMinimumRating() >= 2 ? 'star' : 'star_border'}}</v-icon>
                                 </v-btn>
                                 <v-btn icon small depressed
-                                               @click="setMinimumRating(3)">
-                                <v-icon x-small>{{getMinimumRating() >= 3 ? 'star' : 'star_border'}}</v-icon>
-                            </v-btn>
+                                       @click="setMinimumRating(3)">
+                                    <v-icon x-small>{{getMinimumRating() >= 3 ? 'star' : 'star_border'}}</v-icon>
+                                </v-btn>
                                 <v-btn icon small depressed
                                        @click="setMinimumRating(4)">
                                     <v-icon x-small>{{getMinimumRating() >= 4 ? 'star' : 'star_border'}}</v-icon>
@@ -104,6 +104,7 @@
     import {mapMutations} from 'vuex'
     import {mapGetters} from 'vuex'
     import axios from 'axios'
+
     export default {
         name: "Navigation.vue",
         data() {
@@ -111,21 +112,19 @@
                 filter: "",
                 drawer: true,
                 mini: true,
-                allTags: ["test"],
+                allTags: ["test", "ball", "trump"],
                 selectedTags: [],
                 items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
             }
         },
         mounted() {
-            axios.get(`/tags`)
+            axios.get(`/api/tags`)
                 .then(res => {
-                    if (res.data.status == 200) {
-                        this.allTags.push(...res.data);
-                        console.log(...res.data);
-                    }
+                    this.allTags.push(...res.data);
                 }).catch(error => {
-                console.log("api error:" + error);
+                console.error("api error:" + error);
             })
+            this.setTags([])
         },
         methods: {
             ...mapMutations([
@@ -139,7 +138,6 @@
                 'getMinimumRating'
             ])
         }
-
     }
 </script>
 

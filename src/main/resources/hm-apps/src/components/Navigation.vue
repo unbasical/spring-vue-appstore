@@ -58,11 +58,11 @@
                     </v-list-tile-action>
                     <v-list-tile-content>
                         <v-select
-                                v-model="allTags"
-                                :items="selectedTags"
+                                v-model="selectedTags"
+                                :items="allTags"
 
                                 chips
-                                label="Chips"
+                                label="Tags"
                                 multiple
                         ></v-select>
                     </v-list-tile-content>

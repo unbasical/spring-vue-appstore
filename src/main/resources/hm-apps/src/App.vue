@@ -47,46 +47,12 @@
         </v-toolbar>
         <v-container align-start fluid style="padding: 0px">
             <v-layout row wrap>
-
-                <v-flex @mouseenter="drawer = !drawer" xs2>
-                    <v-navigation-drawer v-model="drawer"
-                                         absolute
-                                         temporary>
-                        <v-toolbar flat>
-                            <v-list>
-                                <v-list-tile>
-                                    <v-list-tile-title class="title headline text-uppercase">
-                                        <span>HM-App</span>
-                                        <span class="font-weight-light">store</span>
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-toolbar>
-
-                        <v-divider></v-divider>
-
-                        <v-list dense class="pt-0">
-                            <v-list-tile
-                                    v-for="item in items"
-                                    :key="item.title"
-                                    @click=""
-                            >
-                                <v-list-tile-action>
-                                    <v-icon>{{ item.icon }}</v-icon>
-                                </v-list-tile-action>
-
-                                <v-list-tile-content>
-                                    <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
-                        </v-list>
-                    </v-navigation-drawer>
-                </v-flex>
-                <v-flex xs10>
-                    <v-content>
-                        <AllApps/>
-                    </v-content>
-                </v-flex>
+                <v-content>
+                    <Navigation/>
+                </v-content>
+                <v-content>
+                    <AllApps/>
+                </v-content>
             </v-layout>
         </v-container>
     </v-app>
@@ -94,17 +60,17 @@
 
 <script>
     import AllApps from './components/AllApps'
+    import Navigation from './components/Navigation'
 
     export default {
         name: 'App',
         components: {
-            AllApps
+            AllApps,
+            Navigation
         },
         data() {
-
             return {
-                drawer:null,
-                items: [{title: 'Test'}],
+                items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
             }
         }
     }

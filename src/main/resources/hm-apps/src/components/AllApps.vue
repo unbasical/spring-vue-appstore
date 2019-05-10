@@ -3,7 +3,7 @@
         <v-layout
                 row wrap
         >
-            <v-flex v-for="app in apps" :key="app.title" xs5>
+            <v-flex v-for="app in applist" :key="app.title" xs5>
                 <v-card color="purple" class="white--text" style="margin: 10px">
                     <!-- TitleRow-->
                     <v-layout style="margin: inherit" row>
@@ -53,11 +53,11 @@
                         <v-flex xs4></v-flex>
                         <v-flex xs4>
                             <div style="text-align: center">
-                                <v-icon>{{app.rating &lt; 1 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{app.rating &lt; 2 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{app.rating &lt; 3 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{app.rating &lt; 4 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{app.rating &lt; 5 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{Math.round(app.rating) >= 1 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{Math.round(app.rating) >= 2 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{Math.round(app.rating) >= 3 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{Math.round(app.rating) >= 4 ? 'star' : 'star_border'}}</v-icon>
+                                <v-icon>{{Math.round(app.rating) >= 5 ? 'star' : 'star_border'}}</v-icon>
                             </div>
                         </v-flex>
                     </v-layout>
@@ -91,6 +91,7 @@
 
 <script>
     import axios from "axios";
+    import {mapGetters} from 'vuex';
 
     export default {
         data: () => ({
@@ -134,7 +135,6 @@
             ]
         }),
         mounted() {
-
             axios.get(`/apps`)
                 .then(res => {
                     if (res.data.status == 200) {
@@ -145,6 +145,23 @@
                 console.log("api error:" + error);
             })
         },
+        methods: {
+            ...mapGetters([
+                'getSearch',
+                'getTags',
+                'getMinimumRating'
+            ])
+        },
+        computed: {
+            applist: function () {
+                console.log(this.apps + '\n');
+                console.log(this.getSearch())
+                console.log(this.getMinimumRating())
+                return this.apps
+                    .filter(app => app.title.includes(this.getSearch()))
+                    .filter(app => Math.round(app.rating) >= this.getMinimumRating());
+            }
+        }
     }
 </script>
 

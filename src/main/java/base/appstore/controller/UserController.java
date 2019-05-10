@@ -5,12 +5,15 @@ import base.appstore.controller.dto.UserDto;
 import base.appstore.exceptions.ResourceExistsException;
 import base.appstore.exceptions.ResourceNotFoundException;
 import base.appstore.model.App;
+import base.appstore.model.Role;
 import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Stream;
@@ -19,12 +22,12 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
     private AppRepository appRepo;
-    @Autowired
     private UserRepository userRepo;
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping()
     public UserDto createUser(@RequestBody UserDto input) {
@@ -32,7 +35,11 @@ public class UserController {
             throw new ResourceExistsException();
         }
 
-        return new UserDto(userRepo.save(input.toEntity()));
+        input.setPassword(passwordEncoder.encode(input.getPassword()));
+        final User user = input.toEntity();
+        user.setRole(Role.DEVELOPER);
+
+        return new UserDto(userRepo.save(user));
     }
 
     @GetMapping()
@@ -54,7 +61,7 @@ public class UserController {
 
     @PostMapping("{userID}/apps")
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    public AppDto createApp(@PathVariable Long userID, @RequestBody AppDto input) {
+    public AppDto createApp(@PathVariable Long userID, @RequestBody AppDto input, Authentication auth) {
         if (appRepo.findOne(Example.of(input.toEntity())).isPresent()) {
             throw new ResourceExistsException();
         }

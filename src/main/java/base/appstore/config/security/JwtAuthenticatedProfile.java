@@ -9,20 +9,20 @@ import java.util.Collection;
 @SuppressWarnings("serial")
 public class JwtAuthenticatedProfile implements Authentication {
 
-    private final String username;
+    private final UserPrincipal user;
     private final String token;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtAuthenticatedProfile(String username, String token) {
+    public JwtAuthenticatedProfile(UserPrincipal user, String token) {
 
-        this.username = username;
+        this.user = user;
         this.token = token;
         this.authorities = new ArrayList<>();
     }
 
-    public JwtAuthenticatedProfile(String username, String token, Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticatedProfile(UserPrincipal user, String token, Collection<? extends GrantedAuthority> authorities) {
 
-        this.username = username;
+        this.user = user;
         this.token = token;
         this.authorities = authorities;
     }
@@ -45,7 +45,7 @@ public class JwtAuthenticatedProfile implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return username;
+        return user;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class JwtAuthenticatedProfile implements Authentication {
 
     @Override
     public String getName() {
-        return username;
+        return user.getUsername();
     }
 }
 

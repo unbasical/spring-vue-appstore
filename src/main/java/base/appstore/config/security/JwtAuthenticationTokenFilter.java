@@ -3,6 +3,8 @@ package base.appstore.config.security;
 
 
 import base.appstore.exceptions.JwtAuthenticationException;
+import base.appstore.model.User;
+import base.appstore.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private String tokenHeader;
     private final JwtTokenValidateService jwtService;
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationProvider.class);
+    @Autowired
+    private UserRepository userRepo;
 
     @Autowired
     public JwtAuthenticationTokenFilter(JwtTokenValidateService jwtService) {
@@ -43,11 +47,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                 if (token != null){
                     String username = jwtService.getUsernameFromToken(token);
+                    final User user = userRepo.findOneByName(username).orElseThrow(() -> new JwtAuthenticationException("JWT Token validation failed"));
                     Collection<? extends GrantedAuthority> authorities;
                     authorities = jwtService.getAuthorities(token);
 
                     if (jwtService.validateToken(token)) {
-                        JwtAuthenticatedProfile authentication = new JwtAuthenticatedProfile(username, token, authorities);
+                        JwtAuthenticatedProfile authentication = new JwtAuthenticatedProfile(new UserPrincipal(user), token, authorities);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }

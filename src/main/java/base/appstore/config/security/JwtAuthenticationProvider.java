@@ -1,6 +1,8 @@
 package base.appstore.config.security;
 
 import base.appstore.exceptions.JwtAuthenticationException;
+import base.appstore.model.User;
+import base.appstore.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtTokenValidateService jwtService;
 
+    @Autowired
+    private UserRepository userRepo;
+
     public JwtAuthenticationProvider() {
         this(null);
     }
@@ -35,11 +40,12 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         try {
             String token = (String) authentication.getCredentials();
             String username = jwtService.getUsernameFromToken(token);
+            final User user = userRepo.findOneByName(username).orElseThrow(() -> new JwtAuthenticationException("JWT Token validation failed"));
             Collection<? extends GrantedAuthority> authorities;
             authorities = jwtService.getAuthorities(token);
 
             return jwtService.validateToken_opt(token)
-                    .map(aBoolean -> new JwtAuthenticatedProfile(username,token, authorities))
+                    .map(aBoolean -> new JwtAuthenticatedProfile(new UserPrincipal(user), token, authorities))
                     .orElseThrow(() -> new JwtAuthenticationException("JWT Token validation failed"));
 
         } catch (JwtException ex) {

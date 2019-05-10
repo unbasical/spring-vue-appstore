@@ -12,10 +12,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.stream.Collectors;
 
 
@@ -67,10 +69,14 @@ public class FileController {
     }
 
     @GetMapping(value = "{userID}/apps/{appID}/logo", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> downloadLogo(@PathVariable Long userID, @PathVariable Long appID) {
-        final Logo logo = getAppByIdOrThrow(appID).getLogo();
+    public ResponseEntity<byte[]> downloadLogo(@PathVariable Long userID, @PathVariable Long appID) throws IOException {
+        Logo logo = getAppByIdOrThrow(appID).getLogo();
         if (logo == null) {
-            return ResponseEntity.notFound().build();
+            logo = Logo.builder()
+                    .imageData(Files.readAllBytes(ResourceUtils.getFile("classpath:default.png").toPath()))
+                    .filename("default.png")
+                    .contentType("image/png")
+                    .build();
         }
 
         return ResponseEntity.ok()
@@ -94,6 +100,7 @@ public class FileController {
                 .body(screenshot.getImageData());
     }
 
+    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
     @DeleteMapping(value = "{userID}/apps/{appID}/logo")
     public void deleteLogo(@PathVariable Long userID, @PathVariable Long appID) {
         final App app = getAppByIdOrThrow(appID);

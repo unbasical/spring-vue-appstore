@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @CrossOrigin
 @AllArgsConstructor
 public class UserController {

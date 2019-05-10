@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 
 @RestController
-@RequestMapping("/tags")
+@RequestMapping("/api/tags")
 @CrossOrigin
 public class TagController {
 

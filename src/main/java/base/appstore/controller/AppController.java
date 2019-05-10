@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 
 @RestController
-@RequestMapping("/apps")
+@RequestMapping("/api/apps")
 @CrossOrigin
 public class AppController {
 

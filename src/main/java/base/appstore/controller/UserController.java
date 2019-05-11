@@ -83,7 +83,7 @@ public class UserController {
     @PreAuthorize("isAuthenticated() " +
             "and hasPermission(#userID, 'UserEvaluator', '')" +
             "and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
-    public AppDto updateApp(@PathVariable Long appID, @RequestBody AppDto input, Authentication auth) {
+    public AppDto updateApp(@PathVariable Long userID, @PathVariable Long appID, @RequestBody AppDto input, Authentication auth) {
         final App receivedApp = input.toEntity();
 
         return appRepo.findById(appID).map(app -> {

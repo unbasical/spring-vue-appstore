@@ -1,5 +1,5 @@
 <template>
-    <v-card hover color="primary" class="white--text" style="margin: 15PX">
+    <v-card hover color="primary" class="white--text" style="margin: 15Px">
         <!-- TitleRow-->
         <v-layout style="margin: inherit" row>
             <v-flex xs12>

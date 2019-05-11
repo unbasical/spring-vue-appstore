@@ -79,7 +79,6 @@
             axios.get(`/api/apps`)
                 .then(res => {
                     this.apps.push(...res.data);
-                    console.log(...res.data);
                 }).catch(error => {
                 console.error("api error:" + error);
             })

@@ -26,6 +26,15 @@
                     <v-list-tile>
                         <v-btn
                                 flat
+                                :to="{name: 'login'}"
+                                target="_blank">
+                            <v-icon left>face</v-icon>
+                            Login
+                        </v-btn>
+                    </v-list-tile>
+                    <v-list-tile>
+                        <v-btn
+                                flat
                                 href="http://fr-11-apps.herokuapp.com/swagger-ui.html"
                                 target="_blank">
                             <v-icon left>assignment</v-icon>
@@ -46,14 +55,7 @@
             </v-menu>
         </v-toolbar>
         <v-container align-start fluid style="padding: 0px">
-            <v-layout row wrap>
-                <v-flex xs2 lg2>
-                    <Navigation/>
-                </v-flex>
-                <v-flex xs10 lg10>
-                    <AllApps/>
-                </v-flex>
-            </v-layout>
+            <router-view></router-view>
         </v-container>
     </v-app>
 </template>

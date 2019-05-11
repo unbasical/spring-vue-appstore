@@ -35,7 +35,7 @@
                 </v-list>
             </v-toolbar>
 
-            <v-list class="pt-0" dense>
+            <v-list class="pt-0">
                 <v-list-tile>
                     <v-list-tile-action>
                         <v-icon>search</v-icon>
@@ -69,7 +69,7 @@
                 </v-list-tile>
                 <v-list-tile>
                     <v-list-tile-content>
-                        <v-flex row>
+                        <v-layout row>
                             <div style="text-align: center">
                                 <v-btn icon small depressed
                                        @click="setMinimumRating(1)">
@@ -92,7 +92,15 @@
                                     <v-icon x-small>{{getMinimumRating() >= 5 ? 'star' : 'star_border'}}</v-icon>
                                 </v-btn>
                             </div>
-                        </v-flex>
+                        </v-layout>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile>
+                    <v-list-tile-content >
+                        <v-btn large round>
+                            <v-icon>add_circle</v-icon>
+                            Share your App
+                        </v-btn>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>

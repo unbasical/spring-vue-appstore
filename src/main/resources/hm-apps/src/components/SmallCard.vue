@@ -1,20 +1,9 @@
 <template>
-    <v-card color="purple" class="white--text" style="margin: 10px">
+    <v-card hover color="primary" class="white--text" style="margin: 15PX">
         <!-- TitleRow-->
         <v-layout style="margin: inherit" row>
-            <v-flex xs7>
+            <v-flex xs12>
                 <v-card-title primary-title>
-                    <div>
-                        <div class="headline">{{id}}   {{title}}</div>
-                    </div>
-                </v-card-title>
-            </v-flex>
-        </v-layout>
-        <!-- Logo, Description, Sceenshot Row-->
-
-        <v-layout style="margin: inherit" row>
-            <v-flex xs4>
-                <div style="text-align: center">
                     <v-avatar>
                         <v-img
                                 :src="logoUrl"
@@ -23,34 +12,41 @@
                                 width="50px"
                         ></v-img>
                     </v-avatar>
-                </div>
+                    <v-spacer></v-spacer>
+                    <div class="headline">{{title}}</div>
+                    <v-spacer></v-spacer>
+                </v-card-title>
             </v-flex>
-            <v-flex xs4>
-                <div v-if="description.length<110">{{description}}</div>
-                <div v-if="description.length>=110">{{description.substring(0,110)+"..."}}</div>
+        </v-layout>
+        <!-- Logo, Description, Sceenshot Row-->
+        <v-layout style="margin: inherit" row>
+            <v-flex xs5>
+                <div v-if="description.length<200">{{description}}</div>
+                <div v-if="description.length>=200">{{description.substring(0,110)+"..."}}</div>
             </v-flex>
-            <v-flex xs4>
-                <div style="text-align: center">
+            <v-flex xs2></v-flex>
+            <v-flex xs5>
+                <v-layout justify-end row>
+                    <v-spacer></v-spacer>
                     <v-img
                             :src="logoUrl"
                             height="125px"
+                            max-width="200px"
                             contain
                     ></v-img>
-                </div>
+                </v-layout>
             </v-flex>
         </v-layout>
 
         <!-- Tags and Stars Row-->
 
         <v-layout style="margin: inherit" row>
-            <v-flex xs4>
-                <div style="text-align: center">
-                    <div>Tags: {{niceList(tags)}}</div>
-                </div>
+            <v-flex xs5>
+                <div>Tags: {{niceList(tags)}}</div>
             </v-flex>
-            <v-flex xs4></v-flex>
-            <v-flex xs4>
-                <div style="text-align: center">
+            <v-flex xs2></v-flex>
+            <v-flex xs5>
+                <div style="text-align: right">
                     <v-icon>{{Math.round(rating) >= 1 ? 'star' : 'star_border'}}</v-icon>
                     <v-icon>{{Math.round(rating) >= 2 ? 'star' : 'star_border'}}</v-icon>
                     <v-icon>{{Math.round(rating) >= 3 ? 'star' : 'star_border'}}</v-icon>
@@ -62,20 +58,16 @@
         <!-- Buttons Row-->
 
         <v-layout style="margin: inherit" row>
-            <v-flex xs4>
-                <div style="text-align: center">
-
-                    <v-btn color="deep-purple" class="white--text" round>
-                        More Info
-                    </v-btn>
-
-                </div>
+            <v-flex xs5>
+                <v-btn color="secondary" class="black--text" round>
+                    More Info
+                </v-btn>
             </v-flex>
-            <v-flex xs4>
+            <v-flex xs2>
             </v-flex>
-            <v-flex xs4>
-                <div style="text-align: center">
-                    <v-btn color="deep-purple" class="white--text" round>
+            <v-flex xs5>
+                <div style="text-align: right">
+                    <v-btn color="secondary" class="black--text" round>
                         Go to Site
                     </v-btn>
                 </div>
@@ -86,6 +78,7 @@
 </template>
 
 <script>
+
 
     export default {
         name: "SmallCard",

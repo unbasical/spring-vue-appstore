@@ -1,10 +1,8 @@
 <template>
     <v-container>
-        <v-layout
-                row wrap
-        >
+        <v-layout row wrap>
 
-            <v-flex v-for="app in applist" :key="app.title" xs6>
+            <v-flex v-for="app in applist" :key="app.title" xs12 sm6 md6 lg4>
                 <small-card
                         v-bind:title="app.title"
                         v-bind:id="app.id"
@@ -101,9 +99,9 @@
                 finalJoin = finalJoin || ', ';
                 return arr.join(join) + finalJoin + last;
             },
-            logoOfApp: function (appID){
+            logoOfApp: function (appID) {
                 //TODO: Check how to receive current user
-                return axios.get("/api/users/1/apps/"+appID+"/logo").catch(error => console.error(error))
+                return axios.get("/api/users/1/apps/" + appID + "/logo").catch(error => console.error(error))
 
             }
         },
@@ -113,7 +111,7 @@
                     .filter(app => app.title.includes(this.getSearch()))
                     .filter(app => Math.round(app.rating) >= this.getMinimumRating())
                     .filter(app => {
-                        if(this.getTags().length==0){
+                        if (this.getTags().length == 0) {
                             return true;
                         }
                         return this.getTags().some(oneTag => app.tags.includes(oneTag))

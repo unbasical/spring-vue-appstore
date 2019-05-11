@@ -1,7 +1,6 @@
 package base.appstore.config.security;
 
 
-
 import base.appstore.exceptions.JwtAuthenticationException;
 import base.appstore.model.User;
 import base.appstore.repository.UserRepository;
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -29,6 +29,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private String tokenHeader;
     private final JwtTokenValidateService jwtService;
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationProvider.class);
+
     @Autowired
     private UserRepository userRepo;
 
@@ -47,12 +48,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                 if (token != null){
                     String username = jwtService.getUsernameFromToken(token);
-                    final User user = userRepo.findOneByName(username).orElseThrow(() -> new JwtAuthenticationException("JWT Token validation failed"));
+                    final Optional<User> user = userRepo.findOneByName(username);
                     Collection<? extends GrantedAuthority> authorities;
                     authorities = jwtService.getAuthorities(token);
 
-                    if (jwtService.validateToken(token)) {
-                        JwtAuthenticatedProfile authentication = new JwtAuthenticatedProfile(new UserPrincipal(user), token, authorities);
+                    if (user.isPresent() && jwtService.validateToken(token)) {
+                        JwtAuthenticatedProfile authentication = new JwtAuthenticatedProfile(new UserPrincipal(user.get()), token, authorities);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }

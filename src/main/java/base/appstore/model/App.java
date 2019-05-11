@@ -47,7 +47,7 @@ public class App {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(
-            cascade = CascadeType.MERGE,
+            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     @EqualsAndHashCode.Exclude

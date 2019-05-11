@@ -9,7 +9,6 @@ import base.appstore.model.Role;
 import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
-import base.appstore.services.AuthorizationService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +29,6 @@ public class UserController {
     private AppRepository appRepo;
     private UserRepository userRepo;
     private PasswordEncoder passwordEncoder;
-    private AuthorizationService authService;
 
     @PostMapping()
     public UserDto createUser(@RequestBody UserDto input) {
@@ -46,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public Stream<UserDto> getAllUsers() {
         return userRepo.findAll().stream().map(UserDto::new);
     }
@@ -57,13 +55,15 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public void deleteUser(@PathVariable Long id) {
         userRepo.deleteById(id);
     }
 
     @PostMapping("{userID}/apps")
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() " +
+            "and hasPermission(#userID, 'UserEvaluator', '') " +
+            "and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
     public AppDto createApp(@PathVariable Long userID, @RequestBody AppDto input) {
         final App app = appRepo.findOne(Example.of(input.toEntity())).orElse(null);
 
@@ -80,10 +80,13 @@ public class UserController {
 
 
     @PutMapping("{userID}/apps/{appID}")
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    public AppDto updateApp(@PathVariable Long userID, @PathVariable Long appID, @RequestBody AppDto input, Authentication auth) {
+    @PreAuthorize("isAuthenticated() " +
+            "and hasPermission(#userID, 'UserEvaluator', '')" +
+            "and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
+    public AppDto updateApp(@PathVariable Long appID, @RequestBody AppDto input, Authentication auth) {
         final App receivedApp = input.toEntity();
-        return authService.getAppIfAuthorized(auth, userID, appID).map(app -> {
+
+        return appRepo.findById(appID).map(app -> {
             app.setTitle(receivedApp.getTitle());
             app.setDescription(receivedApp.getDescription());
             app.setTags(receivedApp.getTags());
@@ -92,7 +95,7 @@ public class UserController {
     }
 
     @DeleteMapping("{userID}/apps/{appID}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public void deleteApp(@PathVariable Long userID, @PathVariable Long appID) {
         appRepo.deleteById(appID);
     }

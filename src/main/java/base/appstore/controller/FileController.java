@@ -7,7 +7,6 @@ import base.appstore.model.App;
 import base.appstore.model.Logo;
 import base.appstore.model.Screenshot;
 import base.appstore.repository.AppRepository;
-import base.appstore.services.AuthorizationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -30,12 +29,11 @@ import java.util.stream.Collectors;
 public class FileController {
 
     private AppRepository appRepository;
-    private AuthorizationService authService;
 
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
     @PostMapping("/users/{userID}/apps/{appID}/logo")
     public UploadFileResponse uploadLogo(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file, Authentication auth) {
-        final App match = authService.getAppIfAuthorized(auth, userID, appID).orElseThrow(ResourceNotFoundException::new);
+        final App match = appRepository.findById(appID).orElseThrow(ResourceNotFoundException::new);
 
         try {
             match.setLogo(Logo.builder()
@@ -51,10 +49,10 @@ public class FileController {
         return new UploadFileResponse(file.getName(), file.getContentType(), file.getSize());
     }
 
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
     @PostMapping("/users/{userID}/apps/{appID}/screenshots")
     public UploadFileResponse uploadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file, Authentication auth) {
-        final App match = authService.getAppIfAuthorized(auth, userID, appID).orElseThrow(ResourceNotFoundException::new);
+        final App match = appRepository.findById(appID).orElseThrow(ResourceNotFoundException::new);
 
         try {
             match.getScreenshots().add(Screenshot.builder()
@@ -72,7 +70,7 @@ public class FileController {
     }
 
     @GetMapping(value = "/apps/{appID}/logo", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> downloadLogo(@PathVariable Long userID, @PathVariable Long appID) throws IOException {
+    public ResponseEntity<byte[]> downloadLogo(@PathVariable Long appID) throws IOException {
         Logo logo = getAppByIdOrThrow(appID).getLogo();
         if (logo == null) {
             logo = Logo.builder()
@@ -89,7 +87,7 @@ public class FileController {
     }
 
     @GetMapping(value = "/apps/{appID}/screenshots/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> downloadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @PathVariable Long id) {
+    public ResponseEntity<byte[]> downloadScreenshot(@PathVariable Long appID, @PathVariable Long id) {
         final App app = getAppByIdOrThrow(appID);
 
         final Screenshot screenshot = app.getScreenshots().stream()
@@ -102,16 +100,16 @@ public class FileController {
                 .body(screenshot.getImageData());
     }
 
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    @DeleteMapping(value = "{userID}/apps/{appID}/logo")
+    @PreAuthorize("isAuthenticated() and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
+    @DeleteMapping(value = "/users/{userID}/apps/{appID}/logo")
     public void deleteLogo(@PathVariable Long userID, @PathVariable Long appID) {
         final App app = getAppByIdOrThrow(appID);
         app.setLogo(null);
         appRepository.save(app);
     }
 
-    @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    @DeleteMapping(value = "{userID}/apps/{appID}/screenshots/{id}")
+    @PreAuthorize("isAuthenticated() and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
+    @DeleteMapping(value = "/users/{userID}/apps/{appID}/screenshots/{id}")
     public void deleteScreenshot(@PathVariable Long userID, @PathVariable Long appID, @PathVariable Long id) {
         final App app = getAppByIdOrThrow(appID);
 

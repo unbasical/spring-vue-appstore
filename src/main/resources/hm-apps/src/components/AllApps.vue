@@ -1,90 +1,19 @@
 <template>
     <v-container>
-        <v-layout
-                row wrap
-        >
-            <v-flex v-for="app in applist" :key="app.title" xs5>
-                <v-card color="purple" class="white--text" style="margin: 10px">
-                    <!-- TitleRow-->
-                    <v-layout style="margin: inherit" row>
-                        <v-flex xs7>
-                            <v-card-title primary-title>
-                                <div>
-                                    <div class="headline">{{app.title}}</div>
-                                </div>
-                            </v-card-title>
-                        </v-flex>
-                    </v-layout>
-                    <!-- Logo, Description, Sceenshot Row-->
-                    <v-layout style="margin: inherit" row>
-                        <v-flex xs4>
-                            <div style="text-align: center">
-                                <v-avatar>
-                                    <v-img
-                                            :src="logoOfApp(app.id)"
-                                            alt="test"
-                                            height="50px"
-                                            width="50px"
-                                    ></v-img>
-                                </v-avatar>
-                            </div>
-                        </v-flex>
-                        <v-flex xs4>
-                            <div v-if="app.description.length<110">{{app.description}}</div>
-                            <div v-if="app.description.length>=110">{{app.description.substring(0,110)+"..."}}</div>
-                        </v-flex>
-                        <v-flex xs4>
-                            <div style="text-align: center">
-                                <v-img
-                                        :src="app.image"
-                                        height="125px"
-                                        contain
-                                ></v-img>
-                            </div>
-                        </v-flex>
-                    </v-layout>
-                    <!-- Tags and Stars Row-->
-                    <v-layout style="margin: inherit" row>
-                        <v-flex xs4>
-                            <div style="text-align: center">
-                                <div>Tags: {{niceList(app.tags)}}</div>
-                            </div>
-                        </v-flex>
-                        <v-flex xs4></v-flex>
-                        <v-flex xs4>
-                            <div style="text-align: center">
-                                <v-icon>{{Math.round(app.rating) >= 1 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{Math.round(app.rating) >= 2 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{Math.round(app.rating) >= 3 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{Math.round(app.rating) >= 4 ? 'star' : 'star_border'}}</v-icon>
-                                <v-icon>{{Math.round(app.rating) >= 5 ? 'star' : 'star_border'}}</v-icon>
-                            </div>
-                        </v-flex>
-                    </v-layout>
-                    <!-- Buttons Row-->
-                    <v-layout style="margin: inherit" row>
-                        <v-flex xs4>
-                            <div style="text-align: center">
+        <v-layout row wrap>
 
-                                <v-btn color="deep-purple" class="white--text" round>
-                                    More Info
-                                </v-btn>
-
-                            </div>
-                        </v-flex>
-                        <v-flex xs4>
-                        </v-flex>
-                        <v-flex xs4>
-                            <div style="text-align: center">
-                                <v-btn color="deep-purple" class="white--text" round>
-                                    Go to Site
-                                </v-btn>
-
-                            </div>
-                        </v-flex>
-                    </v-layout>
-                </v-card>
+            <v-flex v-for="app in applist" :key="app.title" xs12 sm6 md6 lg4>
+                <small-card
+                        v-bind:title="app.title"
+                        v-bind:id="app.id"
+                        v-bind:description="app.description"
+                        v-bind:tags="app.tags"
+                        v-bind:logoUrl="app.image"
+                        v-bind:rating="app.rating">
+                </small-card>
             </v-flex>
+
+
         </v-layout>
     </v-container>
 </template>
@@ -92,8 +21,10 @@
 <script>
     import axios from "axios";
     import {mapGetters} from 'vuex';
+    import SmallCard from "./SmallCard";
 
     export default {
+        components: {SmallCard},
         data: () => ({
             apps: [
                 {
@@ -168,9 +99,9 @@
                 finalJoin = finalJoin || ', ';
                 return arr.join(join) + finalJoin + last;
             },
-            logoOfApp: function (appID){
+            logoOfApp: function (appID) {
                 //TODO: Check how to receive current user
-                return axios.get("/api/users/1/apps/"+appID+"/logo").catch(error => console.error(error))
+                return axios.get("/api/users/1/apps/" + appID + "/logo").catch(error => console.error(error))
 
             }
         },
@@ -180,7 +111,7 @@
                     .filter(app => app.title.includes(this.getSearch()))
                     .filter(app => Math.round(app.rating) >= this.getMinimumRating())
                     .filter(app => {
-                        if(this.getTags().length==0){
+                        if (this.getTags().length == 0) {
                             return true;
                         }
                         return this.getTags().some(oneTag => app.tags.includes(oneTag))

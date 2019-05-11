@@ -8,8 +8,17 @@ export default new Vuex.Store({
         search: "",
         tags: [""],
         minimumRating: 0,
+        user:{
+            userid: 0,
+            email : "mail",
+            username: "default",
+            token : "default"
+        }
     },
     getters: {
+        getUser: (state) =>{
+            return state.user;
+        },
         getSearch: (state) => {
             return state.search;
         },
@@ -21,6 +30,9 @@ export default new Vuex.Store({
         }
     },
     mutations: {
+        setUser(state, user){
+            state.user = user;
+        },
         setSearch(state, searchString) {
             state.search = searchString
         },

@@ -47,12 +47,12 @@
         </v-toolbar>
         <v-container align-start fluid style="padding: 0px">
             <v-layout row wrap>
-                <v-content>
+                <v-flex xs2 lg2>
                     <Navigation/>
-                </v-content>
-                <v-content>
+                </v-flex>
+                <v-flex xs10 lg10>
                     <AllApps/>
-                </v-content>
+                </v-flex>
             </v-layout>
         </v-container>
     </v-app>
@@ -72,6 +72,6 @@
             return {
                 items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
             }
-        }
+        },
     }
 </script>

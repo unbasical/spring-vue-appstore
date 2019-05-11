@@ -47,12 +47,12 @@
         </v-toolbar>
         <v-container align-start fluid style="padding: 0px">
             <v-layout row wrap>
-                <v-content>
+                <v-flex xs2>
                     <Navigation/>
-                </v-content>
-                <v-content>
+                </v-flex>
+                <v-flex xs10>
                     <AllApps/>
-                </v-content>
+                </v-flex>
             </v-layout>
         </v-container>
     </v-app>

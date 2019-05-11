@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @CrossOrigin
 @AllArgsConstructor
 public class FileController {
@@ -33,7 +33,7 @@ public class FileController {
     private AuthorizationService authService;
 
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    @PostMapping("{userID}/apps/{appID}/logo")
+    @PostMapping("/users/{userID}/apps/{appID}/logo")
     public UploadFileResponse uploadLogo(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file, Authentication auth) {
         final App match = authService.getAppIfAuthorized(auth, userID, appID).orElseThrow(ResourceNotFoundException::new);
 
@@ -52,7 +52,7 @@ public class FileController {
     }
 
     @PreAuthorize("hasRole('DEVELOPER') or hasRole('ADMIN')")
-    @PostMapping("{userID}/apps/{appID}/screenshots")
+    @PostMapping("/users/{userID}/apps/{appID}/screenshots")
     public UploadFileResponse uploadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @RequestParam("file") MultipartFile file, Authentication auth) {
         final App match = authService.getAppIfAuthorized(auth, userID, appID).orElseThrow(ResourceNotFoundException::new);
 
@@ -71,7 +71,7 @@ public class FileController {
         return new UploadFileResponse(file.getName(), file.getContentType(), file.getSize());
     }
 
-    @GetMapping(value = "{userID}/apps/{appID}/logo", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = "/apps/{appID}/logo", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> downloadLogo(@PathVariable Long userID, @PathVariable Long appID) throws IOException {
         Logo logo = getAppByIdOrThrow(appID).getLogo();
         if (logo == null) {
@@ -88,7 +88,7 @@ public class FileController {
                 .body(logo.getImageData());
     }
 
-    @GetMapping(value = "{userID}/apps/{appID}/screenshots/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = "/apps/{appID}/screenshots/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> downloadScreenshot(@PathVariable Long userID, @PathVariable Long appID, @PathVariable Long id) {
         final App app = getAppByIdOrThrow(appID);
 

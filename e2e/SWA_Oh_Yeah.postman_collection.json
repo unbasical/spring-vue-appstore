@@ -332,7 +332,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/users/{{user}}/apps/{{app}}/logo",
+                  "raw": "http://{{host}}:{{port}}/api/apps/{{app}}/logo",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -340,8 +340,6 @@
 					"port": "{{port}}",
 					"path": [
 						"api",
-						"users",
-						"{{user}}",
 						"apps",
 						"{{app}}",
 						"logo"

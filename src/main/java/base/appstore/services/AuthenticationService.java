@@ -31,8 +31,12 @@ public class AuthenticationService {
         Optional<User> userAccount = userRepository.findOneByName(username);
 
         return userAccount.filter(account -> passwordEncoder.matches(password, account.getPassword()))
-                .map(account -> new JWTTokenResponse(
-                        jwtTokenService.generateToken(userAccount.get())))
+                .map(account -> JWTTokenResponse.builder()
+                        .id(account.getId())
+                        .email(account.getEmail())
+                        .name(account.getName())
+                        .token(jwtTokenService.generateToken(account))
+                        .build())
                 .orElseThrow(() -> new EntityNotFoundException("Account not found"));
     }
 }

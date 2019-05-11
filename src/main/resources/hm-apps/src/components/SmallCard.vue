@@ -6,7 +6,6 @@
                 <v-card-title primary-title>
                     <div>
                         <div class="headline">{{id}}   {{title}}</div>
-                        what the fuck
                     </div>
                 </v-card-title>
             </v-flex>

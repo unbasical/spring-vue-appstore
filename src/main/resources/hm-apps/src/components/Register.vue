@@ -7,15 +7,18 @@
                             ref="form"
                             lazy-validation>
                         <v-text-field
-                                v-model="name"
+                                v-model="user.name"
                                 label="Name"
                                 prepend-icon="person"
                                 type="text"
                                 required
                         ></v-text-field>
+                        <v-textarea>
+                            {{this.validateName}}
+                        </v-textarea>
 
                         <v-text-field
-                                v-model="email"
+                                v-model="user.email"
                                 label="Email"
                                 prepend-icon="email"
                                 type="text"
@@ -23,14 +26,14 @@
                         ></v-text-field>
 
                         <v-text-field
-                                v-model="password"
+                                v-model="user.password"
                                 label="password"
                                 type="password"
                                 prepend-icon="lock"
                                 required
                         ></v-text-field>
                         <v-text-field
-                                v-model="confirmedPassword"
+                                v-model="user.confirmedPassword"
                                 label="confirm password"
                                 type="password"
                                 prepend-icon="cached"
@@ -57,38 +60,32 @@
     import {mapMutations} from 'vuex'
 
     export default {
-        name: "Login",
+        name: "Register",
         data() {
             return {
-                name: "",
-                password: "",
-                confirmedPassword : "",
-                email : ""
+                user: {
+                    name: "",
+                    password: "",
+                    confirmedPassword: "",
+                    email: ""
+                }
             }
         },
-
         methods: {
             ...mapMutations([
                 'setUser',
             ]),
             submit: function () {
                 axios.post(`/api/users`, {
-                    username: this.name,
-                    email: this.email,
-                    password: this.password
+                    username: this.user.name,
+                    email: this.user.email,
+                    password: this.user.password
                 }).then(res => {
-                    axios.post(`/login`, {
-                        username: this.name,
-                        password: this.password
-                    }).then(res => {
-                        this.setUser(res)
-                    }).catch(error => {
-                        console.error(error);
-                    })
+                    console.log('User Created: ' + JSON.stringify(this.user));
                 }).catch(error => {
                     console.error(error);
                 })
-            }
+            },
         }
     }
 </script>

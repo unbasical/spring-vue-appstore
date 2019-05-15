@@ -59,6 +59,7 @@
                     username: this.name,
                     password: this.password
                 }).then(res => {
+                    console.log(res)
                     this.setUser(res)
                 }).catch(error => {
                     console.error(error);

@@ -49,7 +49,7 @@
                 },
                 {
                     title: 'Ivanka Trump',
-                    description: 'Does everybody know that pig named Lorem Ipsum? She\'s a disgusting pig, right? You’re disgusting. The other thing with Lorem Ipsum is that you have to take out its family. Be careful, or I will spill the beans on your placeholder text. Be careful, or I will spill the beans on your placeholder text.\n' +
+                    description: 'Does everybody know th1at pig named Lorem Ipsum? She\'s a disgusting pig, right? You’re disgusting. The other thing with Lorem Ipsum is that you have to take out its family. Be careful, or I will spill the beans on your placeholder text. Be careful, or I will spill the beans on your placeholder text.\n' +
                         '\n',
                     rating: 4,
                     tags: ["Tochter", ":P"],

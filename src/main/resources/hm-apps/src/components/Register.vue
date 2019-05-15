@@ -13,9 +13,6 @@
                                 type="text"
                                 required
                         ></v-text-field>
-                        <v-textarea>
-                            {{this.validateName}}
-                        </v-textarea>
 
                         <v-text-field
                                 v-model="user.email"
@@ -30,13 +27,6 @@
                                 label="password"
                                 type="password"
                                 prepend-icon="lock"
-                                required
-                        ></v-text-field>
-                        <v-text-field
-                                v-model="user.confirmedPassword"
-                                label="confirm password"
-                                type="password"
-                                prepend-icon="cached"
                                 required
                         ></v-text-field>
                         <v-card-actions>
@@ -66,7 +56,6 @@
                 user: {
                     name: "",
                     password: "",
-                    confirmedPassword: "",
                     email: ""
                 }
             }

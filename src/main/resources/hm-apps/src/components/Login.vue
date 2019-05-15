@@ -23,11 +23,13 @@
                         ></v-text-field>
                         <v-card-actions>
                             <v-spacer></v-spacer>
+                            <router-link :to="{name: 'home'}" tag="button">
                             <v-btn
                                     color="success"
                                     @click="submit"
                             > submit
                             </v-btn>
+                            </router-link>
                             <v-spacer></v-spacer>
                         </v-card-actions>
                     </v-form>
@@ -59,7 +61,6 @@
                     username: this.name,
                     password: this.password
                 }).then(res => {
-                    console.log(res)
                     this.setUser(res)
                 }).catch(error => {
                     console.error(error);

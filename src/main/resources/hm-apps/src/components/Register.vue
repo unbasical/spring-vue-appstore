@@ -77,11 +77,11 @@
             ]),
             submit: function () {
                 axios.post(`/api/users`, {
-                    username: this.user.name,
+                    name: this.user.name,
                     email: this.user.email,
                     password: this.user.password
                 }).then(res => {
-                    console.log('User Created: ' + JSON.stringify(this.user));
+                    //show popup 'User Registered'
                 }).catch(error => {
                     console.error(error);
                 })

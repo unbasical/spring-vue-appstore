@@ -15,3 +15,6 @@ dependency-reduced-pom.xml
 README.html
 *.iml
 .idea
+src/main/resources/www/static
+src/main/resources/hm-apps/node_modules
+src/main/resources/hm-apps/dist

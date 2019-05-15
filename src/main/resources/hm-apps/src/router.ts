@@ -8,8 +8,8 @@ Vue.use(Router);
 export default new Router({
     mode : "history",
     routes: [
-        {path: "/login",
-        name: "login",
+        {path: "/userlogin",
+            name: "userlogin",
             component: Login
         },
         {path: "/register",
@@ -19,7 +19,7 @@ export default new Router({
         {
             path: "/",
             name: "home",
-            component: Home
+            component: Home,
         },
         {
             path: "/about",

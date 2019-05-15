@@ -55,7 +55,7 @@
                 'setUser',
             ]),
             submit: function () {
-                axios.post(`/login`, {
+                axios.post(`/api/login`, {
                     username: this.name,
                     password: this.password
                 }).then(res => {

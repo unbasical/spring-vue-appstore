@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 @Component
-public class UserEvaluator implements PermissionEvaluator {
+public class IsUser implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object o, Object o1) {
         // I will not implement this method just because I don't needed in this demo.

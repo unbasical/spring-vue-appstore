@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
+@CrossOrigin
 public class AuthenticationController {
 
     @Autowired

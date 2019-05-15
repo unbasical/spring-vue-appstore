@@ -23,22 +23,20 @@
             </template>
             <v-list>
                 <v-list-tile>
-                    <v-btn
-                            flat
-                            :to="{name: 'register'}"
-                            target="_blank">
-                        <v-icon left>add</v-icon>
-                        register
-                    </v-btn>
+                    <router-link :to="{name: 'register'}" tag="button">
+                        <v-btn flat>
+                            <v-icon left>add</v-icon>
+                            register
+                        </v-btn>
+                    </router-link>
                 </v-list-tile>
                 <v-list-tile>
-                    <v-btn
-                            flat
-                            :to="{name: 'userlogin'}"
-                            target="_blank">
-                        <v-icon left>face</v-icon>
-                        Login
-                    </v-btn>
+                    <router-link :to="{name: 'userlogin'}" tag="button">
+                        <v-btn flat>
+                            <v-icon left>face</v-icon>
+                            Login
+                        </v-btn>
+                    </router-link>
                 </v-list-tile>
                 <v-list-tile>
                     <v-btn

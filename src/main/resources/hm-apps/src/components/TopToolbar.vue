@@ -23,6 +23,14 @@
             </template>
             <v-list>
                 <v-list-tile>
+                    <router-link :to="{name: 'home'}" tag="button">
+                        <v-btn flat>
+                            <v-icon left>house</v-icon>
+                            all apps
+                        </v-btn>
+                    </router-link>
+                </v-list-tile>
+                <v-list-tile>
                     <router-link :to="{name: 'register'}" tag="button">
                         <v-btn flat>
                             <v-icon left>add</v-icon>

@@ -36,7 +36,7 @@
                 'getUser'
             ]),
         },
-        created() {
+        created: function () {
             console.log('create Card for ID: ' + this.idNumber)
             if (this.getUser().token == 'default') {
                 console.error('user is not loged In correctly')
@@ -44,7 +44,7 @@
             console.log('User: ' + JSON.stringify(this.getUser()))
             axios.get("/api/apps/" + this.idNumber
                 //, {headers: {'Authorization': "bearer " + this.getUser().token}}
-                )
+            )
                 .then(res => console.log('show app & prepare Fields of Card\n' + res))
                 .catch(
                     this.card = {

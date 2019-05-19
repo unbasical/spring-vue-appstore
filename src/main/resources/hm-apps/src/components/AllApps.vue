@@ -3,6 +3,7 @@
         <v-layout row wrap>
 
             <v-flex v-for="app in applist" :key="app.title" xs12 sm6 md6 lg4>
+                <router-link :to="getDetailUrl(app.id)">
                 <small-card
                         v-bind:title="app.title"
                         v-bind:id="app.id"
@@ -11,9 +12,8 @@
                         v-bind:logoUrl="app.image"
                         v-bind:rating="app.rating">
                 </small-card>
+                </router-link>
             </v-flex>
-
-
         </v-layout>
     </v-container>
 </template>
@@ -89,6 +89,9 @@
                 'getTags',
                 'getMinimumRating'
             ]),
+            getDetailUrl: function (appID) {
+                return "/detail/" + appID;
+            },
             niceList: function (array, join, finalJoin) {
                 if (array.length == 0) {
                     return "";

@@ -1,18 +1,22 @@
 import Vue from "vue";
-import Router from "vue-router";
+import Router, {Route} from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import DetailedCardView from "./components/DetailedCardView.vue";
+
 Vue.use(Router);
 
 export default new Router({
-    mode : "history",
+    mode: "history",
     routes: [
-        {path: "/userlogin",
+        {
+            path: "/userlogin",
             name: "userlogin",
             component: Login
         },
-        {path: "/register",
+        {
+            path: "/register",
             name: "register",
             component: Register
         },
@@ -20,6 +24,12 @@ export default new Router({
             path: "/",
             name: "home",
             component: Home,
+        },
+        {
+            path: "/detailed/:id",
+            name: "detailedcardview",
+            component: DetailedCardView,
+            props: true
         },
         {
             path: "/about",

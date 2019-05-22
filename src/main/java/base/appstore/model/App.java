@@ -61,8 +61,7 @@ public class App {
     private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(
-            cascade = CascadeType.MERGE,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
     @EqualsAndHashCode.Exclude
     private List<Screenshot> screenshots = new ArrayList<>();

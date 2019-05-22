@@ -124,16 +124,4 @@ public class FileControllerTest {
                 .andExpect(status().is(200));
     }
 
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void downloadExistingLogo() throws Exception {
-        MockMultipartFile firstFile = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
-        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/users/" + this.testUser.getId() + "/apps/" + this.testApp.getId() + "/screenshots")
-                .file("file", firstFile.getBytes()))
-                .andExpect(status().is(200));
-
-        mockMvc.perform(get("/api/apps/" + this.testApp.getId() + "/screenshots/"))
-                .andExpect(status().is(200));
-    }
-
 }

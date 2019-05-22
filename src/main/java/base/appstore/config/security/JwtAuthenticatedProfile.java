@@ -45,7 +45,7 @@ public class JwtAuthenticatedProfile implements Authentication {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) {
-        // This method is not needed.
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override

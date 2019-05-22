@@ -85,7 +85,7 @@ public class AppController {
         return app.getComments().stream().map(CommentDto::new);
     }
 
-    private App getAppByIdOrThrow(Long id) throws ResourceNotFoundException {
+    private App getAppByIdOrThrow(Long id) {
         return appRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 

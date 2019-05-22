@@ -44,7 +44,7 @@ public class JwtTokenValidateService {
     }
 
 
-    public Optional<Boolean> validateToken_opt(String token) {
+    public Optional<Boolean> validateTokenOpt(String token) {
         return isTokenNotExpired(token) ? Optional.of(Boolean.TRUE) : Optional.empty();
     }
 

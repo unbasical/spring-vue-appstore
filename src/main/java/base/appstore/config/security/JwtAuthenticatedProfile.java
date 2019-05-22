@@ -10,20 +10,17 @@ import java.util.Collection;
 public class JwtAuthenticatedProfile implements Authentication {
 
     private final UserPrincipal user;
-    private final String token;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtAuthenticatedProfile(UserPrincipal user, String token) {
+    public JwtAuthenticatedProfile(UserPrincipal user) {
 
         this.user = user;
-        this.token = token;
         this.authorities = new ArrayList<>();
     }
 
-    public JwtAuthenticatedProfile(UserPrincipal user, String token, Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticatedProfile(UserPrincipal user, Collection<? extends GrantedAuthority> authorities) {
 
         this.user = user;
-        this.token = token;
         this.authorities = authorities;
     }
 
@@ -54,8 +51,7 @@ public class JwtAuthenticatedProfile implements Authentication {
     }
 
     @Override
-    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
+    public void setAuthenticated(boolean isAuthenticated) {
     }
 
     @Override

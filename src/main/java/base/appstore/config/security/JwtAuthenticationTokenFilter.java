@@ -53,7 +53,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     authorities = jwtService.getAuthorities(token);
 
                     if (user.isPresent() && jwtService.validateToken(token)) {
-                        JwtAuthenticatedProfile authentication = new JwtAuthenticatedProfile(new UserPrincipal(user.get()), token, authorities);
+                        JwtAuthenticatedProfile authentication = new JwtAuthenticatedProfile(new UserPrincipal(user.get()), authorities);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }

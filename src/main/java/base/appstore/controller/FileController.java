@@ -122,7 +122,7 @@ public class FileController {
     }
 
 
-    private App getAppByIdOrThrow(Long id) throws ResourceNotFoundException {
+    private App getAppByIdOrThrow(Long id) {
         return appRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 

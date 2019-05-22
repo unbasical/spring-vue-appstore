@@ -3,13 +3,16 @@ package base.appstore.config.security;
 import base.appstore.model.User;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @ToString
 @EqualsAndHashCode
-public class UserPrincipal {
+public class UserPrincipal implements Serializable {
+
 
     private long id;
     private String username;

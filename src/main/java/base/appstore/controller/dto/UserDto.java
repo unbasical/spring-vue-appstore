@@ -30,7 +30,6 @@ public class UserDto {
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
-        System.out.println(user);
         return user;
     }
 

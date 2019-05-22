@@ -1,15 +1,16 @@
 package base.appstore.controller.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UploadFileResponse {
     private String fileName;
     private String fileType;
     private long size;
-
 }

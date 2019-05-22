@@ -19,7 +19,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -64,14 +68,17 @@ public class UserControllerTest {
     public void getAllUsers() throws Exception {
         //testing thymeleaf sec:authorize with hasPermission
         this.mockMvc.perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+        .andExpect(jsonPath("$",hasSize(1)));
     }
 
     @Test
     public void getUser() throws Exception {
         //testing thymeleaf sec:authorize with hasPermission
         this.mockMvc.perform(get("/api/users/" + testUser.getId()).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name",is(testUser.getName())))
+                .andExpect(jsonPath("$.email",is(testUser.getEmail())));
     }
 
     @Test
@@ -83,7 +90,9 @@ public class UserControllerTest {
                 "\t\"email\": \"donaldus.bene.maximus@hm.edu\",\n" +
                 "\t\"password\": \"test\"\n" +
                 "}").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name",is("Donaldus Maximus Ultimatus")))
+                .andExpect(jsonPath("$.email",is("donaldus.bene.maximus@hm.edu")));
     }
 
     @Test
@@ -136,6 +145,21 @@ public class UserControllerTest {
         //testing thymeleaf sec:authorize with hasPermission
         this.mockMvc.perform(delete("/api/users/" + testUser.getId()))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void deleteUserWithUserAmountCheck() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+
+        this.mockMvc.perform(delete("/api/users/" + testUser.getId()))
+                .andExpect(status().isOk());
+
+        this.mockMvc.perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
     }
 
 }

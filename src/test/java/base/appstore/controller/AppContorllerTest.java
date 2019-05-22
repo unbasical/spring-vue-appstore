@@ -100,8 +100,8 @@ public class AppContorllerTest {
                 "\t\"author\": "+testUser.getId()+"\n" +
                 "}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-/*
-        this.mockMvc.perform(get("/api/apps/" + testApp.getId()))
+                /*
+                this.mockMvc.perform(get("/api/apps/" + testApp.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("comment", is("TestComponent")));
                 */

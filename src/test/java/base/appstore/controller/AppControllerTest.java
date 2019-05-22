@@ -1,7 +1,9 @@
 package base.appstore.controller;
 
+import base.appstore.controller.dto.TagDto;
 import base.appstore.model.App;
 import base.appstore.model.Role;
+import base.appstore.model.Tag;
 import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
@@ -18,6 +20,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,7 +38,6 @@ public class AppControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserRepository userRepo;
     @Autowired
@@ -44,6 +49,14 @@ public class AppControllerTest {
 
     @Before
     public void initData() {
+        Set<Tag> tags = new HashSet<>();
+        TagDto firstTag = new TagDto();
+        firstTag.setName("test");
+        tags.add(firstTag.toEntity());
+        TagDto secondTag = new TagDto();
+        secondTag.setName("foo");
+        tags.add(secondTag.toEntity());
+
         testUser = userRepo.save(User.builder()
                 .name("Test User")
                 .email("test.user@test.de")
@@ -53,6 +66,7 @@ public class AppControllerTest {
         testApp = appRepo.save(App.builder()
                 .title("TestApp")
                 .description("Fancy description")
+                .tags(tags)
                 .build());
     }
 
@@ -63,6 +77,53 @@ public class AppControllerTest {
         userRepo.deleteAll();
     }
 
+
+    @Test
+    public void getAllApps() throws Exception {
+        this.mockMvc.perform(get("/api/apps/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void getAllAppsFilteredByTitle() throws Exception {
+        this.mockMvc.perform(get("/api/apps?search=Test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+        this.mockMvc.perform(get("/api/apps?search=none"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void getAllAppsFilteredByRating() throws Exception {
+
+        this.mockMvc.perform(post("/api/apps/" + testApp.getId() + "/ratings").content("{\n" +
+                "\t\"stars\": 3,\n" +
+                "\t\"author\": {" +
+                "\t\"id\": " + testUser.getId() + "}\n" +
+                "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        this.mockMvc.perform(get("/api/apps?rating=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+
+        this.mockMvc.perform(get("/api/apps?rating=4"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void getAllAppsFilteredByTag() throws Exception {
+        this.mockMvc.perform(get("/api/apps?tag=Test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+        this.mockMvc.perform(get("/api/apps?tag=none"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
 
     @Test
     public void getTestApp() throws Exception {
@@ -124,6 +185,12 @@ public class AppControllerTest {
         this.mockMvc.perform(get("/api/apps/" + testApp.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rating", is(5.0)));
+
+
+        this.mockMvc.perform(get("/api/apps/" + testApp.getId() + "/ratings"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+
     }
 
 }

@@ -18,8 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,7 +40,6 @@ public class AppControllerTest {
 
     private User testUser;
     private App testApp;
-
 
 
     @Before
@@ -71,7 +69,7 @@ public class AppControllerTest {
         this.mockMvc.perform(get("/api/apps/" + testApp.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("title", is(testApp.getTitle())))
-        .andExpect(jsonPath("description",is(testApp.getDescription())));
+                .andExpect(jsonPath("description", is(testApp.getDescription())));
     }
 
     @Test
@@ -94,48 +92,38 @@ public class AppControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     public void createComment() throws Exception {
-        this.mockMvc.perform(post("/api/apps/"+testApp.getId()+"/comments").content("{\n" +
+        int expectedInt = Math.toIntExact(testUser.getId());
+        this.mockMvc.perform(post("/api/apps/" + testApp.getId() + "/comments").content("{\n" +
                 "\t\"text\": \"TestComment\",\n" +
-                "\t\"author\": { \"id\":"+testUser.getId()+"}\n" +
-                "}").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-                /*
-                this.mockMvc.perform(get("/api/apps/" + testApp.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("comment", is("TestComponent")));
-                */
-    }
-
-    @Test
-    public void getComment() throws Exception{
-        this.mockMvc.perform(post("/api/apps/"+testApp.getId()+"/comments").content("{\n" +
-                "\t\"text\": \"TestComment\",\n" +
-                "\t\"author\": "+testUser.getId()+"\n" +
+                "\t\"author\": {" +
+                "\t\"id\": " + testUser.getId() + "}\n" +
                 "}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         this.mockMvc.perform(get("/api/apps/" + testApp.getId() + "/comments"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.comments", hasSize(1)))
-        .andExpect(jsonPath("$.comments[0].text", is("TestComment")));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].text", is("TestComment")))
+                .andExpect(jsonPath("$[0].author.id", is(expectedInt)))
+                .andExpect(jsonPath("$[0].author.name", is(testUser.getName())))
+                .andExpect(jsonPath("$[0].author.email", is(testUser.getEmail())));
     }
 
 
-
     @Test
+    @WithMockUser(roles = "USER")
     public void createRating() throws Exception {
-        this.mockMvc.perform(post("/api/apps/"+testApp.getId()+"/ratings").content("{\n" +
+        int expectedInt = Math.toIntExact(testUser.getId());
+        this.mockMvc.perform(post("/api/apps/" + testApp.getId() + "/ratings").content("{\n" +
                 "\t\"stars\": 5,\n" +
                 "\t\"author\": {" +
-                "\t\"name\": \""+testUser.getName()+"\",\n" +
-                "\t\"email\": \""+testUser.getEmail()+"\",\n" +
-                "\t}\n" +
+                "\t\"id\": " + testUser.getId() + "}\n" +
                 "}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         this.mockMvc.perform(get("/api/apps/" + testApp.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.rating.stars", is(5)));
+                .andExpect(jsonPath("$.rating", is(5.0)));
     }
 
 }

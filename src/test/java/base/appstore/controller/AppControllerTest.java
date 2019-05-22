@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
-public class AppContorllerTest {
+public class AppControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -91,13 +92,12 @@ public class AppContorllerTest {
         this.mockMvc.perform(get("/api/apps/" + wrongAppId)).andExpect(status().isNotFound());
     }
 
-
     @Test
-    @Ignore
+    @WithMockUser(roles = "USER")
     public void createComment() throws Exception {
         this.mockMvc.perform(post("/api/apps/"+testApp.getId()+"/comments").content("{\n" +
                 "\t\"text\": \"TestComment\",\n" +
-                "\t\"author\": "+testUser.getId()+"\n" +
+                "\t\"author\": { \"id\":"+testUser.getId()+"}\n" +
                 "}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
                 /*
@@ -105,11 +105,25 @@ public class AppContorllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("comment", is("TestComponent")));
                 */
-
     }
 
     @Test
-    @Ignore
+    public void getComment() throws Exception{
+        this.mockMvc.perform(post("/api/apps/"+testApp.getId()+"/comments").content("{\n" +
+                "\t\"text\": \"TestComment\",\n" +
+                "\t\"author\": "+testUser.getId()+"\n" +
+                "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        this.mockMvc.perform(get("/api/apps/" + testApp.getId() + "/comments"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.comments", hasSize(1)))
+        .andExpect(jsonPath("$.comments[0].text", is("TestComment")));
+    }
+
+
+
+    @Test
     public void createRating() throws Exception {
         this.mockMvc.perform(post("/api/apps/"+testApp.getId()+"/ratings").content("{\n" +
                 "\t\"stars\": 5,\n" +
@@ -122,7 +136,7 @@ public class AppContorllerTest {
 
         this.mockMvc.perform(get("/api/apps/" + testApp.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("rating", is(5)));
+                .andExpect(jsonPath("$.rating.stars", is(5)));
     }
 
 }

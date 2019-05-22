@@ -4,7 +4,7 @@ import Home from "./views/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import DetailedCardView from "./components/DetailedCardView.vue";
-
+import Test from "./components/Test.vue";
 Vue.use(Router);
 
 export default new Router({

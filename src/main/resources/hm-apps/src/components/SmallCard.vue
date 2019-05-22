@@ -83,13 +83,13 @@
     export default {
         name: "SmallCard",
         props: {
-            title: String,
-            id: Number,
-            description: String,
-            tags: Array,
-            rating: Number,
-            logoUrl: String,
-            screenshotUrls: Array
+            title: {type: String, default: 'Default-Title'},
+            id: {type: Number, default: 999},
+            description: {type: String,default: 'default description of default App'},
+            tags: {type: Array, default: ['Test','default','tag']},
+            rating: {type: Number, default: 0},
+            logoUrl: {type:String, default:'media Type expected'},
+            screenshotUrls: {type:Array, default:['screenshot1','screenshot2']}
         },
         methods: {
             niceList: function (array, join, finalJoin) {

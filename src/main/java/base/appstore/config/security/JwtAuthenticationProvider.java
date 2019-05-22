@@ -20,17 +20,16 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationProvider.class);
 
     private final JwtTokenValidateService jwtService;
-
-    @Autowired
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
 
     public JwtAuthenticationProvider() {
-        this(null);
+        this(null, null);
     }
 
     @Autowired
-    public JwtAuthenticationProvider(JwtTokenValidateService jwtService) {
+    public JwtAuthenticationProvider(JwtTokenValidateService jwtService, UserRepository repo) {
         this.jwtService = jwtService;
+        this.userRepo = repo;
     }
 
     @Override

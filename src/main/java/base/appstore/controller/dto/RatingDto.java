@@ -1,14 +1,12 @@
 package base.appstore.controller.dto;
 
 import base.appstore.model.Rating;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class RatingDto {
 

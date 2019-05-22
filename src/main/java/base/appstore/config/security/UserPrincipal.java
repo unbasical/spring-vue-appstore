@@ -11,8 +11,8 @@ import java.io.Serializable;
 @Builder
 @ToString
 @EqualsAndHashCode
+@SuppressWarnings("serial")
 public class UserPrincipal implements Serializable {
-
 
     private long id;
     private String username;

@@ -24,6 +24,7 @@ public class UserPrincipalTest {
         userPrincipalUnderTest.setId(id);
 
         // Verify the results
+        assertEquals(id, userPrincipalUnderTest.getId());
     }
 
     @Test
@@ -35,6 +36,7 @@ public class UserPrincipalTest {
         userPrincipalUnderTest.setUsername(username);
 
         // Verify the results
+        assertEquals(username, userPrincipalUnderTest.getUsername());
     }
 
     @Test
@@ -46,6 +48,7 @@ public class UserPrincipalTest {
         userPrincipalUnderTest.setEmail(email);
 
         // Verify the results
+        assertEquals(email, userPrincipalUnderTest.getEmail());
     }
 
     @Test

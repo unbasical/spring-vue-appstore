@@ -29,7 +29,7 @@ public class Comment {
     @EqualsAndHashCode.Exclude
     private Date createDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
     private User author;

@@ -11,6 +11,7 @@ import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Stream;
@@ -47,6 +48,7 @@ public class AppController {
     }
 
     @PostMapping("{id}/ratings")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('USER', 'DEVELOPER', 'ADMIN')")
     public void createRating(@PathVariable Long id, @RequestBody RatingDto ratingDto) {
         final App app = getAppByIdOrThrow(id);
         final User author = userRepository.findById(ratingDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);
@@ -59,6 +61,7 @@ public class AppController {
     }
 
     @PostMapping("{id}/comments")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('USER', 'DEVELOPER', 'ADMIN')")
     public void createComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
         final App app = getAppByIdOrThrow(id);
         final User author = userRepository.findById(commentDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);

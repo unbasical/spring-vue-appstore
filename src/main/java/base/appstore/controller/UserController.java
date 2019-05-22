@@ -38,7 +38,7 @@ public class UserController {
 
         input.setPassword(passwordEncoder.encode(input.getPassword()));
         final User user = input.toEntity();
-        user.setRole(Role.DEVELOPER);
+        user.setRole(Role.USER);
 
         return new UserDto(userRepo.save(user));
     }
@@ -61,9 +61,7 @@ public class UserController {
     }
 
     @PostMapping("{userID}/apps")
-    @PreAuthorize("isAuthenticated() " +
-            // "and hasPermission(#userID, 'IsUser', '') " +
-            "and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('DEVELOPER', 'ADMIN')")
     public AppDto createApp(@PathVariable Long userID, @RequestBody AppDto input) {
         final App app = appRepo.findOne(Example.of(input.toEntity())).orElse(null);
 
@@ -80,10 +78,7 @@ public class UserController {
 
 
     @PutMapping("{userID}/apps/{appID}")
-    @PreAuthorize("isAuthenticated() " +
-            //"and hasPermission(#userID, 'IsUser', '')" +
-            //"and hasPermission(#appID, 'OwnsApp', '')" +
-            "and (hasRole('DEVELOPER') or hasRole('ADMIN'))")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('DEVELOPER', 'ADMIN')")
     public AppDto updateApp(@PathVariable Long userID, @PathVariable Long appID, @RequestBody AppDto input, Authentication auth) {
         final App receivedApp = input.toEntity();
 

@@ -1,10 +1,12 @@
 package base.appstore.controller;
 
 import base.appstore.controller.dto.*;
+import base.appstore.model.*;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
+import com.openpojo.validation.rule.impl.EqualsAndHashCodeMatchRule;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
@@ -17,11 +19,11 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class DtoTest {
+public class GetterAndSetterTest {
 
     private final Class classToTest;
 
-    public DtoTest(Class classToTest) {
+    public GetterAndSetterTest(Class classToTest) {
         this.classToTest = classToTest;
     }
 
@@ -36,7 +38,14 @@ public class DtoTest {
                 {ScreenshotDto.class},
                 {TagDto.class},
                 {UploadFileResponse.class},
-                {UserDto.class}
+                {UserDto.class},
+                {App.class},
+                {Comment.class},
+                {Logo.class},
+                {Rating.class},
+                {Screenshot.class},
+                {Tag.class},
+                {User.class},
         });
     }
 
@@ -51,7 +60,11 @@ public class DtoTest {
                 .with(new SetterMustExistRule()).with(new GetterMustExistRule())
 
                 // Lets also validate that they are behaving as expected
-                .with(new SetterTester()).with(new GetterTester()).build();
+                .with(new SetterTester()).with(new GetterTester())
+
+                // Hashcode and equals
+                .with(new EqualsAndHashCodeMatchRule())
+                .build();
 
         // Start the Test
         validator.validate(activityPojo);

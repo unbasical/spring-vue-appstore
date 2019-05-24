@@ -116,6 +116,8 @@ public class EntitiesTest {
         assertEquals(ufr1.getFileType(),"png");
         assertEquals(ufr1.getSize(),128L);
 
+        assertEquals(ufr1.toString(),ufr3.toString());
+        assertNotEquals(ufr1.toString(),ufr2.toString());
 
 
     }

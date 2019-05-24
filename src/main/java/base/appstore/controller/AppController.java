@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 
@@ -21,13 +20,12 @@ import java.util.stream.Stream;
 @CrossOrigin
 public class AppController {
 
-    @Autowired
-    private TagRepository tagRepository;
 
     @Autowired
     private AppRepository appRepository;
     @Autowired
     private UserRepository userRepository;
+
 
     @GetMapping()
     public Stream<AppDto> getAllAppsFiltered(@RequestParam(required = false) String search
@@ -35,9 +33,10 @@ public class AppController {
             , @RequestParam(required = false) Long rating) {
         return appRepository.findAll()
                 .stream()
-                //.filter(app -> app.getTitle().contains(search.length() == 0 ? "" : search))
                 .map(AppDto::new);
     }
+
+
 
     @GetMapping("{id}")
     public AppDto getApp(@PathVariable Long id) {

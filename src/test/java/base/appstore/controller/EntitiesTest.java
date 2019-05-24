@@ -100,7 +100,7 @@ public class EntitiesTest {
         assertNotEquals(a1.hashCode(), a2.hashCode());
     }
 
-
+/*
     @Test
     public void testUploadResponse() throws Exception{
         UploadFileResponse ufr1 = UploadFileResponse.builder().fileName("test").fileType("png").size(128).build();
@@ -118,9 +118,7 @@ public class EntitiesTest {
 
         assertEquals(ufr1.toString(),ufr3.toString());
         assertNotEquals(ufr1.toString(),ufr2.toString());
-
-
-    }
+    }*/
 
 
 

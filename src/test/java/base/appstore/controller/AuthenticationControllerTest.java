@@ -34,7 +34,7 @@ public class AuthenticationControllerTest {
     private UserDto testUser;
 
     @Before
-    public void prepareUser(){
+    public void prepareUser() {
         testUser = new UserDto();
         testUser.setName("TestUserAuthenthificator");
         testUser.setEmail("Test@User.com");
@@ -48,18 +48,58 @@ public class AuthenticationControllerTest {
 
     @Test
     public void registerUser() throws Exception {
-
         this.mockMvc.perform(post("/api/users")
                 .content("{\n" +
-                "\t\"name\": \""+testUser.getName()+"\",\n" +
-                "\t\"email\": \"" + testUser.getEmail() + "\",\n" +
-                "\t\"password\": \""+testUser.getPassword()+"\"\n" +
-                "}").contentType(MediaType.APPLICATION_JSON))
+                        "\t\"name\": \"" + testUser.getName() + "\",\n" +
+                        "\t\"email\": \"" + testUser.getEmail() + "\",\n" +
+                        "\t\"password\": \"" + testUser.getPassword() + "\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertTrue(userRepo.findOneByName(testUser.getName()).isPresent());
+        assertFalse(userRepo.findOneByName("randomNameWhichDoesNotExist").isPresent());
+    }
+
+
+    @Test
+    public void registerUser_andLogin() throws Exception {
+        this.mockMvc.perform(post("/api/users")
+                .content("{\n" +
+                        "\t\"name\": \"" + testUser.getName() + "\",\n" +
+                        "\t\"email\": \"" + testUser.getEmail() + "\",\n" +
+                        "\t\"password\": \"" + testUser.getPassword() + "\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         assertTrue(userRepo.findOneByName(testUser.getName()).isPresent());
+
+        this.mockMvc.perform(post("/api/login")
+                .content("{\n" +
+                        "\t\"username\": \"" + testUser.getName() + "\",\n" +
+                        "\t\"password\": \"" + testUser.getPassword() + "\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
+    @Test
+    public void registerUser_andLoginWithWrongPassword() throws Exception {
+        String wrongPassword = "wrong";
+        this.mockMvc.perform(post("/api/users")
+                .content("{\n" +
+                        "\t\"name\": \"" + testUser.getName() + "\",\n" +
+                        "\t\"email\": \"" + testUser.getEmail() + "\",\n" +
+                        "\t\"password\": \"" + testUser.getPassword() + "\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertTrue(userRepo.findOneByName(testUser.getName()).isPresent());
+        this.mockMvc.perform(post("/api/login")
+                .content("{\n" +
+                        "\t\"username\": \"" + testUser.getName() + "\",\n" +
+                        "\t\"password\": \"" + wrongPassword + "\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+
+
+    }
 
 
 }

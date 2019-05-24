@@ -2,6 +2,8 @@ package base.appstore.services;
 
 
 import base.appstore.controller.dto.JWTTokenResponse;
+import base.appstore.exceptions.InvalidLoginCredentialsException;
+import base.appstore.exceptions.UnauthorizedException;
 import base.appstore.model.User;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,13 @@ public class AuthenticationService {
     public JWTTokenResponse generateJWTToken(String username, String password) {
         Optional<User> userAccount = userRepository.findOneByName(username);
 
-        return userAccount.filter(account -> passwordEncoder.matches(password, account.getPassword()))
+        return userAccount.filter(account -> {
+            boolean passwordMatches = passwordEncoder.matches(password, account.getPassword());
+            if(!passwordMatches){
+                throw new InvalidLoginCredentialsException();
+            }
+            return passwordMatches;
+        })
                 .map(account -> JWTTokenResponse.builder()
                         .id(account.getId())
                         .email(account.getEmail())

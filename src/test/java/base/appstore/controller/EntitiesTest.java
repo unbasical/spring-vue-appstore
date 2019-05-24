@@ -112,6 +112,12 @@ public class EntitiesTest {
         assertEquals(ufr1.hashCode(),ufr3.hashCode());
         assertNotEquals(ufr1.hashCode(),ufr2.hashCode());
 
+        assertEquals(ufr1.getFileName(),"test" );
+        assertEquals(ufr1.getFileType(),"png");
+        assertEquals(ufr1.getSize(),128L);
+
+
+
     }
 
 

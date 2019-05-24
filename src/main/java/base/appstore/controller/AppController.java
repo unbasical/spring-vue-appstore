@@ -4,16 +4,15 @@ import base.appstore.controller.dto.AppDto;
 import base.appstore.controller.dto.CommentDto;
 import base.appstore.controller.dto.RatingDto;
 import base.appstore.exceptions.ResourceNotFoundException;
-import base.appstore.model.App;
-import base.appstore.model.Comment;
-import base.appstore.model.Rating;
-import base.appstore.model.User;
+import base.appstore.model.*;
 import base.appstore.repository.AppRepository;
+import base.appstore.repository.TagRepository;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 
@@ -21,6 +20,9 @@ import java.util.stream.Stream;
 @RequestMapping("/api/apps")
 @CrossOrigin
 public class AppController {
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @Autowired
     private AppRepository appRepository;
@@ -33,6 +35,7 @@ public class AppController {
             , @RequestParam(required = false) Long rating) {
         return appRepository.findAll()
                 .stream()
+                //.filter(app -> app.getTitle().contains(search.length() == 0 ? "" : search))
                 .map(AppDto::new);
     }
 

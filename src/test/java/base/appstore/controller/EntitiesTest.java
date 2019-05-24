@@ -1,5 +1,6 @@
 package base.appstore.controller;
 
+import base.appstore.controller.dto.UploadFileResponse;
 import base.appstore.model.*;
 import org.junit.Test;
 
@@ -98,5 +99,21 @@ public class EntitiesTest {
         assertEquals(a1.hashCode(), a3.hashCode());
         assertNotEquals(a1.hashCode(), a2.hashCode());
     }
+
+
+    @Test
+    public void testUploadResponse() throws Exception{
+        UploadFileResponse ufr1 = UploadFileResponse.builder().fileName("test").fileType("png").size(128).build();
+        UploadFileResponse ufr2 = UploadFileResponse.builder().fileName("test2").fileType("png").size(128).build();
+        UploadFileResponse ufr3 = UploadFileResponse.builder().fileName("test").fileType("png").size(128).build();
+
+        assertEquals(ufr1,ufr1);
+        assertNotEquals(ufr1,ufr2);
+        assertEquals(ufr1.hashCode(),ufr3.hashCode());
+        assertNotEquals(ufr1.hashCode(),ufr2.hashCode());
+
+    }
+
+
 
 }

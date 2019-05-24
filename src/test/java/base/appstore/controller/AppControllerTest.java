@@ -86,6 +86,7 @@ public class AppControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
+
     @Ignore
     @Test
     public void getAllAppsFilteredByTitle() throws Exception {

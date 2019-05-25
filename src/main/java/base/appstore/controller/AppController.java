@@ -26,7 +26,7 @@ public class AppController {
     @Autowired
     private UserRepository userRepository;
 
-
+    //TODO check if we realy need to Filter in backend.
     @GetMapping()
     public Stream<AppDto> getAllAppsFiltered(@RequestParam(required = false) String search
             , @RequestParam(required = false) String tag

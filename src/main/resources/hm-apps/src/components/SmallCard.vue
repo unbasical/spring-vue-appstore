@@ -6,11 +6,13 @@
                 <v-card-title primary-title>
                     <v-avatar>
                         <v-img
-                                :src="logoUrl"
-                                alt="test"
+                                :src="logoSrc"
+                                alt="test">
+                                <!--
                                 height="50px"
                                 width="50px"
-                        ></v-img>
+                                -->
+                        </v-img>
                     </v-avatar>
                     <v-spacer></v-spacer>
                     <div class="headline">{{title}}</div>
@@ -29,7 +31,8 @@
                 <v-layout justify-end row>
                     <v-spacer></v-spacer>
                     <v-img
-                            :src="logoUrl"
+                            :src="screenshotUrls"
+                            :alt="logoSrc"
                             height="125px"
                             max-width="200px"
                             contain
@@ -78,10 +81,13 @@
 </template>
 
 <script>
-
+    import axios from "axios"
 
     export default {
         name: "SmallCard",
+        data:{
+            logoSrc: "data:image",
+        },
         props: {
             title: {type: String, default: 'Default-Title'},
             id: {type: Number, default: 999},
@@ -101,6 +107,23 @@
                 finalJoin = finalJoin || ', ';
                 return arr.join(join) + finalJoin + last;
             }
+        },
+        created: function () {
+            //TODO set logo URL
+            // TODO set screenshot URL
+
+            this.logoUrl = "/api/apps/" + this.id + "/logo"
+            /*axios.get("/api/apps/"+this.id+"/logo",{
+                responseType: 'blob'
+            }).then(response => {
+                let reader = new FileReader();
+                reader.readAsDataURL(response.data);
+                reader.onload = () => {
+                    this.logoSrc = reader.result;
+                    console.log("render logo " + this.id)
+                }
+            }).catch(err=>console.error(err))
+*/
         }
     }
 </script>

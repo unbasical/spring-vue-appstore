@@ -1,17 +1,9 @@
 <template>
     <v-container>
         <v-layout row wrap>
-
             <v-flex v-for="app in applist" :key="app.title" xs12 sm6 md6 lg4>
                 <router-link :to="getDetailUrl(app.id)">
-                <small-card
-                        v-bind:title="app.title"
-                        v-bind:id="app.id"
-                        v-bind:description="app.description"
-                        v-bind:tags="app.tags"
-                        v-bind:logoUrl="app.image"
-                        v-bind:rating="app.rating">
-                </small-card>
+                    <small-card :app="app"></small-card>
                 </router-link>
             </v-flex>
         </v-layout>
@@ -50,20 +42,6 @@
             getDetailUrl: function (appID) {
                 return "/detail/" + appID;
             },
-            niceList: function (array, join, finalJoin) {
-                if (array.length == 0) {
-                    return "";
-                }
-                var arr = array.slice(0), last = arr.pop();
-                join = join || ', ';
-                finalJoin = finalJoin || ', ';
-                return arr.join(join) + finalJoin + last;
-            },
-            logoOfApp: function (appID) {
-                //TODO: Check how to receive current user
-                return axios.get("/api/users/1/apps/" + appID + "/logo").catch(error => console.error(error))
-
-            }
         },
         computed: {
             applist: function () {

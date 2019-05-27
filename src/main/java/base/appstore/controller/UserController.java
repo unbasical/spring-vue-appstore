@@ -59,6 +59,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('USER', 'DEVELOPER', 'ADMIN')")
     public UserDto getUser(@PathVariable Long id) {
         return userRepo.findById(id).map(UserDto::new).orElseThrow(ResourceNotFoundException::new);
     }
@@ -100,7 +101,7 @@ public class UserController {
     }
 
     @DeleteMapping("{userID}/apps/{appID}")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('DEVELOPER', 'ADMIN')")
     public void deleteApp(@PathVariable Long userID, @PathVariable Long appID) {
         appRepo.deleteById(appID);
     }

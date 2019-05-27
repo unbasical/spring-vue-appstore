@@ -71,12 +71,40 @@ public class UserControllerTest {
     }
 
     @Test
-    public void getUser() throws Exception {
+    @WithMockUser(roles = "DEVELOPER")
+    public void getUserAsDeveloper() throws Exception {
         //testing thymeleaf sec:authorize with hasPermission
         this.mockMvc.perform(get("/api/users/" + testUser.getId()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",is(testUser.getName())))
                 .andExpect(jsonPath("$.email",is(testUser.getEmail())));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void getUserAsAdmin() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(get("/api/users/" + testUser.getId()).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(testUser.getName())))
+                .andExpect(jsonPath("$.email", is(testUser.getEmail())));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void getUserAsUser() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(get("/api/users/" + testUser.getId()).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(testUser.getName())))
+                .andExpect(jsonPath("$.email", is(testUser.getEmail())));
+    }
+
+    @Test
+    public void getUserUnauthorized() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(get("/api/users/" + testUser.getId()).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

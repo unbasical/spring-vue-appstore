@@ -15,13 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -93,6 +91,29 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",is("Donaldus Maximus Ultimatus")))
                 .andExpect(jsonPath("$.email",is("donaldus.bene.maximus@hm.edu")));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void assingRole() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(put(String.format("/api/users/%d/role", testUser.getId())).content("ADMIN").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "DEVELOPER")
+    public void assingRoleNotAdmin() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(put(String.format("/api/users/%d/role", testUser.getId())).content("ADMIN").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void assingRoleUnauthorized() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(put(String.format("/api/users/%d/role", testUser.getId())).content("ADMIN").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

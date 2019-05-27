@@ -9,7 +9,6 @@ import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,49 +85,6 @@ public class AppControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
-
-    @Ignore
-    @Test
-    public void getAllAppsFilteredByTitle() throws Exception {
-        this.mockMvc.perform(get("/api/apps?search=Test"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
-        this.mockMvc.perform(get("/api/apps?search=none"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
-    }
-
-    @Ignore
-    @Test
-    @WithMockUser(roles = "USER")
-    public void getAllAppsFilteredByRating() throws Exception {
-
-        this.mockMvc.perform(post("/api/apps/" + testApp.getId() + "/ratings").content("{\n" +
-                "\t\"stars\": 3,\n" +
-                "\t\"author\": {" +
-                "\t\"id\": " + testUser.getId() + "}\n" +
-                "}").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        this.mockMvc.perform(get("/api/apps?rating=2"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
-
-        this.mockMvc.perform(get("/api/apps?rating=4"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
-    }
-
-    @Ignore
-    @Test
-    public void getAllAppsFilteredByTag() throws Exception {
-        this.mockMvc.perform(get("/api/apps?tag=Test"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
-        this.mockMvc.perform(get("/api/apps?tag=none"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
-    }
 
     @Test
     public void getTestApp() throws Exception {

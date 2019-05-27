@@ -43,6 +43,15 @@ public class UserController {
         return new UserDto(userRepo.save(user));
     }
 
+    @PutMapping("{userID}/role")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    public void assignRole(@PathVariable Long userID, @RequestBody String role) {
+        userRepo.findById(userID).ifPresent(user -> {
+            user.setRole(Role.valueOf(role));
+            userRepo.save(user);
+        });
+    }
+
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public Stream<UserDto> getAllUsers() {

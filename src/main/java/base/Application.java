@@ -15,7 +15,7 @@ import java.util.Optional;
 @SpringBootApplication
 public class Application {
 
-  private final static String adminUser = "swa_student";
+    private static final String ADMIN_USER = "swa_student";
 
   @Bean
   public PasswordEncoder getPasswordEncoder() {
@@ -29,13 +29,13 @@ public class Application {
   @Bean
   CommandLineRunner init(UserRepository userRepo, PasswordEncoder passwordEncoder) {
     return args -> {
-      Optional<User> admin = userRepo.findOneByName("swa_student");
+        Optional<User> admin = userRepo.findOneByName(ADMIN_USER);
       if (!admin.isPresent()) {
         userRepo.save(User.builder()
-                .name(adminUser)
-                .email(adminUser)
+                .name(ADMIN_USER)
+                .email(ADMIN_USER)
                 .role(Role.ADMIN)
-                .password(passwordEncoder.encode(adminUser))
+                .password(passwordEncoder.encode(ADMIN_USER))
                 .build());
       }
     };

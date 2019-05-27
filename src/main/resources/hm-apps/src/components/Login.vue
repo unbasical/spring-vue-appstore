@@ -43,6 +43,9 @@
     import axios from "axios"
     import {mapMutations} from 'vuex'
 
+    // Set base url of axios
+    axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+
     export default {
         name: "Login",
         data() {

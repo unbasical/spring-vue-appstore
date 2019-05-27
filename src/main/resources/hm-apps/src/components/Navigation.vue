@@ -109,9 +109,11 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex'
-    import {mapGetters} from 'vuex'
+    import {mapGetters, mapMutations} from 'vuex'
     import axios from 'axios'
+
+    // Set base url of axios
+    axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
     export default {
         name: "Navigation.vue",

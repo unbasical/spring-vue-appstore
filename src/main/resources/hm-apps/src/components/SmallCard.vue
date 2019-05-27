@@ -83,6 +83,9 @@
 <script>
     import axios from "axios"
 
+    // Set base url of axios
+    axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+
     export default {
         name: "SmallCard",
         data:{

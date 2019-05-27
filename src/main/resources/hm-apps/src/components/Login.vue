@@ -64,7 +64,7 @@
                     username: this.name,
                     password: this.password
                 }).then(res => {
-                    this.setUser(res)
+                    this.setUser(res.data)
                 }).catch(error => {
                     console.error(error);
                 })

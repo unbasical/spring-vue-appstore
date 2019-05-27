@@ -9,9 +9,9 @@ export default new Vuex.Store({
         tags: [""],
         minimumRating: 0,
         user:{
-            userid: 0,
+            id: 0,
             email : "mail",
-            username: "default",
+            name: "default",
             token : "default"
         }
     },

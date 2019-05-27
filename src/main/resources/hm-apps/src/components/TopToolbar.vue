@@ -13,7 +13,7 @@
                 href="https://github.com/vuetifyjs/vuetify/releases/latest"
                 target="_blank"
         >
-            <span class="mr-2">Donaldus Maximus</span>
+            <span class="mr-2">{{getUser().name}}</span>
         </v-btn>
 
         <v-menu offset-y>
@@ -70,7 +70,14 @@
     </v-toolbar>
 </template>
 <script>
+    import {mapGetters} from 'vuex';
+
     export default {
-        name: 'TopToolbar'
+        name: 'TopToolbar',
+        methods: {
+            ...mapGetters([
+                'getUser',
+            ]),
+        },
     }
 </script>

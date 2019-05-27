@@ -4,9 +4,11 @@ import base.appstore.controller.dto.AppDto;
 import base.appstore.controller.dto.CommentDto;
 import base.appstore.controller.dto.RatingDto;
 import base.appstore.exceptions.ResourceNotFoundException;
-import base.appstore.model.*;
+import base.appstore.model.App;
+import base.appstore.model.Comment;
+import base.appstore.model.Rating;
+import base.appstore.model.User;
 import base.appstore.repository.AppRepository;
-import base.appstore.repository.TagRepository;
 import base.appstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +28,6 @@ public class AppController {
     @Autowired
     private UserRepository userRepository;
 
-    //TODO check if we realy need to Filter in backend.
     @GetMapping()
     public Stream<AppDto> getAllAppsFiltered(@RequestParam(required = false) String search
             , @RequestParam(required = false) String tag

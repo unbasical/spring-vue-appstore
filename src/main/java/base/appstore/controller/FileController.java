@@ -13,10 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 
@@ -71,7 +74,11 @@ public class FileController {
     public ResponseEntity<byte[]> downloadLogo(@PathVariable Long appID) throws IOException {
         Logo logo = getAppByIdOrThrow(appID).getLogo();
         if (logo == null) {
-            return ResponseEntity.notFound().build();
+            logo = Logo.builder()
+                    .imageData(Files.readAllBytes(ResourceUtils.getFile("classpath:default_logo.png").toPath()))
+                    .filename("default.png")
+                    .contentType("image/png")
+                    .build();
         }
 
         return ResponseEntity.ok()

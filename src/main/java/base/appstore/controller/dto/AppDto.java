@@ -22,6 +22,7 @@ public class AppDto {
     private UserDto author;
     private double rating;
     private long updateDate;
+    private long creationDate;
     private long views;
 
     public AppDto(App app) {
@@ -32,6 +33,7 @@ public class AppDto {
         this.screenshots = app.getScreenshots().stream().map(ScreenshotDto::new).collect(Collectors.toList());
         this.tags = app.getTags().stream().map(Tag::getName).collect(Collectors.toList());
         this.updateDate = app.getUpdateDate().getTime();
+        this.creationDate = app.getCreateDate().getTime();
         this.author = new UserDto(app.getUser());
         this.rating = app.getRatings().stream().mapToDouble(Rating::getStars).average().orElse(0);
     }

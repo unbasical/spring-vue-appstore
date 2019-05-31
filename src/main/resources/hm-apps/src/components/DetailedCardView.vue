@@ -4,7 +4,13 @@
             <v-flex lg4>
                 <h1>
                     <div v-if="isEditable">
-                        <input type="text" v-model="card.title" placeholder="edit me">
+                        <!-- <input type="text" v-model="card.title" placeholder="edit me"> -->
+                        <v-text-field
+                                label="Outline"
+                                v-model="card.title"
+                                single-line
+                                outline
+                        ></v-text-field>
                     </div>
                     <div v-if="!isEditable">
                         <v-card-title>
@@ -26,11 +32,11 @@
                 </div>
                 <v-container style="margin: inherit">
                     <br>
-                    Author : autor
+                    Author : {{this.card.autor}}
                     <br>
-                    create date: datum
+                    create date: {{toDate(this.card.createDate)}}
                     <br>
-                    last updated: datum
+                    last updated: {{toDate(this.card.upDate)}}
                     <br>
                     current Rating: {{this.card.rating}}
                     <br>
@@ -39,15 +45,25 @@
                     tags: {{this.card.tags}}
                     <br>
                 </v-container>
+                <div v-if="!isEditable">
+                    <v-spacer></v-spacer>
+                    <router-link :to="getDetailUrl(this.id)" tag="button">
+                        <v-btn
+                                color="success"
+                        > Edit my App
+                        </v-btn>
+                    </router-link>
+                </div>
             </v-flex>
             <v-flex lg4 style="margin: inherit">
                 <v-card-text>
                     <div v-if="isEditable">
                         <v-textarea
-                                name="input-7-1"
-                                label="Default style"
-                                class="white--text"
-                                v-model="this.card.description"
+                                outline
+                                name="input-7-4"
+                                label="Outline textarea"
+                                value="Description"
+                                v-model="card.description"
                         ></v-textarea>
                     </div>
                     <div v-if="!isEditable">
@@ -56,8 +72,11 @@
                 </v-card-text>
             </v-flex>
             <v-flex lg4 style="margin: inherit">
+
                 <!--TODO CHANGE LINK TO FUNCTIONALITY TO UPLOAD NEW IMAGE-->
                 <div v-if="isEditable">UPLOAD SCREENSHOTS</div>
+
+
                 <div v-if="!isEditable">
                     <v-carousel v-if="this.card.screenshots.length>0">
                         <v-carousel-item
@@ -68,6 +87,7 @@
                         ></v-carousel-item>
                     </v-carousel>
                 </div>
+
             </v-flex>
         </v-layout>
     </v-card>
@@ -92,6 +112,9 @@
                 screenshots: [],
                 tags: [],
                 rating: Number,
+                autor: String,
+                createDate: Number,
+                upDate: Number
             }
         }),
         props: {
@@ -123,6 +146,12 @@
                 console.log(screenID)
                 return process.env.VUE_APP_BASE_URL + "/api/apps/" + this.idNumber + "/screenshots/" + Number(screenID);
             },
+            toDate: function (dateAsLong) {
+                return new Date(dateAsLong);
+            },
+            getDetailUrl: function (appID) {
+                return "/detailed/edit/" + appID;
+            },
         },
         created: function () {
             console.log('create Card for ID: ' + this.idNumber)
@@ -143,6 +172,9 @@
                         screenshots: res.data.screenshots,
                         tags: res.data.tags,
                         rating: res.data.rating,
+                        autor: res.data.author.name,
+                        createDate: res.data.creationDate,
+                        upDate: res.data.updateDate
                     }
                 })
                 .catch(err => {
@@ -153,6 +185,9 @@
                             screenshots: [],
                             tags: [],
                             rating: 1,
+                            autor: 'Max Mustermann',
+                            createDate: Date.now(),
+                            upDate: Date.now()
                         }
                     }
                 )

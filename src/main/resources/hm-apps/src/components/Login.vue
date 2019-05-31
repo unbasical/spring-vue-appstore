@@ -24,11 +24,11 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <router-link :to="{name: 'home'}" tag="button">
-                            <v-btn
-                                    color="success"
-                                    @click="submit"
-                            > submit
-                            </v-btn>
+                                <v-btn
+                                        color="success"
+                                        @click="submit"
+                                > submit
+                                </v-btn>
                             </router-link>
                             <v-spacer></v-spacer>
                         </v-card-actions>

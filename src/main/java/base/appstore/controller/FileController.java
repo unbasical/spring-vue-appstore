@@ -8,22 +8,15 @@ import base.appstore.model.Logo;
 import base.appstore.model.Screenshot;
 import base.appstore.repository.AppRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 
@@ -78,16 +71,7 @@ public class FileController {
     public ResponseEntity<byte[]> downloadLogo(@PathVariable Long appID) throws IOException {
         Logo logo = getAppByIdOrThrow(appID).getLogo();
         if (logo == null) {
-            ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-            URL[] urls = ((URLClassLoader)cl).getURLs();
-            Arrays.stream(urls).filter(url -> url.getFile().contains("default")).forEach(System.out::println);
-
-            logo = Logo.builder()
-                    .imageData(Files.readAllBytes(ResourceUtils.getFile("classpath:default.png").toPath()))
-                    .filename("default.png")
-                    .contentType("image/png")
-                    .build();
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok()

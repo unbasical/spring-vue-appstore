@@ -7,7 +7,7 @@
                     <v-avatar>
                         <v-img
                                 :src="logoUrl"
-                                alt="test">
+                                alt="'no logo there'">
                                 <!--
                                 height="50px"
                                 width="50px"
@@ -32,6 +32,7 @@
                     <v-spacer></v-spacer>
                     <v-img
                             :src="logoUrl"
+                            :alt="'no logo there'"
                             height="125px"
                             max-width="200px"
                             contain

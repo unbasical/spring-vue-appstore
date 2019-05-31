@@ -40,7 +40,7 @@
                 'getMinimumRating'
             ]),
             getDetailUrl: function (appID) {
-                return "/detail/" + appID;
+                return "/detailed/" + appID;
             },
         },
         computed: {

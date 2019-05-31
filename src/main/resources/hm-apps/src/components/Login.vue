@@ -23,13 +23,11 @@
                         ></v-text-field>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <router-link :to="{name: 'home'}" tag="button">
                                 <v-btn
                                         color="success"
                                         @click="submit"
                                 > submit
                                 </v-btn>
-                            </router-link>
                             <v-spacer></v-spacer>
                         </v-card-actions>
                     </v-form>
@@ -42,6 +40,7 @@
 <script>
     import axios from "axios"
     import {mapMutations} from 'vuex'
+    import router from "../router"
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
@@ -65,6 +64,8 @@
                     password: this.password
                 }).then(res => {
                     this.setUser(res.data)
+                    console.log(res.data)
+                    router.push({name: 'home'})
                 }).catch(error => {
                     console.error(error);
                 })

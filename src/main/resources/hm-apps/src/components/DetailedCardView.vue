@@ -1,5 +1,5 @@
 <template>
-    <v-card color="primary" class="white--text" style="margin: 15px" min-height="25%">
+    <v-card color="primary" class="white--text" style="margin: 15px" min-height="75%">
         <v-layout row style="margin: inherit">
             <v-flex lg4>
                 <h1>
@@ -18,18 +18,18 @@
                         </v-card-title>
                     </div>
                 </h1>
-                <!--TODO CHANGE LINK TO FUNCTIONALITY TO UPLOAD NEW IMAGE-->
-                <div v-if="isEditable">UPLOAD NEW LOGO</div>
-                <div v-if="!isEditable">
-                    <v-avatar :size="100" style="margin: inherit">
-                        <v-img
-                                :src="logoUrl"
-                                alt="'no logo there'"
-                                max-width="125"
-                        >
-                        </v-img>
-                    </v-avatar>
+                <v-avatar :size="100" style="margin: inherit">
+                    <v-img
+                            :src="logoUrl"
+                            alt="'no logo there'"
+                            max-width="125"
+                    >
+                    </v-img>
+                </v-avatar>
+                <div v-if="isEditable">
+                    <input type="file" name="test" @change="onFileSelected">
                 </div>
+
                 <v-container style="margin: inherit">
                     <br>
                     Author : {{this.card.autor}}
@@ -49,10 +49,14 @@
                     <v-spacer></v-spacer>
                     <router-link :to="getDetailUrl(this.id)" tag="button">
                         <v-btn
-                                color="success"
                         > Edit my App
                         </v-btn>
                     </router-link>
+                </div>
+                <div v-if="isEditable">
+                    <v-btn @click="onUpload">
+                        Save Changes
+                    </v-btn>
                 </div>
             </v-flex>
             <v-flex lg4 style="margin: inherit">
@@ -73,9 +77,9 @@
             </v-flex>
             <v-flex lg4 style="margin: inherit">
 
-                <!--TODO CHANGE LINK TO FUNCTIONALITY TO UPLOAD NEW IMAGE-->
-                <div v-if="isEditable">UPLOAD SCREENSHOTS</div>
-
+                <div v-if="isEditable">
+                    <input type="file" multiple @change="onScreenshotFilesSelected">
+                </div>
 
                 <div v-if="!isEditable">
                     <v-carousel v-if="this.card.screenshots.length>0">
@@ -96,15 +100,17 @@
 <script>
     import axios from "axios";
     import {mapGetters} from 'vuex';
-    import SmallCard from "./SmallCard";
+    import router from "../router"
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
     export default {
         name: "DetailedCardView",
-        components: {SmallCard},
+        components: {},
         data: () => ({
+            selectedFileLogo: null,
+            screenshotFiles: [],
             card: {
                 title: String,
                 description: String,
@@ -141,6 +147,66 @@
             ...mapGetters([
                 'getUser'
             ]),
+            onFileSelected(event) {
+                this.selectedFileLogo = event.target.files[0]
+            },
+            onScreenshotFilesSelected(event) {
+                this.screenshotFiles = event.target.files
+            },
+            onUpload() {
+                //Upload Image
+                if (this.selectedFileLogo != null) {
+                    const fd = new FormData();
+                    fd.append('file', this.selectedFileLogo)
+                    axios.post("/api/users/" + this.getUser().id + "/apps/" + this.idNumber + "/logo", fd,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': 'Bearer ' + this.getUser().token
+                            },
+                        }
+                    )
+                        .then(res => console.log(res))
+                        .catch(err => console.error(err))
+                }
+
+                //for (image in this.screenshotFiles) {
+
+
+                for (let i = 0; i < this.screenshotFiles.length; i++) {
+                    const screenData = new FormData();
+                    console.log('upload Screenshot: ' + this.screenshotFiles[i].name)
+                    screenData.append('file', this.screenshotFiles[i])
+
+                    axios.post("/api/users/" + this.getUser().id + "/apps/" + this.idNumber + "/screenshots", screenData,
+                        {
+                            headers: {
+                                'Authorization': 'Bearer ' + this.getUser().token
+                            },
+                        }
+                    )
+                        .catch(err => console.error(err))
+                }
+
+
+                //save Title, Tags, Description
+                axios.put("/api/users/" + this.getUser().id + "/apps/" + this.idNumber,
+                    {
+                        'description': this.card.description,
+                        'title': this.card.title,
+                        'tags': this.card.tags
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + this.getUser().token
+                        },
+                    }
+                )
+                    .then(res => console.log(res))
+                    .catch(err => console.error(err))
+                router.push('/detailed/view/' + this.idNumber)
+            },
             getScreenshotUrl: function (screenID) {
                 console.log(this.card.screenshots)
                 console.log(screenID)

@@ -33,11 +33,11 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <router-link :to="{name: 'home'}" tag="button">
-                            <v-btn
-                                    color="success"
-                                    @click="submit"
-                            > submit
-                            </v-btn>
+                                <v-btn
+                                        color="success"
+                                        @click="submit"
+                                > submit
+                                </v-btn>
                             </router-link>
                             <v-spacer></v-spacer>
                         </v-card-actions>
@@ -51,6 +51,7 @@
 <script>
     import axios from "axios"
     import {mapMutations} from 'vuex'
+    import router from "../router"
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
@@ -76,6 +77,7 @@
                     email: this.user.email,
                     password: this.user.password
                 }).then(res => {
+                    router.push({name: 'userlogin'})
                 }).catch(error => {
                     console.error(error);
                 })

@@ -8,6 +8,8 @@ import base.appstore.model.Logo;
 import base.appstore.model.Screenshot;
 import base.appstore.repository.AppRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -74,8 +76,9 @@ public class FileController {
     public ResponseEntity<byte[]> downloadLogo(@PathVariable Long appID) throws IOException {
         Logo logo = getAppByIdOrThrow(appID).getLogo();
         if (logo == null) {
+            final Resource resource = new ClassPathResource("default_logo.png");
             logo = Logo.builder()
-                    .imageData(Files.readAllBytes(ResourceUtils.getFile("classpath:default_logo.png").toPath()))
+                    .imageData(Files.readAllBytes(resource.getFile().toPath()))
                     .filename("default.png")
                     .contentType("image/png")
                     .build();

@@ -1,22 +1,29 @@
 <template>
-    <!-- <v-container style="margin: 15px"> -->
     <v-card color="primary" class="white--text" style="margin: 15px" min-height="25%">
         <v-layout row style="margin: inherit">
-            <v-flex lg4 >
+            <v-flex lg4>
                 <h1>
-                    <v-card-title>
-                        {{this.card.title}}
-                    </v-card-title>
+                    <div v-if="isEditable">
+                        <input type="text" v-model="card.title" placeholder="edit me">
+                    </div>
+                    <div v-if="!isEditable">
+                        <v-card-title>
+                            {{this.card.title}}
+                        </v-card-title>
+                    </div>
                 </h1>
-
-                <v-avatar :size="100" style="margin: inherit">
-                    <v-img
-                            :src="logoUrl"
-                            alt="'no logo there'"
-                            max-width="125"
-                    >
-                    </v-img>
-                </v-avatar>
+                <!--TODO CHANGE LINK TO FUNCTIONALITY TO UPLOAD NEW IMAGE-->
+                <div v-if="isEditable">UPLOAD NEW LOGO</div>
+                <div v-if="!isEditable">
+                    <v-avatar :size="100" style="margin: inherit">
+                        <v-img
+                                :src="logoUrl"
+                                alt="'no logo there'"
+                                max-width="125"
+                        >
+                        </v-img>
+                    </v-avatar>
+                </div>
                 <v-container style="margin: inherit">
                     <br>
                     Author : autor
@@ -31,40 +38,39 @@
                     <br>
                     tags: {{this.card.tags}}
                     <br>
-
                 </v-container>
-
-
             </v-flex>
             <v-flex lg4 style="margin: inherit">
                 <v-card-text>
-                    {{this.card.description}}
-                    {{this.card.screenshots.length}}
+                    <div v-if="isEditable">
+                        <v-textarea
+                                name="input-7-1"
+                                label="Default style"
+                                class="white--text"
+                                v-model="this.card.description"
+                        ></v-textarea>
+                    </div>
+                    <div v-if="!isEditable">
+                        {{this.card.description}}
+                    </div>
                 </v-card-text>
             </v-flex>
             <v-flex lg4 style="margin: inherit">
-                <v-carousel v-if="this.card.screenshots.length>0">
-                    <v-carousel-item
-                            v-for="screenshot in this.card.screenshots"
-                            :src="getScreenshotUrl(screenshot.id)"
-                            reverse-transition="fade"
-                            transition="fade"
-                    ></v-carousel-item>
-                </v-carousel>
+                <!--TODO CHANGE LINK TO FUNCTIONALITY TO UPLOAD NEW IMAGE-->
+                <div v-if="isEditable">UPLOAD SCREENSHOTS</div>
+                <div v-if="!isEditable">
+                    <v-carousel v-if="this.card.screenshots.length>0">
+                        <v-carousel-item
+                                v-for="screenshot in this.card.screenshots"
+                                :src="getScreenshotUrl(screenshot.id)"
+                                reverse-transition="fade"
+                                transition="fade"
+                        ></v-carousel-item>
+                    </v-carousel>
+                </div>
             </v-flex>
         </v-layout>
     </v-card>
-    <!-- </v-container> -->
-    <!--
-    <small-card
-            v-bind:title="this.card.title"
-            v-bind:id="card.id"
-            v-bind:description="card.description"
-            v-bind:tags="card.tags"
-            v-bind:logoUrl="card.image"
-            v-bind:rating="card.rating">
-    </small-card>
--->
 </template>
 
 <script>
@@ -90,8 +96,15 @@
         }),
         props: {
             id: String,
+            editMode: String,
         },
         computed: {
+            isEditable: function () {
+                if (this.editMode == 'edit') {
+                    return true;
+                }
+                return false;
+            },
             idNumber: function () {
                 // `this` points to the vm instance
                 return Number(this.id)

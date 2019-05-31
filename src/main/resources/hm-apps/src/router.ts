@@ -26,7 +26,7 @@ export default new Router({
             component: Home,
         },
         {
-            path: "/detailed/:id",
+            path: "/detailed/:editMode/:id",
             name: "detailedcardview",
             component: DetailedCardView,
             props: true

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.ResourceUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,9 +77,8 @@ public class FileController {
     public ResponseEntity<byte[]> downloadLogo(@PathVariable Long appID) throws IOException {
         Logo logo = getAppByIdOrThrow(appID).getLogo();
         if (logo == null) {
-            final Resource resource = new ClassPathResource("default_logo.png");
             logo = Logo.builder()
-                    .imageData(Files.readAllBytes(resource.getFile().toPath()))
+                    .imageData(StreamUtils.copyToByteArray(new ClassPathResource("default_logo.png").getInputStream()))
                     .filename("default.png")
                     .contentType("image/png")
                     .build();

@@ -1,5 +1,5 @@
 <template>
-  <v-layout row wrap>
+  <v-layout row wrap style="height: 100%">
     <v-flex xs2 lg2>
       <Navigation/>
     </v-flex>

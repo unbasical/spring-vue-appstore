@@ -1,12 +1,14 @@
 <template>
     <v-toolbar>
-        <v-img
-                alt="HM-Logo"
-                :src="require('../assets/hm_logo.jpeg')"
-                style="background-position: left center !important;"
-                height="100%"
-                width="10px"
+        <v-img alt="HM-Logo"
+               :src="require('../assets/hm_logo.jpeg')"
+               contain
+               height="100%"
         ></v-img>
+        <v-toolbar-title>
+
+            <!--:aspect-ratio="16/9"-->
+            </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
                 flat

@@ -29,9 +29,7 @@
             axios.get(`/api/apps`)
                 .then(res => {
                     this.apps.push(...res.data);
-                }).catch(error => {
-                console.error("api error:" + error);
-            })
+                }).catch(() => Promise.reject('Fehler beim laden aller Apps!'))
         },
         methods: {
             ...mapGetters([

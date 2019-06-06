@@ -78,9 +78,7 @@
                     password: this.user.password
                 }).then(res => {
                     router.push({name: 'userlogin'})
-                }).catch(error => {
-                    console.error(error);
-                })
+                }).catch(() => Promise.reject('Fehler beim Registrieren!'))
             },
         }
     }

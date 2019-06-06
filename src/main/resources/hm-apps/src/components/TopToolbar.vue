@@ -1,20 +1,16 @@
 <template>
     <v-toolbar>
-        <v-img alt="HM-Logo"
-               :src="require('../assets/hm_logo.jpeg')"
-               contain
-               height="100%"
-        ></v-img>
-        <v-toolbar-title>
+        <v-toolbar-side-icon>
+            <router-link :to="{name: 'home'}" tag="button">
+                <v-icon>home</v-icon>
+            </router-link>
+        </v-toolbar-side-icon>
 
-            <!--:aspect-ratio="16/9"-->
+        <v-toolbar-title>
+            Apps@HM
             </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn
-                flat
-                href="https://github.com/vuetifyjs/vuetify/releases/latest"
-                target="_blank"
-        >
+        <v-btn flat>
             <span class="mr-2">{{getUser().name}}</span>
         </v-btn>
 

@@ -3,9 +3,7 @@
             v-model="drawer"
             :mini-variant.sync="mini"
             hide-overlay
-            stateless
-
-    >
+            stateless>
         <v-toolbar flat class="transparent">
             <v-list class="pa-0">
                 <v-list-tile>
@@ -131,7 +129,7 @@
                     this.allTags.push(...res.data);
                 }).catch(error => {
                 console.error("api error:" + error);
-            })
+            });
             this.setTags([])
         },
         methods: {

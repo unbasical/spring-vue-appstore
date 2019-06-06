@@ -66,9 +66,7 @@
                     this.setUser(res.data)
                     console.log(res.data)
                     router.push({name: 'home'})
-                }).catch(error => {
-                    console.error(error);
-                })
+                }).catch(() => Promise.reject('Fehler beim Einloggen!'))
             }
         }
     }

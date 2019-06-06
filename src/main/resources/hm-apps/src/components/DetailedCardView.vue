@@ -167,7 +167,7 @@
                         }
                     )
                         .then(res => console.log(res))
-                        .catch(err => console.error(err))
+                        .catch(() => Promise.reject('Fehler beim Hochladen des des Logos!'))
                 }
 
                 //for (image in this.screenshotFiles) {
@@ -185,7 +185,7 @@
                             },
                         }
                     )
-                        .catch(err => console.error(err))
+                        .catch(() => Promise.reject('Fehler beim Hochladen des Screenshots!'))
                 }
 
 
@@ -204,7 +204,7 @@
                     }
                 )
                     .then(res => console.log(res))
-                    .catch(err => console.error(err))
+                    .catch(() => Promise.reject('Fehler beim Speichern der App!'))
                 router.push('/detailed/view/' + this.idNumber)
             },
             getScreenshotUrl: function (screenID) {

@@ -93,8 +93,8 @@
                 </v-list-tile-content>
             </v-list-tile>
             <v-list-tile>
-                <v-list-tile-content >
-                    <v-btn large round>
+                <v-list-tile-content>
+                    <v-btn large round @click="createNewApp">
                         <v-icon>add_circle</v-icon>
                         Share your App
                     </v-btn>
@@ -107,22 +107,22 @@
 <script>
     import {mapGetters, mapMutations} from 'vuex'
     import axios from 'axios'
+    import router from "../router"
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
     export default {
         name: "Navigation.vue",
-        data() {
-            return {
-                filter: "",
-                drawer: true,
-                mini: true,
-                allTags: ["test", "ball", "trump"],
-                selectedTags: [],
-                items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
-            }
-        },
+        data: () => ({
+            filter: "",
+            drawer: true,
+            mini: true,
+            allTags: ["test", "ball", "trump"],
+            selectedTags: [],
+            items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
+        })
+        ,
         mounted() {
             axios.get(`/api/tags`)
                 .then(res => {
@@ -143,6 +143,9 @@
                 'getTags',
                 'getMinimumRating'
             ])
+            , createNewApp: function (event) {
+                router.push({name: 'createapp'})
+            }
         }
     }
 </script>

@@ -1,41 +1,42 @@
 <template>
     <form>
-        <v-card style="margin-left: 25%;margin-right: 25%">
+        <v-card style="margin-left: 25%;margin-right: 25%;margin-top: 15px">
             <v-text-field
                     v-model="title"
                     label="Title:"
                     required
+                    style="margin: 3%;"
             ></v-text-field>
             <v-textarea
                     v-model="description"
                     label="App description"
                     required
+                    style="margin: 3%;"
             >
             </v-textarea>
             <v-select
-                    :items="tags"
+                    :items="allTags"
+                    v-model="tags"
+                    chips
+                    multiple
                     label="Tags"
+                    style="margin: 3%;"
             ></v-select>
-            <v-layout justify-space-between row>
+            <v-layout justify-space-between row style="margin: 3%;">
                 Screenshots:
-                <input type="file" @change="onScreenshotFilesSelected">
-                <!--
-                <v-list v-for="pic in screenshotFiles">
-                    <v-list-tile>
-                        <v-img :src="getScreenshotUrl(pic)" v-if="pic!=null" contain height="50px"></v-img>
-                    </v-list-tile>
-                </v-list>
-                -->
+                <input multiple type="file" @change="onScreenshotFilesSelected">
+                <v-layout row v-for="pic in screenshotFiles">
+                    <v-img :src="getScreenshotUrl(pic)" v-if="pic!=null" contain height="50px"></v-img>
+                </v-layout>
             </v-layout>
-            <v-layout justify-space-between row>
+            <v-layout justify-space-between row style="margin: 3%;">
                 Logo:
                 <input type="file" @change="onFileSelected">
-                <!--
                 <v-img :src="getScreenshotUrl(logo)" v-if="logo!=null" contain height="50px"></v-img>
-                -->
             </v-layout>
             <v-btn
                     @click="createApp"
+                    style="margin: 3%;"
             > Create My APP
             </v-btn>
         </v-card>
@@ -52,11 +53,19 @@
         data: () => ({
             title: '',
             description: '',
-            items: [],
             screenshotFiles: [],
             logo: null,
+            allTags: [],
             tags: []
         }),
+        mounted() {
+            axios.get(`/api/tags`)
+                .then(res => {
+                    this.allTags.push(...res.data);
+                }).catch(error => {
+                console.error("api error:" + error);
+            });
+        },
         methods: {
             ...mapGetters([
                 'getUser'
@@ -68,13 +77,13 @@
                 this.logo = event.target.files[0]
             },
             getCreateUrl: function () {
-                return this.getUser().id + "/apps"
+                return "/api/users/" + this.getUser().id + "/apps"
             },
             getScreenshotUrl: function (screenID) {
                 console.log(screenID)
                 return URL.createObjectURL(screenID)
-            }, createApp: function (event) {
-                //create APP code
+            },
+            createApp: function (event) {
                 axios.post(this.getCreateUrl(),
                     {
                         'description': this.description,
@@ -87,7 +96,48 @@
                             'Authorization': 'Bearer ' + this.getUser().token
                         },
                     }
+                ).then(res => {
+                        let idofAPP = res.data.id
+                        //Save Logo
+                        if (this.logo != null) {
+                            const fd = new FormData();
+                            fd.append('file', this.logo)
+                            axios.post("/api/users/" + this.getUser().id + "/apps/" + idofAPP + "/logo",
+                                fd,
+                                {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data',
+                                        'Authorization': 'Bearer ' + this.getUser().token
+                                    },
+                                }
+                            )
+                                .then(
+
+                                )
+                                .catch(() => Promise.reject('Fehler beim Hochladen des des Logos!'))
+                        }
+
+
+                        //Save screenshots
+                        for (let i = 0; i < this.screenshotFiles.length; i++) {
+                            const screenData = new FormData();
+                            console.log('upload Screenshot: ' + this.screenshotFiles[i].name)
+                            screenData.append('file', this.screenshotFiles[i])
+
+                            axios.post("/api/users/" + this.getUser().id + "/apps/" + idofAPP + "/screenshots", screenData,
+                                {
+                                    headers: {
+                                        'Authorization': 'Bearer ' + this.getUser().token
+                                    },
+                                }
+                            )
+                                .catch(() => Promise.reject('Fehler beim Hochladen des Screenshots!'))
+                        }
+                    }
+                ).catch(err => console.error(err)
                 )
+
+
             }
 
 

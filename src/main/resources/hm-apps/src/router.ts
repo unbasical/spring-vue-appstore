@@ -4,7 +4,9 @@ import Home from "./views/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import DetailedCardView from "./components/DetailedCardView.vue";
+import CreateApp from "./components/CreateApp.vue";
 import Test from "./components/Test.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -26,10 +28,21 @@ export default new Router({
             component: Home,
         },
         {
-            path: "/detailed/:editMode/:id",
-            name: "detailedcardview",
+            path: "/edit/:id",
+            name: "editapp",
             component: DetailedCardView,
             props: true
+        },
+        {
+            path: "/view/:id",
+            name: "viewapp",
+            component: DetailedCardView,
+            props: true
+        },
+        {
+            path: "/create",
+            name: "createapp",
+            component: CreateApp,
         },
         {
             path: "/about",

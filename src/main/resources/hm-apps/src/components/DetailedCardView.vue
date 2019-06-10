@@ -1,262 +1,175 @@
 <template>
-    <v-card color="primary" class="white--text" style="margin: 15px" min-height="75%">
-        <v-layout row style="margin: inherit">
-            <v-flex lg4>
-                <h1>
-                    <div v-if="isEditable">
-                        <!-- <input type="text" v-model="card.title" placeholder="edit me"> -->
-                        <v-text-field
-                                label="Outline"
-                                v-model="card.title"
-                                single-line
-                                outline
-                        ></v-text-field>
-                    </div>
-                    <div v-if="!isEditable">
-                        <v-card-title>
-                            {{this.card.title}}
-                        </v-card-title>
-                    </div>
-                </h1>
-                <v-avatar :size="100" style="margin: inherit">
-                    <v-img
-                            :src="logoUrl"
-                            alt="'no logo there'"
-                            max-width="125"
-                    >
-                    </v-img>
-                </v-avatar>
-                <div v-if="isEditable">
-                    <input type="file" name="test" @change="onFileSelected">
-                </div>
-
-                <v-container style="margin: inherit">
-                    <br>
-                    Author : {{this.card.autor}}
-                    <br>
-                    create date: {{toDate(this.card.createDate)}}
-                    <br>
-                    last updated: {{toDate(this.card.upDate)}}
-                    <br>
-                    current Rating: {{this.card.rating}}
-                    <br>
-                    overall views: {{this.card.views}}
-                    <br>
-                    tags: {{this.card.tags}}
-                    <br>
-                </v-container>
-                <div v-if="!isEditable">
-                    <v-spacer></v-spacer>
-                    <router-link :to="getDetailUrl(this.id)" tag="button">
-                        <v-btn
-                        > Edit my App
-                        </v-btn>
-                    </router-link>
-                </div>
-                <div v-if="isEditable">
-                    <v-btn @click="onUpload">
-                        Save Changes
-                    </v-btn>
-                </div>
-            </v-flex>
-            <v-flex lg4 style="margin: inherit">
-                <v-card-text>
-                    <div v-if="isEditable">
-                        <v-textarea
-                                outline
-                                name="input-7-4"
-                                label="Outline textarea"
-                                value="Description"
-                                v-model="card.description"
-                        ></v-textarea>
-                    </div>
-                    <div v-if="!isEditable">
-                        {{this.card.description}}
-                    </div>
-                </v-card-text>
-            </v-flex>
-            <v-flex lg4 style="margin: inherit">
-
-                <div v-if="isEditable">
-                    <input type="file" multiple @change="onScreenshotFilesSelected">
-                </div>
-
-                <div v-if="!isEditable">
-                    <v-carousel v-if="this.card.screenshots.length>0">
+    <v-card :color="background.LightVibrant" style="padding: 50px">
+        <v-card :color="background.DarkVibrant" class="white--text" style="padding: 50px;">
+            <!-- Header -->
+            <v-layout row wrap>
+                <!-- App Logo -->
+                <v-flex xs2 align-center justify-center layout text-xs-center>
+                    <v-badge right>
+                        <template v-slot:badge>
+                            <span>{{app.views}} Views</span>
+                        </template>
+                        <v-avatar :tile="false" :size="150" :color="background.LightVibrant">
+                            <img :src="logoUrl" alt="avatar">
+                        </v-avatar>
+                    </v-badge>
+                </v-flex>
+                <!-- Title and update date -->
+                <v-flex xs8>
+                    <v-card-title primary-title>
+                        <div>
+                            <div style="font-size: 4em">{{app.title}}</div>
+                            <div style="font-size: 2em">{{app.updateDate | date}}</div>
+                        </div>
+                    </v-card-title>
+                </v-flex>
+                <v-flex xs2>
+                    <v-layout v-if="app.author">
+                        <v-flex xs3>
+                            <v-avatar :color="background.LightMuted">
+                                <span class="white--text headline">{{toAcronym(app.author.name)}}</span>
+                            </v-avatar>
+                        </v-flex>
+                        <v-flex xs9 align-self-end>
+                            <h2>{{app.author.name}}</h2>
+                            <h4>{{app.author.email}}</h4>
+                        </v-flex>
+                    </v-layout>
+                </v-flex>
+            </v-layout>
+            <!-- Body -->
+            <v-layout row wrap>
+                <!-- Description block -->
+                <v-flex xs6>
+                    <v-card-title primary-title>
+                        <div>
+                            <div class="headline">{{app.description}}</div>
+                        </div>
+                    </v-card-title>
+                </v-flex>
+                <!-- Screenshot carousel -->
+                <v-flex xs6>
+                    <v-carousel height="400" hide-delimiters hide-controls>
                         <v-carousel-item
-                                v-for="screenshot in this.card.screenshots"
-                                :src="getScreenshotUrl(screenshot.id)"
-                                reverse-transition="fade"
-                                transition="fade"
-                        ></v-carousel-item>
+                                v-for="(screenshotUrl,i) in app.screenshots"
+                                :key="i">
+                            <v-img height="400" contain :src="screenshotUrl"></v-img>
+                        </v-carousel-item>
                     </v-carousel>
-                </div>
+                </v-flex>
+            </v-layout>
+            <v-divider light style="margin-top: 20px;"></v-divider>
 
-            </v-flex>
-        </v-layout>
+            <v-card-actions class="pa-3" style="padding-top: 40px;">
+                <v-layout row wrap>
+                    <v-flex xs3>
+                        <div @click="ratingChanged = true">
+                            <v-rating v-model="app.rating" :background-color="background.LightMuted"
+                                      :color="background.Vibrant" large/>
+                        </div>
+                        <v-btn v-if="ratingChanged"
+                               :disabled="!isLoggedIn()"
+                               color="blue-grey"
+                               class="white--text"
+                               @click="rate"
+                        >
+                            Bewerten
+                            <v-icon right dark>send</v-icon>
+                        </v-btn>
+                    </v-flex>
+                </v-layout>
+            </v-card-actions>
+        </v-card>
+        <Comments :appId="id" :background="background"/>
     </v-card>
 </template>
 
 <script>
     import axios from "axios";
     import {mapGetters} from 'vuex';
-    import router from "../router"
+    import Comments from './Comments';
+    import * as Vibrant from 'node-vibrant'
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
     export default {
         name: "DetailedCardView",
-        components: {},
+        components: {Comments},
+        props: ['id'],
         data: () => ({
-            selectedFileLogo: null,
-            screenshotFiles: [],
-            card: {
-                title: String,
-                description: String,
-                views: Number,
-                screenshots: [],
-                tags: [],
-                rating: Number,
-                autor: String,
-                createDate: Number,
-                upDate: Number
-            }
+            ratingChanged: false,
+            app: {},
+            background: {
+                Vibrant: 'white',
+                Muted: 'white',
+                LightVibrant: 'white',
+                DarkVibrant: 'white',
+                DarkMuted: 'white',
+                LightMuted: 'white'
+            },
         }),
-        props: {
-            id: String,
-            editMode: String,
+        mounted() {
+            axios.get(`/api/apps/${this.id}`)
+                .then(res => {
+                    this.processScreenshots(res.data);
+                    this.app = res.data;
+                    this.setBackground();
+                }).catch(() => {
+                Promise.reject('Unable to load app');
+            });
         },
         computed: {
-            isEditable: function () {
-                if (this.editMode == 'edit') {
-                    return true;
-                }
-                return false;
-            },
-            idNumber: function () {
-                // `this` points to the vm instance
-                return Number(this.id)
-            },
             logoUrl: function () {
-                // `this` points to the vm instance
-                return process.env.VUE_APP_BASE_URL + '/api/apps/' + this.idNumber + '/logo'
-            }
+                return process.env.VUE_APP_BASE_URL + '/api/apps/' + this.id + '/logo'
+            },
         },
         methods: {
             ...mapGetters([
-                'getUser'
+                'getUser',
+                'userAcronym',
+                'isLoggedIn'
             ]),
-            onFileSelected(event) {
-                this.selectedFileLogo = event.target.files[0]
+            setBackground() {
+                Vibrant.from(this.logoUrl).getPalette()
+                    .then((palette) => {
+                        Object.keys(palette).forEach(key => this.background[key] = palette[key].hex);
+                    });
             },
-            onScreenshotFilesSelected(event) {
-                this.screenshotFiles = event.target.files
+            processScreenshots(app) {
+                if (!app.screenshots || app.screenshots.length === 0) {
+                    app.screenshots = [
+                        'https://upload.wikimedia.org/wikipedia/commons/3/35/Roter_W%C3%BCrfel.jpg',
+                        'https://upload.wikimedia.org/wikipedia/commons/6/64/Hochschule_Muenchen_Ansicht_Lothstrasse.jpg',
+                        'https://cdn.weka-fachmedien.de/thumbs/media_uploads/images/1511264229-283-worrsfuwh.jpg.627x353.jpg',
+                    ];
+                } else {
+                    app.screenshots = app.screenshots.map(s => `${process.env.VUE_APP_BASE_URL}/api/apps/${this.id}/screenshots/${s.id}`);
+                }
             },
-            onUpload() {
-                //Upload Image
-                if (this.selectedFileLogo != null) {
-                    const fd = new FormData();
-                    fd.append('file', this.selectedFileLogo)
-                    axios.post("/api/users/" + this.getUser().id + "/apps/" + this.idNumber + "/logo", fd,
-                        {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                                'Authorization': 'Bearer ' + this.getUser().token
-                            },
-                        }
-                    )
-                        .then(res => console.log(res))
-                        .catch(() => Promise.reject('Fehler beim Hochladen des des Logos!'))
-                }
-
-                //for (image in this.screenshotFiles) {
-
-
-                for (let i = 0; i < this.screenshotFiles.length; i++) {
-                    const screenData = new FormData();
-                    console.log('upload Screenshot: ' + this.screenshotFiles[i].name)
-                    screenData.append('file', this.screenshotFiles[i])
-
-                    axios.post("/api/users/" + this.getUser().id + "/apps/" + this.idNumber + "/screenshots", screenData,
-                        {
-                            headers: {
-                                'Authorization': 'Bearer ' + this.getUser().token
-                            },
-                        }
-                    )
-                        .catch(() => Promise.reject('Fehler beim Hochladen des Screenshots!'))
-                }
-
-
-                //save Title, Tags, Description
-                axios.put("/api/users/" + this.getUser().id + "/apps/" + this.idNumber,
-                    {
-                        'description': this.card.description,
-                        'title': this.card.title,
-                        'tags': this.card.tags
+            toAcronym(username) {
+                return username
+                    .split(' ')
+                    .reduce((a, b) => a + b.charAt(0), '')
+                    .substr(0, 2).toUpperCase();
+            },
+            rate() {
+                this.ratingChanged = false;
+                axios.post(`/api/apps/${this.id}/ratings`, {
+                        author: this.getUser(),
+                        stars: this.app.rating
                     },
                     {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer ' + this.getUser().token
                         },
-                    }
-                )
-                    .then(res => console.log(res))
-                    .catch(() => Promise.reject('Fehler beim Speichern der App!'))
-                router.push('/detailed/view/' + this.idNumber)
-            },
-            getScreenshotUrl: function (screenID) {
-                console.log(this.card.screenshots)
-                console.log(screenID)
-                return process.env.VUE_APP_BASE_URL + "/api/apps/" + this.idNumber + "/screenshots/" + Number(screenID);
-            },
-            toDate: function (dateAsLong) {
-                return new Date(dateAsLong);
-            },
-            getDetailUrl: function (appID) {
-                return "/detailed/edit/" + appID;
-            },
-        },
-        created: function () {
-            console.log('create Card for ID: ' + this.idNumber)
-            /* if (this.getUser().token == 'default') {
-                console.error('user is not loged In correctly')
+                    })
+                    .then((res) => {
+                        this.app.rating = res.data;
+                    })
+                    .catch(err => Promise.reject("Fehler beim Senden des Ratings!"))
             }
-            console.log('User: ' + JSON.stringify(this.getUser())) */
-            axios.get("/api/apps/" + this.idNumber
-                //, {headers: {'Authorization': "bearer " + this.getUser().token}}
-            )
-                .then(res => {
-                    console.log('show app & prepare Fields of Card\n' + res)
-                    console.log(...res.data.screenshots)
-                    this.card = {
-                        title: res.data.title,
-                        description: res.data.description,
-                        views: res.data.views,
-                        screenshots: res.data.screenshots,
-                        tags: res.data.tags,
-                        rating: res.data.rating,
-                        autor: res.data.author.name,
-                        createDate: res.data.creationDate,
-                        upDate: res.data.updateDate
-                    }
-                })
-                .catch(err => {
-                        this.card = {
-                            title: 'default',
-                            description: 'default description',
-                            views: 999,
-                            screenshots: [],
-                            tags: [],
-                            rating: 1,
-                            autor: 'Max Mustermann',
-                            createDate: Date.now(),
-                            upDate: Date.now()
-                        }
-                    }
-                )
         }
     }
 </script>

@@ -12,7 +12,7 @@ export default new Vuex.Store({
             id: 0,
             email : "mail",
             name: "default",
-            token : "default"
+            token: null,
         }
     },
     getters: {
@@ -27,7 +27,17 @@ export default new Vuex.Store({
         },
         getMinimumRating: (state) => {
             return state.minimumRating;
+        },
+        isLoggedIn: (state) => {
+            return state.user.token;
+        },
+        userAcronym: (state) => {
+            return state.user.name
+                .split(' ')
+                .reduce((a, b) => a + b.charAt(0), '')
+                .substr(0, 2).toUpperCase();
         }
+
     },
     mutations: {
         setUser(state, user){

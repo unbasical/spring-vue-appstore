@@ -1,17 +1,13 @@
 <template>
-    <v-card hover color="primary" class="white--text" style="margin: 15Px">
+    <v-card hover :color="background.DarkVibrant" class="white--text" style="margin: 15px; padding-bottom: 10px">
         <!-- TitleRow-->
         <v-layout style="margin: inherit" row>
             <v-flex xs12>
                 <v-card-title primary-title>
                     <v-avatar>
                         <v-img
-                                :src="logoUrl"
-                                alt="'no logo there'">
-                                <!--
-                                height="50px"
-                                width="50px"
-                                -->
+                            :src="logoUrl"
+                            alt="'no logo there'">
                         </v-img>
                     </v-avatar>
                     <v-spacer></v-spacer>
@@ -47,44 +43,37 @@
             <v-flex xs5>
                 <div>Tags: {{niceList(app.tags)}}</div>
             </v-flex>
-            <v-flex xs2></v-flex>
-            <v-flex xs5>
+            <v-flex xs1></v-flex>
+            <v-flex xs6>
                 <div style="text-align: right">
-                    <v-icon>{{Math.round(app.rating) >= 1 ? 'star' : 'star_border'}}</v-icon>
-                    <v-icon>{{Math.round(app.rating) >= 2 ? 'star' : 'star_border'}}</v-icon>
-                    <v-icon>{{Math.round(app.rating) >= 3 ? 'star' : 'star_border'}}</v-icon>
-                    <v-icon>{{Math.round(app.rating) >= 4 ? 'star' : 'star_border'}}</v-icon>
-                    <v-icon>{{Math.round(app.rating) >= 5 ? 'star' : 'star_border'}}</v-icon>
+                    <v-rating v-model="app.rating" :background-color="background.LightMuted"
+                              :color="background.Vibrant" small/>
                 </div>
             </v-flex>
         </v-layout>
-        <!-- Buttons Row-->
-
-        <v-layout style="margin: inherit" row>
-            <v-flex xs5>
-                <v-btn color="secondary" class="black--text" round>
-                    More Info
-                </v-btn>
-            </v-flex>
-            <v-flex xs2>
-            </v-flex>
-            <v-flex xs5>
-                <div style="text-align: right">
-                    <v-btn color="secondary" class="black--text" round>
-                        Go to Site
-                    </v-btn>
-                </div>
-            </v-flex>
-        </v-layout>
-
     </v-card>
 </template>
 
 <script>
+    import * as Vibrant from 'node-vibrant'
+
     export default {
         name: "SmallCard",
         props: {
             app: {type: Object, default: {}},
+        },
+        data: () => ({
+            background: {
+                Vibrant: 'white',
+                Muted: 'white',
+                LightVibrant: 'white',
+                DarkVibrant: 'white',
+                DarkMuted: 'white',
+                LightMuted: 'white'
+            },
+        }),
+        mounted() {
+            this.setBackground();
         },
         methods: {
             niceList: function (array, join, finalJoin) {
@@ -95,7 +84,13 @@
                 join = join || ', ';
                 finalJoin = finalJoin || ', ';
                 return arr.join(join) + finalJoin + last;
-            }
+            },
+            setBackground() {
+                Vibrant.from(this.logoUrl).getPalette()
+                    .then((palette) => {
+                        Object.keys(palette).forEach(key => this.background[key] = palette[key].hex);
+                    });
+            },
         },
         computed: {
             // a computed getter

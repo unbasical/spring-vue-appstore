@@ -3,6 +3,7 @@
             v-model="drawer"
             :mini-variant.sync="mini"
             hide-overlay
+            absolute
             stateless>
         <v-toolbar flat class="transparent">
             <v-list class="pa-0">
@@ -18,7 +19,7 @@
                         </div>
                     </v-list-tile-action>
                     <v-list-tile-content>
-                        <v-list-tile-title>HM APPS</v-list-tile-title>
+                        <v-list-tile-title>Optionen</v-list-tile-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
                         <v-btn
@@ -92,9 +93,17 @@
                     </v-layout>
                 </v-list-tile-content>
             </v-list-tile>
+            <v-list-tile v-if="isFilterSet">
+                <v-list-tile-content>
+                    <v-btn large round @click="resetFilters">
+                        <v-icon>clear</v-icon>
+                        Filter zurücksetzen
+                    </v-btn>
+                </v-list-tile-content>
+            </v-list-tile>
             <v-list-tile>
-                <v-list-tile-content >
-                    <v-btn large round>
+                <v-list-tile-content>
+                    <v-btn large round @click="createNewApp" :disabled="!isLoggedIn()">
                         <v-icon>add_circle</v-icon>
                         Share your App
                     </v-btn>
@@ -107,22 +116,22 @@
 <script>
     import {mapGetters, mapMutations} from 'vuex'
     import axios from 'axios'
+    import router from "../router"
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
 
     export default {
         name: "Navigation.vue",
-        data() {
-            return {
-                filter: "",
-                drawer: true,
-                mini: true,
-                allTags: ["test", "ball", "trump"],
-                selectedTags: [],
-                items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
-            }
-        },
+        data: () => ({
+            filter: "",
+            drawer: true,
+            mini: true,
+            allTags: ["test", "ball", "trump"],
+            selectedTags: [],
+            items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
+        })
+        ,
         mounted() {
             axios.get(`/api/tags`)
                 .then(res => {
@@ -141,9 +150,27 @@
             ...mapGetters([
                 'getSearch',
                 'getTags',
-                'getMinimumRating'
-            ])
-        }
+                'getMinimumRating',
+                'isLoggedIn'
+            ]),
+            createNewApp: function (event) {
+                router.push({name: 'createapp'})
+            },
+            resetFilters: function () {
+                this.filter = '';
+                this.selectedTags = [];
+                this.setSearch('');
+                this.setTags([]);
+                this.setMinimumRating(0);
+            }
+        },
+        computed: {
+            isFilterSet: function () {
+                return this.filter !== ''
+                    || this.selectedTags.length !== 0
+                    || this.getMinimumRating() !== 0;
+            },
+        },
     }
 </script>
 

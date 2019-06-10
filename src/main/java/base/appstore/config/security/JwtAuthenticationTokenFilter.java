@@ -1,7 +1,6 @@
 package base.appstore.config.security;
 
 
-import base.appstore.exceptions.JwtAuthenticationException;
 import base.appstore.model.User;
 import base.appstore.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
@@ -59,9 +58,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 }
             }
         }catch (JwtException ex) {
-                log.error(String.format("Invalid JWT Token: %s", ex.getMessage()));
-                throw new JwtAuthenticationException("Failed to verify token");
-            }
+            log.error(String.format("Invalid JWT Token: %s", ex.getMessage()));
+        }
         chain.doFilter(request, response);
     }
 }

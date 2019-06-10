@@ -5,18 +5,36 @@
             <v-layout row wrap>
                 <!-- App Logo -->
                 <v-flex xs2 align-center justify-center layout text-xs-center>
-                    <v-avatar :tile="false" :size="150" color="grey lighten-4">
-                        <img :src="logoUrl" alt="avatar">
-                    </v-avatar>
+                    <v-badge right>
+                        <template v-slot:badge>
+                            <span>{{app.views}} views</span>
+                        </template>
+                        <v-avatar :tile="false" :size="150" color="grey lighten-4">
+                            <img :src="logoUrl" alt="avatar">
+                        </v-avatar>
+                    </v-badge>
                 </v-flex>
                 <!-- Title and update date -->
-                <v-flex xs10>
+                <v-flex xs8>
                     <v-card-title primary-title>
                         <div>
                             <div style="font-size: 4em">{{app.title}}</div>
                             <div style="font-size: 2em">{{app.updateDate | date}}</div>
                         </div>
                     </v-card-title>
+                </v-flex>
+                <v-flex xs2>
+                    <v-layout v-if="app.author">
+                        <v-flex xs3>
+                            <v-avatar color="blue">
+                                <span class="white--text headline">{{toAcronym(app.author.name)}}</span>
+                            </v-avatar>
+                        </v-flex>
+                        <v-flex xs9 align-self-end>
+                            <h2>{{app.author.name}}</h2>
+                            <h4>{{app.author.email}}</h4>
+                        </v-flex>
+                    </v-layout>
                 </v-flex>
             </v-layout>
             <!-- Body -->
@@ -88,7 +106,8 @@
         },
         methods: {
             ...mapGetters([
-                'getUser'
+                'getUser',
+                'userAcronym'
             ]),
             processScreenshots(app) {
                 if (!app.screenshots || app.screenshots.length == 0) {
@@ -101,6 +120,12 @@
                     app.screenshots = app.screenshots.map(s => `${process.env.VUE_APP_BASE_URL}/api/apps/${this.id}/screenshots/${s.id}`);
                 }
             },
+            toAcronym(username) {
+                return username
+                    .split(' ')
+                    .reduce((a, b) => a + b.charAt(0), '')
+                    .substr(0, 2).toUpperCase();
+            }
         }
     }
 </script>

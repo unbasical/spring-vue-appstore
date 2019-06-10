@@ -9,6 +9,7 @@
                 <v-form v-model="valid">
                     <v-textarea
                             outline
+                            light
                             v-model="newComment"
                             :rules="newCommentRules"
                             :counter="300"
@@ -25,7 +26,7 @@
         </v-layout>
         <v-divider light></v-divider>
         <!-- Existing comments -->
-        <v-layout row wrap>
+        <v-layout row wrap v-if="comments.length > 0">
             <v-flex xs8 offset-xs2>
                 <v-list three-line :style="{'background-color': background.DarkVibrant}">
                     <template v-for="(comment, index) in comments">

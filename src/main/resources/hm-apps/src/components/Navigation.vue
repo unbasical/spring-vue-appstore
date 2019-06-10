@@ -3,6 +3,7 @@
             v-model="drawer"
             :mini-variant.sync="mini"
             hide-overlay
+            absolute
             stateless>
         <v-toolbar flat class="transparent">
             <v-list class="pa-0">
@@ -18,7 +19,7 @@
                         </div>
                     </v-list-tile-action>
                     <v-list-tile-content>
-                        <v-list-tile-title>HM APPS</v-list-tile-title>
+                        <v-list-tile-title>Optionen</v-list-tile-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
                         <v-btn
@@ -92,6 +93,14 @@
                     </v-layout>
                 </v-list-tile-content>
             </v-list-tile>
+            <v-list-tile v-if="isFilterSet">
+                <v-list-tile-content>
+                    <v-btn large round @click="resetFilters">
+                        <v-icon>clear</v-icon>
+                        Filter zurücksetzen
+                    </v-btn>
+                </v-list-tile-content>
+            </v-list-tile>
             <v-list-tile>
                 <v-list-tile-content>
                     <v-btn large round @click="createNewApp" :disabled="!isLoggedIn()">
@@ -143,11 +152,25 @@
                 'getTags',
                 'getMinimumRating',
                 'isLoggedIn'
-            ])
-            , createNewApp: function (event) {
+            ]),
+            createNewApp: function (event) {
                 router.push({name: 'createapp'})
+            },
+            resetFilters: function () {
+                this.filter = '';
+                this.selectedTags = [];
+                this.setSearch('');
+                this.setTags([]);
+                this.setMinimumRating(0);
             }
-        }
+        },
+        computed: {
+            isFilterSet: function () {
+                return this.filter !== ''
+                    || this.selectedTags.length !== 0
+                    || this.getMinimumRating() !== 0;
+            },
+        },
     }
 </script>
 

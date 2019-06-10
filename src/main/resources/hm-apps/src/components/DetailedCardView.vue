@@ -7,7 +7,7 @@
                 <v-flex xs2 align-center justify-center layout text-xs-center>
                     <v-badge right>
                         <template v-slot:badge>
-                            <span>{{app.views}} views</span>
+                            <span>{{app.views}} Views</span>
                         </template>
                         <v-avatar :tile="false" :size="150" :color="background.LightVibrant">
                             <img :src="logoUrl" alt="avatar">
@@ -49,7 +49,7 @@
                 </v-flex>
                 <!-- Screenshot carousel -->
                 <v-flex xs6>
-                    <v-carousel height="400" hide-delimiters>
+                    <v-carousel height="400" hide-delimiters hide-controls>
                         <v-carousel-item
                                 v-for="(screenshotUrl,i) in app.screenshots"
                                 :key="i">
@@ -58,7 +58,7 @@
                     </v-carousel>
                 </v-flex>
             </v-layout>
-            <v-divider light></v-divider>
+            <v-divider light style="margin-top: 20px;"></v-divider>
 
             <v-card-actions class="pa-3" style="padding-top: 40px;">
                 <v-layout row wrap>
@@ -137,7 +137,7 @@
                     });
             },
             processScreenshots(app) {
-                if (!app.screenshots || app.screenshots.length == 0) {
+                if (!app.screenshots || app.screenshots.length === 0) {
                     app.screenshots = [
                         'https://upload.wikimedia.org/wikipedia/commons/3/35/Roter_W%C3%BCrfel.jpg',
                         'https://upload.wikimedia.org/wikipedia/commons/6/64/Hochschule_Muenchen_Ansicht_Lothstrasse.jpg',

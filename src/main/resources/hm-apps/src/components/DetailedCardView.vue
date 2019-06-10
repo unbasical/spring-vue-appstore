@@ -63,7 +63,18 @@
             <v-card-actions class="pa-3" style="padding-top: 40px;">
                 <v-layout row wrap>
                     <v-flex xs3>
-                        <v-rating v-model="app.rating" background-color="grey lighten-3" color="red" large/>
+                        <div @click="ratingChanged = true">
+                            <v-rating v-model="app.rating" background-color="grey lighten-3" color="red" large/>
+                        </div>
+                        <v-btn v-if="ratingChanged"
+                               :disabled="!isLoggedIn()"
+                               color="blue-grey"
+                               class="white--text"
+                               @click="rate"
+                        >
+                            Bewerten
+                            <v-icon right dark>send</v-icon>
+                        </v-btn>
                     </v-flex>
                     <v-flex xs9>
 
@@ -88,7 +99,8 @@
         components: {Comments},
         props: ['id'],
         data: () => ({
-            app: {}
+            ratingChanged: false,
+            app: {},
         }),
         mounted() {
             axios.get(`/api/apps/${this.id}`)
@@ -102,12 +114,13 @@
         computed: {
             logoUrl: function () {
                 return process.env.VUE_APP_BASE_URL + '/api/apps/' + this.id + '/logo'
-        }
+            },
         },
         methods: {
             ...mapGetters([
                 'getUser',
-                'userAcronym'
+                'userAcronym',
+                'isLoggedIn'
             ]),
             processScreenshots(app) {
                 if (!app.screenshots || app.screenshots.length == 0) {
@@ -125,6 +138,23 @@
                     .split(' ')
                     .reduce((a, b) => a + b.charAt(0), '')
                     .substr(0, 2).toUpperCase();
+            },
+            rate() {
+                this.ratingChanged = false;
+                axios.post(`/api/apps/${this.id}/ratings`, {
+                        author: this.getUser(),
+                        stars: this.app.rating
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + this.getUser().token
+                        },
+                    })
+                    .then((res) => {
+                        this.app.rating = res.data;
+                    })
+                    .catch(err => Promise.reject("Fehler beim Senden des Ratings!"))
             }
         }
     }

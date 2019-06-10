@@ -52,7 +52,7 @@ public class AppController {
 
     @PostMapping("{id}/ratings")
     @PreAuthorize("isAuthenticated() and hasAnyRole('USER', 'DEVELOPER', 'ADMIN')")
-    public void createRating(@PathVariable Long id, @RequestBody RatingDto ratingDto) {
+    public double createRating(@PathVariable Long id, @RequestBody RatingDto ratingDto) {
         final App app = getAppByIdOrThrow(id);
         final User author = userRepository.findById(ratingDto.getAuthor().getId()).orElseThrow(ResourceNotFoundException::new);
         final Rating rating = ratingDto.toEntity();
@@ -61,6 +61,7 @@ public class AppController {
         app.addRating(rating);
 
         appRepository.save(app);
+        return app.getRatings().stream().mapToDouble(Rating::getStars).average().orElse(0);
     }
 
     @PostMapping("{id}/comments")

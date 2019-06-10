@@ -94,7 +94,7 @@
             </v-list-tile>
             <v-list-tile>
                 <v-list-tile-content>
-                    <v-btn large round @click="createNewApp">
+                    <v-btn large round @click="createNewApp" :disabled="!isLoggedIn()">
                         <v-icon>add_circle</v-icon>
                         Share your App
                     </v-btn>
@@ -141,7 +141,8 @@
             ...mapGetters([
                 'getSearch',
                 'getTags',
-                'getMinimumRating'
+                'getMinimumRating',
+                'isLoggedIn'
             ])
             , createNewApp: function (event) {
                 router.push({name: 'createapp'})

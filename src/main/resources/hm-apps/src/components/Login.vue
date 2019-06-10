@@ -15,6 +15,7 @@
                         ></v-text-field>
 
                         <v-text-field
+                                @keydown.enter="submit"
                                 v-model="password"
                                 label="password"
                                 type="password"

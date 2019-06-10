@@ -111,9 +111,7 @@
                                     },
                                 }
                             )
-                                .then(
-
-                                )
+                                .then(() => router.push({name: 'home'}))
                                 .catch(() => Promise.reject('Fehler beim Hochladen des des Logos!'))
                         }
 

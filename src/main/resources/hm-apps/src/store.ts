@@ -31,6 +31,12 @@ export default new Vuex.Store({
         isLoggedIn: (state) => {
             return state.user.token;
         },
+        userAcronym: (state) => {
+            return state.user.name
+                .split(' ')
+                .reduce((a, b) => a + b.charAt(0), '')
+                .substr(0, 2).toUpperCase();
+        }
 
     },
     mutations: {

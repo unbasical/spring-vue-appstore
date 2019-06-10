@@ -29,17 +29,21 @@
             <v-flex xs8 offset-xs2>
                 <v-list three-line>
                     <template v-for="(comment, index) in comments">
-                        <v-divider inset></v-divider>
-
+                        <v-divider v-if="index != 0" inset></v-divider>
                         <v-list-tile :key="comment.id" avatar>
-                            <v-list-tile-avatar>
-                                <img :src="getAvatar(comment)">
-                            </v-list-tile-avatar>
-
-                            <v-list-tile-content>
-                                <v-list-tile-title v-html="comment.author.name"></v-list-tile-title>
-                                <v-list-tile-sub-title v-html="comment.text"></v-list-tile-sub-title>
-                            </v-list-tile-content>
+                            <v-layout row wrap>
+                                <v-flex xs1>
+                                    <v-avatar color="red">
+                                        <span class="white--text headline">{{toAcronym(comment.author.name)}}</span>
+                                    </v-avatar>
+                                </v-flex>
+                                <v-flex xs10>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title v-html="comment.author.name"></v-list-tile-title>
+                                        <v-list-tile-sub-title v-html="comment.text"></v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                </v-flex>
+                            </v-layout>
                         </v-list-tile>
                     </template>
                 </v-list>
@@ -79,7 +83,8 @@
         methods: {
             ...mapGetters([
                 'getUser',
-                'isLoggedIn'
+                'isLoggedIn',
+                'userAcronym'
             ]),
             sendComment() {
                 if (!this.valid)
@@ -97,12 +102,19 @@
                     })
                     .then((res) => {
                         this.comments.unshift(res.data);
+                        this.newComment = '';
                     })
                     .catch(err => Promise.reject("Fehler beim Senden des Kommentars!"))
 
             },
             getAvatar(comment) {
                 return 'https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png';
+            },
+            toAcronym(username) {
+                return username
+                    .split(' ')
+                    .reduce((a, b) => a + b.charAt(0), '')
+                    .substr(0, 2).toUpperCase();
             }
         }
     }

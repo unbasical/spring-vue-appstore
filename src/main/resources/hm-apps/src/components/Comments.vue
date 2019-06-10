@@ -1,7 +1,7 @@
 <template>
-    <v-card>
+    <v-card :color="background.Muted" style="padding: 50px">
         <!-- Header -->
-        <v-card-title><h2>Kommentare</h2></v-card-title>
+        <v-card-title><h2 class="white--text headline">Kommentare</h2></v-card-title>
         <!-- Body -->
         <v-layout row align-content-center v-if="isLoggedIn()">
             <!-- Description block -->
@@ -27,20 +27,22 @@
         <!-- Existing comments -->
         <v-layout row wrap>
             <v-flex xs8 offset-xs2>
-                <v-list three-line>
+                <v-list three-line :style="{'background-color': background.DarkVibrant}">
                     <template v-for="(comment, index) in comments">
                         <v-divider v-if="index != 0" inset></v-divider>
-                        <v-list-tile :key="comment.id" avatar>
+                        <v-list-tile :key="comment.id" avatar :color="background.LightVibrant">
                             <v-layout row wrap>
                                 <v-flex xs1>
-                                    <v-avatar color="red">
-                                        <span class="white--text headline">{{toAcronym(comment.author.name)}}</span>
+                                    <v-avatar :color="background.LightVibrant">
+                                        <span>{{toAcronym(comment.author.name)}}</span>
                                     </v-avatar>
                                 </v-flex>
                                 <v-flex xs10>
                                     <v-list-tile-content>
-                                        <v-list-tile-title v-html="comment.author.name"></v-list-tile-title>
-                                        <v-list-tile-sub-title v-html="comment.text"></v-list-tile-sub-title>
+                                        <v-list-tile-title class="white--text"
+                                                           v-html="comment.author.name"></v-list-tile-title>
+                                        <v-list-tile-sub-title class="white--text"
+                                                               v-html="comment.text"></v-list-tile-sub-title>
                                     </v-list-tile-content>
                                 </v-flex>
                             </v-layout>
@@ -61,7 +63,7 @@
 
     export default {
         name: "Comments",
-        props: ['appId'],
+        props: ['appId', 'background'],
         data: () => ({
             valid: false,
             newComment: '',

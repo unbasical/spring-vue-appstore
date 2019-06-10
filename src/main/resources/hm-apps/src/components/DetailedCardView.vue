@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <v-card color="cyan darken-2" class="white--text" style="margin: 50px; padding: 50px;">
+    <v-card :color="background.LightVibrant" style="padding: 50px">
+        <v-card :color="background.DarkVibrant" class="white--text" style="padding: 50px;">
             <!-- Header -->
             <v-layout row wrap>
                 <!-- App Logo -->
@@ -9,7 +9,7 @@
                         <template v-slot:badge>
                             <span>{{app.views}} views</span>
                         </template>
-                        <v-avatar :tile="false" :size="150" color="grey lighten-4">
+                        <v-avatar :tile="false" :size="150" :color="background.LightVibrant">
                             <img :src="logoUrl" alt="avatar">
                         </v-avatar>
                     </v-badge>
@@ -26,7 +26,7 @@
                 <v-flex xs2>
                     <v-layout v-if="app.author">
                         <v-flex xs3>
-                            <v-avatar color="blue">
+                            <v-avatar :color="background.LightMuted">
                                 <span class="white--text headline">{{toAcronym(app.author.name)}}</span>
                             </v-avatar>
                         </v-flex>
@@ -64,7 +64,8 @@
                 <v-layout row wrap>
                     <v-flex xs3>
                         <div @click="ratingChanged = true">
-                            <v-rating v-model="app.rating" background-color="grey lighten-3" color="red" large/>
+                            <v-rating v-model="app.rating" :background-color="background.LightMuted"
+                                      :color="background.Vibrant" large/>
                         </div>
                         <v-btn v-if="ratingChanged"
                                :disabled="!isLoggedIn()"
@@ -76,20 +77,18 @@
                             <v-icon right dark>send</v-icon>
                         </v-btn>
                     </v-flex>
-                    <v-flex xs9>
-
-                    </v-flex>
                 </v-layout>
             </v-card-actions>
         </v-card>
-        <Comments :appId="id"/>
-    </div>
+        <Comments :appId="id" :background="background"/>
+    </v-card>
 </template>
 
 <script>
     import axios from "axios";
     import {mapGetters} from 'vuex';
     import Comments from './Comments';
+    import * as Vibrant from 'node-vibrant'
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
@@ -101,12 +100,21 @@
         data: () => ({
             ratingChanged: false,
             app: {},
+            background: {
+                Vibrant: 'white',
+                Muted: 'white',
+                LightVibrant: 'white',
+                DarkVibrant: 'white',
+                DarkMuted: 'white',
+                LightMuted: 'white'
+            },
         }),
         mounted() {
             axios.get(`/api/apps/${this.id}`)
                 .then(res => {
                     this.processScreenshots(res.data);
                     this.app = res.data;
+                    this.setBackground();
                 }).catch(() => {
                 Promise.reject('Unable to load app');
             });
@@ -122,6 +130,12 @@
                 'userAcronym',
                 'isLoggedIn'
             ]),
+            setBackground() {
+                Vibrant.from(this.logoUrl).getPalette()
+                    .then((palette) => {
+                        Object.keys(palette).forEach(key => this.background[key] = palette[key].hex);
+                    });
+            },
             processScreenshots(app) {
                 if (!app.screenshots || app.screenshots.length == 0) {
                     app.screenshots = [

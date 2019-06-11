@@ -12,7 +12,7 @@ export default new Vuex.Store({
             id: 0,
             email : "mail",
             name: "default",
-            token: null,
+            token: '',
         }
     },
     getters: {
@@ -29,7 +29,14 @@ export default new Vuex.Store({
             return state.minimumRating;
         },
         isLoggedIn: (state) => {
-            return state.user.token;
+            return state.user.token && state.user.token !== '';
+        },
+        userRole: (state) => {
+            try {
+                return JSON.parse(atob(state.user.token.split('.')[1])).role.replace('ROLE_', '');
+            } catch (e) {
+                return '';
+            }
         },
         userAcronym: (state) => {
             return state.user.name

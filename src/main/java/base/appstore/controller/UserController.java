@@ -102,8 +102,9 @@ public class UserController {
 
     @DeleteMapping("{userID}/apps/{appID}")
     @PreAuthorize("isAuthenticated() and hasAnyRole('DEVELOPER', 'ADMIN')")
-    public void deleteApp(@PathVariable Long userID, @PathVariable Long appID) {
+    public boolean deleteApp(@PathVariable Long userID, @PathVariable Long appID) {
         appRepo.deleteById(appID);
+        return true;
     }
 
 }

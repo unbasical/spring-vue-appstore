@@ -77,6 +77,25 @@
                             <v-icon right dark>send</v-icon>
                         </v-btn>
                     </v-flex>
+                    <v-flex xs1 offset-xs8>
+                        <div v-if="userRole() === 'ADMIN' || userRole() === 'DEVELOPER'">
+                            <v-btn color="blue-grey"
+                                   class="white--text"
+                                   :to="`/edit/${id}`"
+                                   style="margin-bottom: 30px"
+                            >
+                                Bearbeiten
+                                <v-icon right dark>edit</v-icon>
+                            </v-btn>
+                            <v-btn color="blue-grey"
+                                   class="white--text"
+                                   @click="deleteApp"
+                            >
+                                Löschen
+                                <v-icon right dark>delete</v-icon>
+                            </v-btn>
+                        </div>
+                    </v-flex>
                 </v-layout>
             </v-card-actions>
         </v-card>
@@ -128,13 +147,26 @@
             ...mapGetters([
                 'getUser',
                 'userAcronym',
-                'isLoggedIn'
+                'isLoggedIn',
+                'userRole'
             ]),
             setBackground() {
                 Vibrant.from(this.logoUrl).getPalette()
                     .then((palette) => {
                         Object.keys(palette).forEach(key => this.background[key] = palette[key].hex);
                     });
+            },
+            deleteApp() {
+                axios.delete(`/api/users/${this.app.author.id}/apps/${this.id}`,
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + this.getUser().token
+                        },
+                    })
+                    .then((res) => {
+                        router.push({name: 'home'});
+                    })
+                    .catch(err => Promise.reject("Fehler beim Löschen der App!"))
             },
             processScreenshots(app) {
                 if (!app.screenshots || app.screenshots.length === 0) {

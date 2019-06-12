@@ -107,7 +107,8 @@
     import axios from "axios";
     import {mapGetters} from 'vuex';
     import Comments from './Comments';
-    import * as Vibrant from 'node-vibrant'
+    import * as Vibrant from 'node-vibrant';
+    import router from "../router";
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;

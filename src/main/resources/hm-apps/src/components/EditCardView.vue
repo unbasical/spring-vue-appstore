@@ -73,6 +73,17 @@
                                     d-flex
                             >
                                 <v-card flat tile class="d-flex" style="margin: 10px">
+                                    <v-btn
+                                            fab
+                                            small
+                                            color="red accent-2"
+                                            top
+                                            right
+                                            absolute
+                                            @click="deleteScreenshot(i)"
+                                    >
+                                        <v-icon>delete</v-icon>
+                                    </v-btn>
                                     <v-img contain
                                            :src="screenshotUrl"
                                            aspect-ratio="1"
@@ -135,6 +146,7 @@
             logo: null,
             screenshots: [],
             appChanges: {},
+            screenshotIdsToDelete: [],
             background: {
                 Vibrant: 'white',
                 Muted: 'white',
@@ -193,6 +205,20 @@
             },
             addScreenshot(event) {
                 this.screenshots.push(...event.target.files);
+            },
+            deleteScreenshot(index) {
+                // Delete local Screenshot
+                const border = this.app.screenshots.length;
+                if (this.app.screenshots && index >= border) {
+                    this.screenshots.splice(index - border, 1);
+                }
+                // Delete remote screenshot
+                else {
+                    // Mark for deletion
+                    this.screenshotIdsToDelete.push(this.app.screenshots[index].id);
+                    // Delete local
+                    this.app.screenshots.splice(index, 1);
+                }
             },
             uploadLogo() {
                 if (this.logo != null) {

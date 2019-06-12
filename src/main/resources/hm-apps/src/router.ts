@@ -1,11 +1,12 @@
 import Vue from "vue";
-import Router, {Route} from "vue-router";
+import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import DetailedCardView from "./components/DetailedCardView.vue";
+import EditCardView from "./components/EditCardView.vue";
 import CreateApp from "./components/CreateApp.vue";
-import Test from "./components/Test.vue";
+
 
 Vue.use(Router);
 
@@ -30,7 +31,7 @@ export default new Router({
         {
             path: "/edit/:id",
             name: "editapp",
-            component: DetailedCardView,
+            component: EditCardView,
             props: true
         },
         {

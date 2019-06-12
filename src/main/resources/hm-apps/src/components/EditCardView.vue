@@ -10,7 +10,8 @@
                             <v-btn fab color="success" @click="$refs.logoUpload.click()">
                                 <v-icon dark>edit</v-icon>
                             </v-btn>
-                            <input v-show="false" ref="logoUpload" type="file" @change="changeLogo">
+                            <input v-show="false" ref="logoUpload" type="file"
+                                   @change="logo = $event.target.files[0]; setBackground()">
                         </template>
                         <v-avatar :tile="false" :size="150" :color="background.LightVibrant">
                             <img :src="logoUrl" alt="avatar" style="background-color: white;">
@@ -21,7 +22,12 @@
                 <v-flex xs8>
                     <v-card-title primary-title>
                         <div>
-                            <div style="font-size: 4em">{{app.title}}</div>
+                            <v-text-field style="min-width: 500px;"
+                                          :background-color="background.LightVibrant"
+                                          v-model="app.title"
+                                          label="Solo textarea"
+                                          single-line
+                            ></v-text-field>
                             <div style="font-size: 2em">{{app.updateDate | date}}</div>
                         </div>
                     </v-card-title>
@@ -46,19 +52,46 @@
                 <v-flex xs6>
                     <v-card-title primary-title>
                         <div>
-                            <div class="headline">{{app.description}}</div>
+                            <v-textarea style="min-width: 700px;"
+                                        full-width auto-grow
+                                        :background-color="background.LightVibrant"
+                                        name="input-7-1"
+                                        label="Solo textarea"
+                                        v-model="app.description"
+                            ></v-textarea>
                         </div>
                     </v-card-title>
                 </v-flex>
                 <!-- Screenshot carousel -->
                 <v-flex xs6>
-                    <v-carousel height="400" hide-delimiters hide-controls>
-                        <v-carousel-item
-                                v-for="(screenshotUrl,i) in app.screenshots"
-                                :key="i">
-                            <v-img height="400" contain :src="screenshotUrl"></v-img>
-                        </v-carousel-item>
-                    </v-carousel>
+                    <v-container grid-list-sm fluid>
+                        <v-layout row wrap>
+                            <v-flex
+                                    v-for="(screenshotUrl,i) in screenshotUrls"
+                                    :key="i"
+                                    xs4
+                                    d-flex
+                            >
+                                <v-card flat tile class="d-flex" style="margin: 10px">
+                                    <v-img contain
+                                           :src="screenshotUrl"
+                                           aspect-ratio="1"
+                                           class="grey lighten-2"
+                                    >
+                                    </v-img>
+                                </v-card>
+                            </v-flex>
+                            <v-flex xs4 d-flex>
+                                <div>
+                                    <v-btn fab color="success" @click="$refs.screenshotUpload.click()" class="d-flex">
+                                        <v-icon dark>add</v-icon>
+                                    </v-btn>
+                                    <input multiple v-show="false" ref="screenshotUpload" type="file"
+                                           @change="addScreenshot">
+                                </div>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
                 </v-flex>
             </v-layout>
             <v-divider light style="margin-top: 20px;"></v-divider>
@@ -88,7 +121,6 @@
     import {mapGetters} from 'vuex';
     import Comments from './Comments';
     import * as Vibrant from 'node-vibrant';
-    import router from "../router";
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
@@ -101,6 +133,7 @@
             ratingChanged: false,
             app: {},
             logo: null,
+            screenshots: [],
             appChanges: {},
             background: {
                 Vibrant: 'white',
@@ -114,7 +147,6 @@
         mounted() {
             axios.get(`/api/apps/${this.id}`)
                 .then(res => {
-                    this.processScreenshots(res.data);
                     this.app = res.data;
                     this.setBackground();
                 }).catch(() => {
@@ -128,6 +160,22 @@
                 } else {
                     return URL.createObjectURL(this.logo);
                 }
+            },
+            screenshotUrls: function () {
+                const urls = [];
+                if (this.app.screenshots && this.app.screenshots.length > 0) {
+                    urls.push(...this.app.screenshots.map(s => `${process.env.VUE_APP_BASE_URL}/api/apps/${this.id}/screenshots/${s.id}`));
+                } else {
+                    urls.push(
+                        'https://upload.wikimedia.org/wikipedia/commons/3/35/Roter_W%C3%BCrfel.jpg',
+                        'https://upload.wikimedia.org/wikipedia/commons/6/64/Hochschule_Muenchen_Ansicht_Lothstrasse.jpg',
+                        'https://cdn.weka-fachmedien.de/thumbs/media_uploads/images/1511264229-283-worrsfuwh.jpg.627x353.jpg',
+                    );
+                }
+
+                // Add local images
+                urls.push(...this.screenshots.map(s => URL.createObjectURL(s)));
+                return urls;
             },
         },
         methods: {
@@ -143,9 +191,10 @@
                         Object.keys(palette).forEach(key => this.background[key] = palette[key].hex);
                     });
             },
-            changeLogo(event) {
-                this.logo = event.target.files[0];
-                //this.app.
+            addScreenshot(event) {
+                this.screenshots.push(...event.target.files);
+            },
+            uploadLogo() {
                 if (this.logo != null) {
                     const fd = new FormData();
                     fd.append('file', this.logo);
@@ -160,29 +209,6 @@
                     )
                         .then(() => this.setBackground())
                         .catch(() => Promise.reject('Fehler beim Hochladen des des Logos!'))
-                }
-            },
-            deleteApp() {
-                axios.delete(`/api/users/${this.app.author.id}/apps/${this.id}`,
-                    {
-                        headers: {
-                            'Authorization': 'Bearer ' + this.getUser().token
-                        },
-                    })
-                    .then((res) => {
-                        router.push({name: 'home'});
-                    })
-                    .catch(err => Promise.reject("Fehler beim Löschen der App!"))
-            },
-            processScreenshots(app) {
-                if (!app.screenshots || app.screenshots.length === 0) {
-                    app.screenshots = [
-                        'https://upload.wikimedia.org/wikipedia/commons/3/35/Roter_W%C3%BCrfel.jpg',
-                        'https://upload.wikimedia.org/wikipedia/commons/6/64/Hochschule_Muenchen_Ansicht_Lothstrasse.jpg',
-                        'https://cdn.weka-fachmedien.de/thumbs/media_uploads/images/1511264229-283-worrsfuwh.jpg.627x353.jpg',
-                    ];
-                } else {
-                    app.screenshots = app.screenshots.map(s => `${process.env.VUE_APP_BASE_URL}/api/apps/${this.id}/screenshots/${s.id}`);
                 }
             },
             toAcronym(username) {
@@ -213,5 +239,7 @@
 </script>
 
 <style scoped>
-
+    .white-input-text >>> .v-text-field__slot input {
+        color: white
+    }
 </style>

@@ -72,7 +72,16 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
-
+                <v-list-tile v-if="userRole()== 'ADMIN'">
+                    <router-link :to="{name: 'changepermissions'}" tag="button">
+                        <v-btn
+                                flat
+                                target="_blank">
+                            <v-icon left>bug_report</v-icon>
+                            Permissions
+                        </v-btn>
+                    </router-link>
+                </v-list-tile>
             </v-list>
         </v-menu>
     </v-toolbar>

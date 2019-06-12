@@ -6,6 +6,7 @@ import Register from "./components/Register.vue";
 import DetailedCardView from "./components/DetailedCardView.vue";
 import CreateApp from "./components/CreateApp.vue";
 import AllFeedback from "./components/AllFeedbacks.vue";
+import GrantPermissions from "./components/GrantPermissions.vue";
 import Test from "./components/Test.vue";
 
 Vue.use(Router);
@@ -50,7 +51,11 @@ export default new Router({
             name: "showfeedback",
             component: AllFeedback,
         },
-
+        {
+            path: "/permissions",
+            name: "changepermissions",
+            component: GrantPermissions,
+        },
         {
             path: "/about",
             name: "about",

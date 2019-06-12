@@ -15,8 +15,10 @@ public class UserDto {
     private String email;
     @JsonIgnore
     private String password;
+    private String role;
 
     public UserDto(User user) {
+        this.role = user.getRole().toString();
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();

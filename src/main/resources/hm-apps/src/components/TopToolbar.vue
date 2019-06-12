@@ -8,7 +8,7 @@
 
         <v-toolbar-title>
             Apps@HM
-            </v-toolbar-title>
+        </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn flat>
             <span class="mr-2">{{getUser().name}}</span>
@@ -44,7 +44,7 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
-                <v-list-tile>
+                <v-list-tile v-if="userRole() == 'ADMIN'">
                     <v-btn
                             flat
                             href="http://fr-11-apps.herokuapp.com/swagger-ui.html"
@@ -53,7 +53,7 @@
                         swagger UI
                     </v-btn>
                 </v-list-tile>
-                <v-list-tile>
+                <v-list-tile v-if="userRole() == 'ADMIN'">
                     <v-btn
                             flat
                             href="http://localhost:8080/swagger-ui.html"
@@ -61,6 +61,16 @@
                         <v-icon left>assignment</v-icon>
                         swagger UI local
                     </v-btn>
+                </v-list-tile>
+                <v-list-tile v-if="userRole()== 'ADMIN'">
+                    <router-link :to="{name: 'showfeedback'}" tag="button">
+                        <v-btn
+                                flat
+                                target="_blank">
+                            <v-icon left>bug_report</v-icon>
+                            Feedback
+                        </v-btn>
+                    </router-link>
                 </v-list-tile>
 
             </v-list>
@@ -75,6 +85,7 @@
         methods: {
             ...mapGetters([
                 'getUser',
+                'userRole'
             ]),
         },
     }

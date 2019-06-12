@@ -5,6 +5,7 @@ import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import DetailedCardView from "./components/DetailedCardView.vue";
 import CreateApp from "./components/CreateApp.vue";
+import AllFeedback from "./components/AllFeedbacks.vue";
 import Test from "./components/Test.vue";
 
 Vue.use(Router);
@@ -44,6 +45,12 @@ export default new Router({
             name: "createapp",
             component: CreateApp,
         },
+        {
+            path: "/feedback",
+            name: "showfeedback",
+            component: AllFeedback,
+        },
+
         {
             path: "/about",
             name: "about",

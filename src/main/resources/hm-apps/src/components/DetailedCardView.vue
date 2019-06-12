@@ -10,7 +10,7 @@
                             <span>{{app.views}} Views</span>
                         </template>
                         <v-avatar :tile="false" :size="150" :color="background.LightVibrant">
-                            <img :src="logoUrl" alt="avatar">
+                            <img :src="logoUrl" alt="avatar" style="background-color: white;">
                         </v-avatar>
                     </v-badge>
                 </v-flex>

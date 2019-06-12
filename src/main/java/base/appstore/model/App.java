@@ -23,7 +23,7 @@ public class App {
     private Long id;
 
     private String title;
-    @Column(length = 3000)
+    @Column(length = 10_000)
     private String description;
     @EqualsAndHashCode.Exclude
     private long views;

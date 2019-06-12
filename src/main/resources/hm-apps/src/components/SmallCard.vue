@@ -5,9 +5,9 @@
             <v-flex xs12>
                 <v-card-title primary-title>
                     <v-avatar>
-                        <v-img
-                            :src="logoUrl"
-                            alt="'no logo there'">
+                        <v-img style="background-color: white;"
+                               :src="logoUrl"
+                               alt="'no logo there'">
                         </v-img>
                     </v-avatar>
                     <v-spacer></v-spacer>
@@ -26,12 +26,12 @@
             <v-flex xs5>
                 <v-layout justify-end row>
                     <v-spacer></v-spacer>
-                    <v-img
-                            :src="logoUrl"
-                            :alt="'no logo there'"
-                            height="125px"
-                            max-width="200px"
-                            contain
+                    <v-img style="background-color: white;"
+                           :src="logoUrl"
+                           :alt="'no logo there'"
+                           height="125px"
+                           max-width="200px"
+                           contain
                     ></v-img>
                 </v-layout>
             </v-flex>

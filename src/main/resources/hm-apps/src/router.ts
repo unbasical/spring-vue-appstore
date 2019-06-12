@@ -46,7 +46,7 @@ export default new Router({
             component: CreateApp,
         },
         {
-            path: "/feedback",
+            path: "/feedbacks",
             name: "showfeedback",
             component: AllFeedback,
         },

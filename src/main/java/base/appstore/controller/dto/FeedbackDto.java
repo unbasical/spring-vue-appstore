@@ -10,8 +10,10 @@ public class FeedbackDto {
 
     private String subject;
     private String content;
+    private long id;
 
     public FeedbackDto(Feedback feedback) {
+        this.id = feedback.getId();
         this.subject = feedback.getSubject();
         this.content = feedback.getContent();
     }

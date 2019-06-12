@@ -22,7 +22,6 @@
         components: {SmallCard},
         data: () => ({
             apps: [
-
             ]
         }),
         mounted() {

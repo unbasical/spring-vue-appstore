@@ -53,6 +53,19 @@
                         style="padding: 30px;"
                 >
                     <form>
+                        <v-layout row>
+                            <v-text-field
+                                    no-data-text="add your own Tag"
+                                    v-model="newTag"
+                                    :items="allTags"
+                            >
+                            </v-text-field>
+
+                            <v-btn flat @click="addTagToTags()">
+                                <v-icon>add</v-icon>
+                            </v-btn>
+                        </v-layout>
+
                         <v-select
                                 :items="allTags"
                                 v-model="tags"
@@ -66,7 +79,7 @@
 
                 <v-btn
                         color="primary"
-                        @click="stage = 3"
+                        @click="addTagsToApp"
                 >
                     Weiter
                 </v-btn>
@@ -124,6 +137,7 @@
             screenshotFiles: [],
             logo: null,
             allTags: [],
+            newTag: '',
             tags: []
         }),
         mounted() {
@@ -147,6 +161,9 @@
             getCreateUrl: function () {
                 return "/api/users/" + this.getUser().id + "/apps"
             },
+            getUpdateUrl: function (id) {
+                return "/api/users/" + this.getUser().id + "/apps/" + id
+            },
             getScreenshotUrl: function (screenID) {
                 console.log(screenID)
                 return URL.createObjectURL(screenID)
@@ -169,8 +186,24 @@
                     this.stage = 2;
                 })
                     .catch(() => Promise.reject('Die App konnte nicht erstellt werden!'))
-
-
+            },
+            addTagsToApp: function (){
+                axios.put(this.getUpdateUrl(this.appId),
+                    {
+                        'description': this.description,
+                        'title': this.title,
+                        'tags': this.tags
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + this.getUser().token
+                        },
+                    }
+                ).then(res => {
+                    this.stage = 3;
+                })
+                    .catch(() => Promise.reject('Die tags konnten nicht hinzugefügt werden!'))
             },
             uploadFiles: function () {
                 //Save Logo
@@ -208,9 +241,12 @@
                 }
 
 
+            },
+            addTagToTags: function (event) {
+                this.tags.push(this.newTag)
+                this.allTags.push(this.newTag)
+                this.newTag = ''
             }
-
-
         }
     }
 </script>

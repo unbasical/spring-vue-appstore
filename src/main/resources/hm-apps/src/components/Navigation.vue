@@ -127,7 +127,7 @@
             filter: "",
             drawer: true,
             mini: true,
-            allTags: ["test", "ball", "trump"],
+            allTags: [],
             selectedTags: [],
             items: [{title: 'Menu 1'}, {title: 'Menu 2'}],
         })

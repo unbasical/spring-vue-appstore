@@ -28,7 +28,7 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
-                <v-list-tile>
+                <v-list-tile v-if="getUser().id==0">
                     <router-link :to="{name: 'register'}" tag="button">
                         <v-btn flat>
                             <v-icon left>add</v-icon>
@@ -36,7 +36,15 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
-                <v-list-tile>
+                <v-list-tile v-if="getUser().id!=0">
+                    <router-link :to="{name: 'home'}" tag="button">
+                        <v-btn flat @click="logout()">
+                            <v-icon left>face</v-icon>
+                            Logout
+                        </v-btn>
+                    </router-link>
+                </v-list-tile>
+                <v-list-tile v-if="getUser().id==0">
                     <router-link :to="{name: 'userlogin'}" tag="button">
                         <v-btn flat>
                             <v-icon left>face</v-icon>
@@ -87,7 +95,7 @@
     </v-toolbar>
 </template>
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapGetters,mapMutations} from 'vuex';
 
     export default {
         name: 'TopToolbar',
@@ -96,6 +104,18 @@
                 'getUser',
                 'userRole'
             ]),
+            ...mapMutations([
+                'setUser'
+            ]),
+            logout:function () {
+                this.setUser({
+                    id: 0,
+                    email : "mail",
+                    name: "default",
+                    token: '',
+                })
+                console.log(this.getUser())
+            }
         },
     }
 </script>

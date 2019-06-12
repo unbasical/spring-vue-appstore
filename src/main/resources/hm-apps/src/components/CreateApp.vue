@@ -148,7 +148,6 @@
                 return "/api/users/" + this.getUser().id + "/apps"
             },
             getScreenshotUrl: function (screenID) {
-                console.log(screenID)
                 return URL.createObjectURL(screenID)
             },
             createApp: function () {
@@ -194,7 +193,6 @@
                 //Save screenshots
                 for (let i = 0; i < this.screenshotFiles.length; i++) {
                     const screenData = new FormData();
-                    console.log('upload Screenshot: ' + this.screenshotFiles[i].name);
                     screenData.append('file', this.screenshotFiles[i]);
 
                     axios.post("/api/users/" + this.getUser().id + "/apps/" + this.appId + "/screenshots", screenData,

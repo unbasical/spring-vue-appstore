@@ -9,21 +9,17 @@ import base.appstore.model.Screenshot;
 import base.appstore.repository.AppRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
+import java.util.List;
 
 
 @RestController
@@ -117,12 +113,20 @@ public class FileController {
     public void deleteScreenshot(@PathVariable Long userID, @PathVariable Long appID, @PathVariable Long id) {
         final App app = getAppByIdOrThrow(appID);
 
-        app.setScreenshots(app.getScreenshots().stream()
-                .filter(s -> !s.getId().equals(id))
-                .collect(Collectors.toList())
-        );
+        final List<Screenshot> screenshots = app.getScreenshots();
+        int idToDelete = -1;
+        for (int i = 0; i < screenshots.size(); i++) {
+            if (screenshots.get(i).getId().equals(id)) {
+                idToDelete = i;
+                break;
+            }
+        }
 
-        appRepository.save(app);
+        if (idToDelete > 0) {
+            app.getScreenshots().remove(idToDelete);
+            appRepository.save(app);
+        }
+
     }
 
 

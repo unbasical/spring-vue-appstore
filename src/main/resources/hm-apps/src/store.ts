@@ -43,8 +43,7 @@ export default new Vuex.Store({
                 .split(' ')
                 .reduce((a, b) => a + b.charAt(0), '')
                 .substr(0, 2).toUpperCase();
-        }
-
+        },
     },
     mutations: {
         setUser(state, user){

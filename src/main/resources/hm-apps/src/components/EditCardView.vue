@@ -27,6 +27,7 @@
                                           v-model="app.title"
                                           label="Solo textarea"
                                           single-line
+                                          @click="app.dirty = true"
                             ></v-text-field>
                             <div style="font-size: 2em">{{app.updateDate | date}}</div>
                         </div>
@@ -58,6 +59,7 @@
                                         name="input-7-1"
                                         label="Solo textarea"
                                         v-model="app.description"
+                                        @click="app.dirty = true"
                             ></v-textarea>
                         </div>
                     </v-card-title>
@@ -113,8 +115,8 @@
                         <div v-if="userRole() === 'ADMIN' || userRole() === 'DEVELOPER'">
                             <v-btn color="success"
                                    class="white--text"
-                                   :to="`/view/${id}`"
                                    style="margin-bottom: 30px"
+                                   @click="commit()"
                             >
                                 Fertig
                                 <v-icon right dark>edit</v-icon>
@@ -132,6 +134,9 @@
     import {mapGetters} from 'vuex';
     import Comments from './Comments';
     import * as Vibrant from 'node-vibrant';
+    import router from "../router"
+    import {EMPTY, forkJoin, from} from 'rxjs';
+    import {filter, flatMap, tap} from 'rxjs/operators';
 
     // Set base url of axios
     axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
@@ -145,7 +150,6 @@
             app: {},
             logo: null,
             screenshots: [],
-            appChanges: {},
             screenshotIdsToDelete: [],
             background: {
                 Vibrant: 'white',
@@ -177,12 +181,6 @@
                 const urls = [];
                 if (this.app.screenshots && this.app.screenshots.length > 0) {
                     urls.push(...this.app.screenshots.map(s => `${process.env.VUE_APP_BASE_URL}/api/apps/${this.id}/screenshots/${s.id}`));
-                } else {
-                    urls.push(
-                        'https://upload.wikimedia.org/wikipedia/commons/3/35/Roter_W%C3%BCrfel.jpg',
-                        'https://upload.wikimedia.org/wikipedia/commons/6/64/Hochschule_Muenchen_Ansicht_Lothstrasse.jpg',
-                        'https://cdn.weka-fachmedien.de/thumbs/media_uploads/images/1511264229-283-worrsfuwh.jpg.627x353.jpg',
-                    );
                 }
 
                 // Add local images
@@ -195,7 +193,8 @@
                 'getUser',
                 'userAcronym',
                 'isLoggedIn',
-                'userRole'
+                'userRole',
+                'getRequestHeader'
             ]),
             setBackground() {
                 Vibrant.from(this.logoUrl).getPalette()
@@ -220,22 +219,44 @@
                     this.app.screenshots.splice(index, 1);
                 }
             },
+            commit() {
+                forkJoin(this.uploadApp(), this.uploadLogo(), this.deleteMarkedScreenshots(), this.uploadNewScreenshots())
+                    .subscribe(res => {
+                    }, err => console.log('HTTP Error', err), () => router.push({name: 'home'}));
+            },
             uploadLogo() {
                 if (this.logo != null) {
                     const fd = new FormData();
                     fd.append('file', this.logo);
-                    axios.post("/api/users/" + this.getUser().id + "/apps/" + this.id + "/logo",
-                        fd,
-                        {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                                'Authorization': 'Bearer ' + this.getUser().token
-                            },
-                        }
-                    )
-                        .then(() => this.setBackground())
-                        .catch(() => Promise.reject('Fehler beim Hochladen des des Logos!'))
+                    return from(axios.post("/api/users/" + this.getUser().id + "/apps/" + this.id + "/logo", fd, this.getRequestHeader('multipart/form-data')))
+                        .pipe(tap(() => this.setBackground()))
                 }
+                return EMPTY;
+            },
+            uploadApp() {
+                if (this.app.dirty) {
+                    return from(axios.put("/api/users/" + this.getUser().id + "/apps/" + this.id, {
+                        title: this.app.title,
+                        description: this.app.description,
+                    }, this.getRequestHeader()));
+                }
+                return EMPTY;
+            },
+            deleteMarkedScreenshots() {
+                return from(this.screenshotIdsToDelete)
+                    .pipe(
+                        flatMap(screenshotId => from(axios.delete(`/api/users/${this.getUser().id}/apps/${this.id}/screenshots/${screenshotId}`, this.getRequestHeader())))
+                    );
+            },
+            uploadNewScreenshots() {
+                return from(this.screenshots).pipe(
+                    filter(s => !('id' in s)),
+                    flatMap(s => {
+                        const screenData = new FormData();
+                        screenData.append('file', s);
+                        return from(axios.post(`/api/users/${this.getUser().id}/apps/${this.id}/screenshots`, screenData, this.getRequestHeader('multipart/form-data')));
+                    })
+                );
             },
             toAcronym(username) {
                 return username
@@ -248,24 +269,24 @@
                 axios.post(`/api/apps/${this.id}/ratings`, {
                         author: this.getUser(),
                         stars: this.app.rating
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + this.getUser().token
-                        },
-                    })
+                }, this.getRequestHeader())
                     .then((res) => {
                         this.app.rating = res.data;
                     })
                     .catch(err => Promise.reject("Fehler beim Senden des Ratings!"))
-            }
+            },
+            getRequestHeader(contentType) {
+                const type = contentType ? contentType : 'application/json';
+                return {
+                    headers: {
+                        'Content-Type': type,
+                        'Authorization': 'Bearer ' + this.getUser().token
+                    },
+                }
+            },
         }
     }
 </script>
 
 <style scoped>
-    .white-input-text >>> .v-text-field__slot input {
-        color: white
-    }
 </style>

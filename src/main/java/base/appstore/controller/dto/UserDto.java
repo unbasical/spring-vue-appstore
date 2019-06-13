@@ -18,7 +18,7 @@ public class UserDto {
     private String role;
 
     public UserDto(User user) {
-        this.role = user.getRole() != null ? user.getRole().toString() : "";
+        this.role = user.getRole().toString();
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();

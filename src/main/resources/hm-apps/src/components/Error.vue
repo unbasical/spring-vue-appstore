@@ -25,7 +25,6 @@
         }),
         methods: {
             showError: function (event) {
-                console.log(event);
                 this.error = event.reason;
                 this.show = true;
                 window.setTimeout(this.hideError, 4000);

@@ -49,7 +49,6 @@
                 return "/api/users/" + userid + "/role"
             },
             assignRole: function (userId, role) {
-                console.log(userId + ' gets role ' + role),
                 axios.put(this.getAssingPermissionUrl(userId), role,{
                     headers: {
                         'Content-Type': 'application/json',

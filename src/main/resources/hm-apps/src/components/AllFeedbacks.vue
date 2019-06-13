@@ -2,14 +2,22 @@
     <v-container>
         <v-list two-line subheader>
             <v-list-tile
-                    v-for="item in feedback"
-                    :key="item.subject"
+                    v-for="feedback in feedbacks"
+                    :key="feedback.subject"
                     @click=""
+
             >
-                <v-list-tile-content style="margin: 10px">
-                    <v-list-tile-title>{{ item.subject }}</v-list-tile-title>
-                    <v-list-tile-sub-title>{{ item.content}}</v-list-tile-sub-title>
-                </v-list-tile-content>
+                <v-layout row>
+                    <v-list-tile-content style="margin: 10px">
+                        <v-list-tile-title>{{ feedback.subject }}</v-list-tile-title>
+                        <v-list-tile-sub-title>{{ feedback.content}}</v-list-tile-sub-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                        <v-btn @click="removeFeedback(feedback)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                    </v-list-tile-action>
+                </v-layout>
             </v-list-tile>
         </v-list>
     </v-container>
@@ -22,22 +30,38 @@
     export default {
         name: "AllFeedbacks",
         data: () => ({
-            feedback: []
+            feedbacks: []
         }),
         mounted() {
-            axios.get("/api/feedback", {
+            axios.get("/api/feedbacks", {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + this.getUser().token
                 },
             })
-                .then(res => this.feedback = res.data)
+                .then(res => this.feedbacks = res.data)
                 .catch(err => console.error(err))
         },
         methods: {
             ...mapGetters([
                 'getUser'
-            ])
+            ]),
+            removeFeedback: function (feedbackobj) {
+                axios.delete("/api/feedbacks/" + feedbackobj.id, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.getUser().token
+                    },
+                })
+                    .then(res => {
+                        var index = this.feedbacks.indexOf(feedbackobj);
+                        if (index > -1) {
+                            this.feedbacks.splice(index, 1);
+                        }
+                    })
+                    .catch(err => console.error(err))
+
+            }
         }
     }
 </script>

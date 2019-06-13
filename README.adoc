@@ -1,6 +1,6 @@
 # Fr-11 Apps@FHM
 
-# https://fr-11-apps.herokuapp.com/apps.html[Go to App]
+# https://fr-11-apps.herokuapp.com[Go to App]
 
 image::https://storiescdn.hornet.com/wp-content/uploads/2019/01/24204340/he-man.jpg[GitHub mascot]
 

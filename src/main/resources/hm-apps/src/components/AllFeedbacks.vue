@@ -33,7 +33,7 @@
             feedbacks: []
         }),
         mounted() {
-            axios.get("/api/feedbacks", {
+            axios.get("/api/feedback", {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + this.getUser().token
@@ -47,7 +47,7 @@
                 'getUser'
             ]),
             removeFeedback: function (feedbackobj) {
-                axios.delete("/api/feedbacks/" + feedbackobj.id, {
+                axios.delete("/api/feedback/" + feedbackobj.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + this.getUser().token

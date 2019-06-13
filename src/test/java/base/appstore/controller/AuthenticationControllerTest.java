@@ -1,7 +1,6 @@
 package base.appstore.controller;
 
 import base.appstore.controller.dto.UserDto;
-import base.appstore.model.User;
 import base.appstore.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;

@@ -1,6 +1,5 @@
 package base.appstore.controller;
 
-import base.appstore.exceptions.ResourceExistsException;
 import base.appstore.model.App;
 import base.appstore.model.Role;
 import base.appstore.model.User;
@@ -8,9 +7,7 @@ import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

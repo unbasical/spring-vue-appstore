@@ -67,6 +67,7 @@ public class AppControllerTest {
                 .title("TestApp")
                 .description("Fancy description")
                 .tags(tags)
+                .user(testUser)
                 .build());
     }
 

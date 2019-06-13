@@ -52,6 +52,7 @@ public class UserControllerTest {
         testApp = appRepo.save(App.builder()
                 .title("TestApp")
                 .description("Fancy description")
+                .user(testUser)
                 .build());
     }
 

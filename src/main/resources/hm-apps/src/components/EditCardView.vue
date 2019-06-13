@@ -222,7 +222,7 @@
             commit() {
                 forkJoin(this.uploadApp(), this.uploadLogo(), this.deleteMarkedScreenshots(), this.uploadNewScreenshots())
                     .subscribe(res => {
-                    }, err => console.log('HTTP Error', err), () => router.push({name: 'home'}));
+                    }, err => Promise.reject('Fehler beim Aktualisieren der App!'), () => router.push({name: 'home'}));
             },
             uploadLogo() {
                 if (this.logo != null) {

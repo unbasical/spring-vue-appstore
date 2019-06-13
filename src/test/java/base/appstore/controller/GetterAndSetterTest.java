@@ -46,6 +46,8 @@ public class GetterAndSetterTest {
                 {Screenshot.class},
                 {Tag.class},
                 {User.class},
+                {Feedback.class},
+                {FeedbackDto.class}
         });
     }
 

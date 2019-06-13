@@ -84,7 +84,6 @@
                     Weiter
                 </v-btn>
 
-                <v-btn flat @click="stage = 1">Zurück</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="3">

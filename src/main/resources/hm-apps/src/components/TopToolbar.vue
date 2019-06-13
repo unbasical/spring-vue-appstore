@@ -114,7 +114,6 @@
                     name: "default",
                     token: '',
                 })
-                console.log(this.getUser())
             }
         },
     }

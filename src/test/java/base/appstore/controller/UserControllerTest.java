@@ -1,5 +1,6 @@
 package base.appstore.controller;
 
+import base.appstore.exceptions.ResourceExistsException;
 import base.appstore.model.App;
 import base.appstore.model.Role;
 import base.appstore.model.User;
@@ -7,7 +8,9 @@ import base.appstore.repository.AppRepository;
 import base.appstore.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -168,6 +171,17 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    public void createAppTwiceAndGetError() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(post(String.format("/api/users/%d/apps", testUser.getId())).content("{\n" +
+                "\t\"title\": \""+testApp.getTitle()+"\",\n" +
+                "\t\"description\": \""+testApp.getDescription()+"\"\n" +
+                "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
     @WithMockUser(roles = "DEVELOPER")
     public void updateAppAsDeveloper() throws Exception {
         //testing thymeleaf sec:authorize with hasPermission
@@ -210,6 +224,23 @@ public class UserControllerTest {
 
         this.mockMvc.perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void createUserTwiceAndGetException() throws Exception{
+        this.mockMvc.perform(post("/api/users").content("{\n" +
+                "\t\"name\": \"Test User\",\n" +
+                "\t\"email\": \"test@hm.edu\",\n" +
+                "\t\"password\": \"test\"\n" +
+                "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void deleteAppByID() throws Exception{
+        this.mockMvc.perform(delete("/api/users/" + testUser.getId()+"/apps/" + testApp.getId()))
+                .andExpect(status().isOk());
     }
 
 

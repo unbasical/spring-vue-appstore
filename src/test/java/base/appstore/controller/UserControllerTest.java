@@ -168,6 +168,17 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    public void createAppTwiceAndGetError() throws Exception {
+        //testing thymeleaf sec:authorize with hasPermission
+        this.mockMvc.perform(post(String.format("/api/users/%d/apps", testUser.getId())).content("{\n" +
+                "\t\"title\": \""+testApp.getTitle()+"\",\n" +
+                "\t\"description\": \""+testApp.getDescription()+"\"\n" +
+                "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
     @WithMockUser(roles = "DEVELOPER")
     public void updateAppAsDeveloper() throws Exception {
         //testing thymeleaf sec:authorize with hasPermission
@@ -210,6 +221,23 @@ public class UserControllerTest {
 
         this.mockMvc.perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void createUserTwiceAndGetException() throws Exception{
+        this.mockMvc.perform(post("/api/users").content("{\n" +
+                "\t\"name\": \"Test User\",\n" +
+                "\t\"email\": \"test@hm.edu\",\n" +
+                "\t\"password\": \"test\"\n" +
+                "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void deleteAppByID() throws Exception{
+        this.mockMvc.perform(delete("/api/users/" + testUser.getId()+"/apps/" + testApp.getId()))
+                .andExpect(status().isOk());
     }
 
 

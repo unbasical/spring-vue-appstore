@@ -19,6 +19,9 @@ $ ./scripts/build-dev.sh
 export JDBC_DATABASE_URL=<your url>
 export JDBC_DATABASE_USERNAME=<your user>
 export JDBC_DATABASE_PASSWORD=<your password>
+
+# Integrate with kelon
+export OPA_URL=<url to opa>
 ```
 
 3. Start Spring via maven

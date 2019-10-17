@@ -7,7 +7,11 @@ The project can be built and started in three steps:
 
 1. Build the frontend and bundle it inside spring
 ```bash
+# Build frontend with production profile
 $ ./scripts/build.sh
+
+# Build frontend with development profile
+$ ./scripts/build-dev.sh
 ```
 
 2. Set environment vairables for running PostgreSQL instance
@@ -30,6 +34,10 @@ mvn spring-boot:run -Pdev
 * The main application should be reachable [here](http://localhost:8080).
 * There is also a [Swagger-UI](http://localhost:8080/swagger-ui.html) available.
 
+# Development
+A admin user for development is created during startup.
+* Username: swa_student
+* Password: swa_student
 
 # Initial work
 * Anton Saatze

@@ -17,3 +17,4 @@ README.html
 .idea
 src/main/resources/hm-apps/node_modules
 src/main/resources/hm-apps/dist
+src/main/resources/www/static

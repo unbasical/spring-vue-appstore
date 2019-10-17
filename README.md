@@ -42,3 +42,4 @@ A admin user for development is created during startup.
 # Initial work
 * Anton Saatze
 * Daniel Seifert
+* Prof. Dr. Gudrun Socher (professor)

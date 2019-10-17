@@ -18,7 +18,7 @@ COPY pom.xml /usr/app
 
 WORKDIR /usr/app
 
-RUN rm -r src/main/resources/www/static/*
+RUN rm -rf src/main/resources/www/static/*
 COPY --from=FE-BUILD /usr/app/dist/ src/main/resources/www/static
 RUN mvn -f pom.xml -Djar.finalName=app -DskipTests clean package
 

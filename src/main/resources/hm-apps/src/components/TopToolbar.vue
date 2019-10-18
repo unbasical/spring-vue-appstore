@@ -52,7 +52,7 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
-                <v-list-tile v-if="userRole() == 'ADMIN'">
+                <v-list-tile>
                     <v-btn
                             flat
                             href="http://fr-11-apps.herokuapp.com/swagger-ui.html"
@@ -61,7 +61,7 @@
                         swagger UI
                     </v-btn>
                 </v-list-tile>
-                <v-list-tile v-if="userRole() == 'ADMIN'">
+                <v-list-tile>
                     <v-btn
                             flat
                             href="http://localhost:8080/swagger-ui.html"
@@ -70,7 +70,7 @@
                         swagger UI local
                     </v-btn>
                 </v-list-tile>
-                <v-list-tile v-if="userRole()== 'ADMIN'">
+                <v-list-tile>
                     <router-link :to="{name: 'showfeedback'}" tag="button">
                         <v-btn
                                 flat
@@ -80,7 +80,7 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
-                <v-list-tile v-if="userRole()== 'ADMIN'">
+                <v-list-tile>
                     <router-link :to="{name: 'changepermissions'}" tag="button">
                         <v-btn
                                 flat
@@ -102,7 +102,6 @@
         methods: {
             ...mapGetters([
                 'getUser',
-                'userRole'
             ]),
             ...mapMutations([
                 'setUser'

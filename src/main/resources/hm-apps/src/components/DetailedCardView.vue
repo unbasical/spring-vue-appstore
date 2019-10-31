@@ -78,7 +78,7 @@
                         </v-btn>
                     </v-flex>
                     <v-flex xs1 offset-xs8>
-                        <div v-if="userRole() === 'ADMIN' || userRole() === 'DEVELOPER'">
+                        <div>
                             <v-btn color="blue-grey"
                                    class="white--text"
                                    :to="`/edit/${id}`"
@@ -149,7 +149,6 @@
                 'getUser',
                 'userAcronym',
                 'isLoggedIn',
-                'userRole'
             ]),
             setBackground() {
                 Vibrant.from(this.logoUrl).getPalette()

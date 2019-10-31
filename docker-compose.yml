@@ -1,0 +1,51 @@
+version: '3'
+services:
+  appstore:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      - JDBC_DATABASE_URL=jdbc:postgresql://postgres:5432/appstore
+      - JDBC_DATABASE_USERNAME=admin
+      - JDBC_DATABASE_PASSWORD=SuperSecure
+      - OPA_URL=http://kelon:8181/v1/data/http/authz/allow
+
+  kelon:
+    image: kelon:latest
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./kelon/:/conf
+      - ./kelon/postgres-call-operands.yml:/call-operands/postgres.yml
+    environment:
+      - DATASTORE_CONF=/conf/datastore.yml
+      - API_CONF=/conf/api.yml
+      - OPA_CONF=/conf/opa.yml
+      - REGO_DIR=/conf
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: 'appstore'
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: 'SuperSecure'
+    ports:
+      - '5432:5432'
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./init-postgres-schemas.sql:/docker-entrypoint-initdb.d/Init-Postgres.sql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+volumes:
+  pg-data:

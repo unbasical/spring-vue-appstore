@@ -112,7 +112,7 @@
             <v-card-actions class="pa-3" style="padding-top: 40px;">
                 <v-layout row wrap>
                     <v-flex xs1 offset-xs10>
-                        <div v-if="userRole() === 'ADMIN' || userRole() === 'DEVELOPER'">
+                        <div>
                             <v-btn color="success"
                                    class="white--text"
                                    style="margin-bottom: 30px"
@@ -193,7 +193,6 @@
                 'getUser',
                 'userAcronym',
                 'isLoggedIn',
-                'userRole',
                 'getRequestHeader'
             ]),
             setBackground() {

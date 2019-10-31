@@ -3,31 +3,22 @@
 Simple appstore example which was created in the context of the lecture Software Architecture (2019) @ Hochschule München.
 
 # Setup
-The project can be built and started in three steps:
+The project can be built and started in two steps:
 
-1. Build the frontend and bundle it inside spring
+1. Build kelon as docker image
 ```bash
-# Build frontend with production profile
-$ ./scripts/build.sh
+# Clone the repository
+$ git clone git@github.com:Foundato/kelon.git
 
-# Build frontend with development profile
-$ ./scripts/build-dev.sh
+# Build the container
+$ docker build ./kelon -t kelon:latest
 ```
 
-2. Set environment vairables for running PostgreSQL instance
+2. Build and start all components with docker-compose
 ```bash
-export JDBC_DATABASE_URL=<your url>
-export JDBC_DATABASE_USERNAME=<your user>
-export JDBC_DATABASE_PASSWORD=<your password>
-```
-
-3. Start Spring via maven
-```bash
-# Production mode
-mvn spring-boot:run -Pprod
-
-# Local development (H2 database is used)
-mvn spring-boot:run -Pdev
+$ git clone git@github.com:Foundato/spring-vue-appstore.git
+$ cd spring-vue-appstore
+$ docker-compose up -d
 ```
 
 # User interfaces

@@ -11,11 +11,13 @@ The project can be built and started in two steps:
 $ git clone git@github.com:Foundato/kelon.git
 
 # Build the container
-$ docker build . -t kelon:latest
+$ docker build ./kelon -t kelon:latest
 ```
 
 2. Build and start all components with docker-compose
 ```bash
+$ git clone git@github.com:Foundato/spring-vue-appstore.git
+$ cd spring-vue-appstore
 $ docker-compose up -d
 ```
 

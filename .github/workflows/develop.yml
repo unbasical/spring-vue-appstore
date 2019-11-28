@@ -1,0 +1,22 @@
+name: Build and Test
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build container image
+        run: docker build -t kelonio/spring-vue-appstore:$(git rev-parse --short HEAD) -t kelonio/spring-vue-appstore:latest .
+
+      - name: Push images to DockerHub
+        run: echo kelonio/spring-vue-appstore:$(git rev-parse --short HEAD) kelonio/spring-vue-appstore:latest | xargs -n 1 docker push

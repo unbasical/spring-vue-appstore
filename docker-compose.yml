@@ -11,9 +11,10 @@ services:
       - JDBC_DATABASE_USERNAME=admin
       - JDBC_DATABASE_PASSWORD=SuperSecure
       - OPA_URL=http://kelon:8181/v1/data/http/authz/allow
+      - ALLOW_ALL=false
 
   kelon:
-    image: kelon:latest
+    image: kelonio/kelon:latest
     restart: always
     depends_on:
       - postgres
@@ -27,6 +28,8 @@ services:
       - API_CONF=/conf/api.yml
       - OPA_CONF=/conf/opa.yml
       - REGO_DIR=/conf
+      - CONFIG_WATCHER_PATH=/conf
+
 
   postgres:
     image: postgres

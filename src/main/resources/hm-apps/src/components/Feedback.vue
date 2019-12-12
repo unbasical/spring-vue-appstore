@@ -67,8 +67,9 @@
 <script>
     import axios from "axios"
 
-    // Set base url of axios
-    axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+    // Set base url of axios from index.html property
+    const node = document.querySelector(`meta[property=BACKEND_URL]`)
+    axios.defaults.baseURL = node.content;
 
     export default {
         name: "Feedback",

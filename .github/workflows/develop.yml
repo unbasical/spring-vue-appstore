@@ -15,8 +15,14 @@ jobs:
       - name: Login to DockerHub
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build container image
-        run: docker build -t kelonio/spring-vue-appstore:$(git rev-parse --short HEAD) -t kelonio/spring-vue-appstore:latest .
+      - name: Build backend container image
+        run: docker build -t kelonio/spring-vue-appstore-backend:$(git rev-parse --short HEAD) -t kelonio/spring-vue-appstore-backend:latest  -f backend.dockerfile .
 
-      - name: Push images to DockerHub
-        run: echo kelonio/spring-vue-appstore:$(git rev-parse --short HEAD) kelonio/spring-vue-appstore:latest | xargs -n 1 docker push
+      - name: Build frontend container image
+        run: docker build -t kelonio/spring-vue-appstore-frontend:$(git rev-parse --short HEAD) -t kelonio/spring-vue-appstore-frontend:latest -f frontend.dockerfile .
+
+      - name: Push backend image to DockerHub
+        run: echo kelonio/spring-vue-appstore-backend:$(git rev-parse --short HEAD) kelonio/spring-vue-appstore-backend:latest | xargs -n 1 docker push
+
+      - name: Push frontend image to DockerHub
+        run: echo kelonio/spring-vue-appstore-frontend:$(git rev-parse --short HEAD) kelonio/spring-vue-appstore-frontend:latest | xargs -n 1 docker push

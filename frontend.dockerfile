@@ -12,3 +12,4 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 COPY docker-frontend-entrypoint.sh .
 EXPOSE 80
 ENTRYPOINT ["sh", "docker-frontend-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

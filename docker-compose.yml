@@ -13,7 +13,7 @@ services:
       - JDBC_DATABASE_USERNAME=admin
       - JDBC_DATABASE_PASSWORD=SuperSecure
       - OPA_URL=http://kelon:8181/v1/data/http/authz/allow
-      - ALLOW_ALL=true
+      - ALLOW_ALL=false
 
   appstore-frontend:
     build:

@@ -61,7 +61,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AccessDecisionManager accessDecisionManager() {
         List<AccessDecisionVoter<?>> decisionVoters = Collections
                 .singletonList(new OPAVoter(System.getenv("OPA_URL")));
-
         return new UnanimousBased(decisionVoters);
     }
 }

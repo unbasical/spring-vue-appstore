@@ -59,11 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<?>> decisionVoters = Collections.emptyList();
-        final String opaURL = System.getenv("OPA_URL");
-        if (opaURL != null && !opaURL.isEmpty()){
-            decisionVoters = Collections.singletonList(new OPAVoter(System.getenv("OPA_URL")));
-        }
+        List<AccessDecisionVoter<?>> decisionVoters = Collections.singletonList(new OPAVoter(System.getenv("OPA_URL")));
         return new UnanimousBased(decisionVoters);
     }
 }

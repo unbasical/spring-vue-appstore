@@ -18,7 +18,6 @@ public class OPAVoter implements AccessDecisionVoter<Object> {
     private final boolean allowAll;
 
     public OPAVoter(String opaUrl) {
-
         this.opaUrl = opaUrl;
         this.allowAll = "true".equals(System.getenv("ALLOW_ALL"));
     }

@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
+                .csrf().disable().cors().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().accessDecisionManager(accessDecisionManager())
@@ -59,9 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<?>> decisionVoters = Collections
-                .singletonList(new OPAVoter(System.getenv("OPA_URL")));
-
+        List<AccessDecisionVoter<?>> decisionVoters = Collections.singletonList(new OPAVoter(System.getenv("OPA_URL")));
         return new UnanimousBased(decisionVoters);
     }
 }

@@ -14,15 +14,15 @@ entity_schemas:
   pg:
     appstore:
       entities:
-        - app
-        - app_comments
-        - app_ratings
-        - app_screenshots
-        - app_tags
-        - comment
-        - feedback
-        - logo
-        - rating
-        - screenshot
-        - tag
-        - users
+        - name: app
+        - name: app_comments
+        - name: app_ratings
+        - name: app_screenshots
+        - name: app_tags
+        - name: comment
+        - name: feedback
+        - name: logo
+        - name: rating
+        - name: screenshot
+        - name: tag
+        - name: users

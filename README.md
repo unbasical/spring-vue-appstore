@@ -3,18 +3,8 @@
 Simple appstore example which was created in the context of the lecture Software Architecture (2019) @ Hochschule München.
 
 # Setup
-The project can be built and started in two steps:
 
-1. Build kelon as docker image
-```bash
-# Clone the repository
-$ git clone git@github.com:Foundato/kelon.git
-
-# Build the container
-$ docker build ./kelon -t kelon:latest
-```
-
-2. Build and start all components with docker-compose
+The project can easily be started via docker-compose:
 ```bash
 $ git clone git@github.com:Foundato/spring-vue-appstore.git
 $ cd spring-vue-appstore

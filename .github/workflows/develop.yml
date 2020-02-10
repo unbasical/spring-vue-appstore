@@ -1,0 +1,28 @@
+name: Publish
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build backend container image
+        run: docker build -t kelonio/spring-vue-appstore-backend:$(git rev-parse --short HEAD) -t kelonio/spring-vue-appstore-backend:latest  -f backend.dockerfile .
+
+      - name: Build frontend container image
+        run: docker build -t kelonio/spring-vue-appstore-frontend:$(git rev-parse --short HEAD) -t kelonio/spring-vue-appstore-frontend:latest -f frontend.dockerfile .
+
+      - name: Push backend image to DockerHub
+        run: echo kelonio/spring-vue-appstore-backend:$(git rev-parse --short HEAD) kelonio/spring-vue-appstore-backend:latest | xargs -n 1 docker push
+
+      - name: Push frontend image to DockerHub
+        run: echo kelonio/spring-vue-appstore-frontend:$(git rev-parse --short HEAD) kelonio/spring-vue-appstore-frontend:latest | xargs -n 1 docker push

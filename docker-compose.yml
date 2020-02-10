@@ -1,7 +1,9 @@
 version: '3'
 services:
-  appstore:
-    build: .
+  appstore-backend:
+    build:
+      context: .
+      dockerfile: ./backend.dockerfile
     depends_on:
       - postgres
     ports:
@@ -11,9 +13,21 @@ services:
       - JDBC_DATABASE_USERNAME=admin
       - JDBC_DATABASE_PASSWORD=SuperSecure
       - OPA_URL=http://kelon:8181/v1/data/http/authz/allow
+      - ALLOW_ALL=false
+
+  appstore-frontend:
+    build:
+      context: .
+      dockerfile: ./frontend.dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "80:80"
+    environment:
+      - BACKEND_URL=http://localhost:8080
 
   kelon:
-    image: kelon:latest
+    image: kelonio/kelon:latest
     restart: always
     depends_on:
       - postgres
@@ -27,6 +41,8 @@ services:
       - API_CONF=/conf/api.yml
       - OPA_CONF=/conf/opa.yml
       - REGO_DIR=/conf
+      - CONFIG_WATCHER_PATH=/conf
+
 
   postgres:
     image: postgres

@@ -15,9 +15,11 @@ import java.util.Map;
 public class OPAVoter implements AccessDecisionVoter<Object> {
 
     private String opaUrl;
+    private final boolean allowAll;
 
     public OPAVoter(String opaUrl) {
         this.opaUrl = opaUrl;
+        this.allowAll = "true".equals(System.getenv("ALLOW_ALL"));
     }
 
     @Override
@@ -32,6 +34,11 @@ public class OPAVoter implements AccessDecisionVoter<Object> {
 
     @Override
     public int vote(Authentication authentication, Object obj, Collection<ConfigAttribute> attrs) {
+
+        // Add possibility to bridge OPA
+        if (allowAll) {
+            return ACCESS_GRANTED;
+        }
 
         if (!(obj instanceof FilterInvocation)) {
             return ACCESS_ABSTAIN;

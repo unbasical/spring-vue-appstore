@@ -138,8 +138,9 @@
     import {EMPTY, forkJoin, from} from 'rxjs';
     import {filter, flatMap, tap} from 'rxjs/operators';
 
-    // Set base url of axios
-    axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+    // Set base url of axios from index.html property
+    const node = document.querySelector(`meta[property=BACKEND_URL]`)
+    axios.defaults.baseURL = node.content;
 
     export default {
         name: "DetailedCardView",

@@ -12,3 +12,5 @@ apis:
         package: applications
       - path: /api/users/\d+/apps/\d+
         package: applications
+      - path: /api/tags.*
+        package: applications

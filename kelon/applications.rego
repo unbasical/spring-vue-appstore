@@ -10,6 +10,12 @@ allow = global.allow
 allow {
   input.method == "GET"
   input.path = ["api", "apps"]
+  data.pg.users[_].name = "swa_student"
+}
+
+allow {
+  input.method == "GET"
+  input.path = ["api", "tags"]
 }
 
 # Get details about an app is always allowed

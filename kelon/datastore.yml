@@ -8,6 +8,13 @@ datastores:
       database: appstore
       user: admin
       password: SuperSecure
+      sslmode: disable
+    metadata:
+      maxIdleConnections: 5
+      maxOpenConnections: 10
+      connectionMaxLifetimeSeconds: 1800
+      telemetryName: Datasource
+      telemetryType: PostgreSQL
 
 # Entity-Schemas define the structure of the entities of one schema inside a datastore
 entity_schemas:

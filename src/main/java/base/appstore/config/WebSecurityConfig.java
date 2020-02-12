@@ -4,7 +4,6 @@ import base.appstore.config.security.JwtAuthenticationEntryPoint;
 import base.appstore.config.security.JwtAuthenticationProvider;
 import base.appstore.config.security.JwtAuthenticationTokenFilter;
 import base.appstore.config.security.voter.OPAVoter;
-import com.microsoft.applicationinsights.TelemetryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +25,6 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    TelemetryClient telemetryClient;
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -62,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<?>> decisionVoters = Collections.singletonList(new OPAVoter(System.getenv("OPA_URL"), telemetryClient));
+        List<AccessDecisionVoter<?>> decisionVoters = Collections.singletonList(new OPAVoter(System.getenv("OPA_URL")));
         return new UnanimousBased(decisionVoters);
     }
 }

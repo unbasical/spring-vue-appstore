@@ -45,7 +45,7 @@ services:
       - CONFIG_WATCHER_PATH=/conf
       - TELEMETRY_SERVICE=applicationinsights
       - INSTRUMENTATION_KEY=ae6aa5ed-b2d4-4368-a5d2-5dc28c9a696d
-      - APPLICATION_INSIGHTS_SERVICE_NAME=kelon:8181 | kelon
+      - APPLICATION_INSIGHTS_SERVICE_NAME=Kelon
 
 
   postgres:
